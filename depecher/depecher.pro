@@ -23,7 +23,7 @@ CONFIG += c++11
 CONFIG += link_pkgconfig
 PKGCONFIG += nemonotifications-qt5 tdlibjson
 PKGCONFIG += sailfishapp mlite5
-PKGCONFIG += vorbisfile libglibutil libdbusaccess
+PKGCONFIG += vorbisfile libglibutil libdbusaccess gio-2.0
 
 dbus_policy.files = dbus/depecher-dbus-access.conf
 dbus_policy.path = /etc/$$TARGET
