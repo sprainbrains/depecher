@@ -277,15 +277,25 @@ QVariant ChatsModel::data(const QModelIndex &index, int role) const
     case LAST_MESSAGE:
         if (m_chats[rowIndex]->last_message_.data() != nullptr) {
             //Return content
-            if (m_chats[rowIndex]->last_message_->content_.data() != nullptr) {
-                if (m_chats[rowIndex]->last_message_->content_->get_id() == messageText::ID) {
+            auto lastMessage = m_chats[rowIndex]->last_message_;
+            if (lastMessage->content_.data() != nullptr) {
+                auto messageTypeId = lastMessage->content_->get_id();
+                if (messageTypeId == messageText::ID) {
                     auto contentPtr = static_cast<messageText *>
-                                      (m_chats[rowIndex]->last_message_->content_.data());
+                                      (lastMessage->content_.data());
                     if (contentPtr->text_.data() != nullptr) {
                         return QString::fromStdString(contentPtr->text_->text_);
                     }
+                } else if (messageTypeId == messageChatJoinByLink::ID) {
+                    QString name = tdlibJson->parseObject->getFirstName(
+                                lastMessage->sender_user_id_);
+                    return name + " joined by invite link";
+                } else if (messageTypeId == messageChatAddMembers::ID) {
+                    QString name = tdlibJson->parseObject->getFirstName(
+                                lastMessage->sender_user_id_);
+                    return name + " joined Telegram";
                 }
-                return ParseObject::messageTypeToString(m_chats[rowIndex]->last_message_->content_->get_id());
+                return ParseObject::messageTypeToString(lastMessage->content_->get_id());
             }
         }
     case LAST_MESSAGE_AUTHOR:

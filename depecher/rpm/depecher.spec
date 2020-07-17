@@ -13,7 +13,6 @@ Group:      Applications/Communications
 License:    LICENSE
 URL:        https://github.com/blacksailer/depecher
 Source0:    %{name}-%{version}.tar.bz2
-Source100:  depecher.yaml
 Requires:   sailfishsilica-qt5 >= 0.10.9
 Requires:   tdlibjson >= 1.3.1
 Requires:   libvorbis

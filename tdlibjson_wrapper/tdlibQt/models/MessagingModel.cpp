@@ -418,35 +418,38 @@ QVariant MessagingModel::data(const QModelIndex &index, int role) const
         return QVariant();
         break;
     case MESSAGE_TYPE: {
+        auto messageTypeId = m_messages[rowIndex]->content_->get_id();
         if (m_messages[rowIndex]->chat_id_ == 0)
             return SYSTEM_NEW_MESSAGE;
-        if (m_messages[rowIndex]->content_->get_id() == messageText::ID)
+        if (messageTypeId == messageText::ID)
             return TEXT;
-        if (m_messages[rowIndex]->content_->get_id() == messagePhoto::ID)
+        if (messageTypeId == messagePhoto::ID)
             return PHOTO;
-        if (m_messages[rowIndex]->content_->get_id() == messageSticker::ID)
+        if (messageTypeId == messageSticker::ID)
             return STICKER;
-        if (m_messages[rowIndex]->content_->get_id() == messageDocument::ID)
+        if (messageTypeId == messageDocument::ID)
             return DOCUMENT;
-        if (m_messages[rowIndex]->content_->get_id() == messageVoiceNote::ID)
+        if (messageTypeId == messageVoiceNote::ID)
             return VOICE;
-        if (m_messages[rowIndex]->content_->get_id() == messageAudio::ID)
+        if (messageTypeId == messageAudio::ID)
             return AUDIO;
-        if (m_messages[rowIndex]->content_->get_id() == messageVideo::ID)
+        if (messageTypeId == messageVideo::ID)
             return VIDEO;
-        if (m_messages[rowIndex]->content_->get_id() == messageVideoNote::ID)
+        if (messageTypeId == messageVideoNote::ID)
             return VIDEO_NOTE;
-        if (m_messages[rowIndex]->content_->get_id() == messageAnimation::ID)
+        if (messageTypeId == messageAnimation::ID)
             return ANIMATION;
-        if (m_messages[rowIndex]->content_->get_id() == messageContact::ID)
+        if (messageTypeId == messageContact::ID)
             return CONTACT;
-        if (m_messages[rowIndex]->content_->get_id() == messageChatJoinByLink::ID)
+        if (messageTypeId == messageChatJoinByLink::ID)
             return JOINBYLINK;
-        if (m_messages[rowIndex]->content_->get_id() == messageContactRegistered::ID)
+        if (messageTypeId == messageChatAddMembers::ID)
+            return ADD_MEMBERS;
+        if (messageTypeId == messageContactRegistered::ID)
             return CONTACT_REGISTERED;
-        if (m_messages[rowIndex]->content_->get_id() == messageSupergroupChatCreate::ID)
+        if (messageTypeId == messageSupergroupChatCreate::ID)
             return CHAT_CREATED;
-        if (m_messages[rowIndex]->content_->get_id() == messageBasicGroupChatCreate::ID)
+        if (messageTypeId == messageBasicGroupChatCreate::ID)
             return CHAT_CREATED;
         return UNDEFINED;
         break;

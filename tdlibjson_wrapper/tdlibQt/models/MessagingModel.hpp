@@ -285,6 +285,7 @@ public:
         SYSTEM_NEW_MESSAGE,
         CONTACT,
         JOINBYLINK,
+        ADD_MEMBERS,
         CONTACT_REGISTERED,
         CHAT_CREATED,
         UNDEFINED

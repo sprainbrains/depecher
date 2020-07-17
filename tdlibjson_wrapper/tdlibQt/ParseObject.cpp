@@ -754,170 +754,128 @@ QSharedPointer<MessageContent> ParseObject::parseMessageContent(const QJsonObjec
     typeMessageText->text_ = QSharedPointer<formattedText> (new formattedText);
     typeMessageText->text_->text_ = "Unsupported";
 
-    if (messageContentObject["@type"].toString() == "messagePhoto")
+    QString messageContentType = messageContentObject["@type"].toString();
+
+    if (messageContentType == "messagePhoto")
         return parseMessagePhoto(messageContentObject);
-    if (messageContentObject["@type"].toString() == "messageText")
+    if (messageContentType == "messageText")
         return parseMessageText(messageContentObject);
-    if (messageContentObject["@type"].toString() == "messageSticker")
+    if (messageContentType == "messageSticker")
         return parseMessageSticker(messageContentObject);
-    if (messageContentObject["@type"].toString() == "messageAnimation")
+    if (messageContentType == "messageAnimation")
         return parseMessageAnimation(messageContentObject);
-    if (messageContentObject["@type"].toString() == "messageAudio")
+    if (messageContentType == "messageAudio")
         return parseMessageAudio(messageContentObject);
-    if (messageContentObject["@type"].toString() == "messageContact") {
-        if (messageContentObject["@type"].toString() != "messageContact")
-            return QSharedPointer<messageContact>(new messageContact);
+    if (messageContentType == "messageContact") {
         auto resultMessage = QSharedPointer<messageContact>(new messageContact);
         resultMessage->contact_ = parseContact(messageContentObject["contact"].toObject());
         return resultMessage;
     }
 
-    if (messageContentObject["@type"].toString() == "messageDocument")
+    if (messageContentType == "messageDocument")
         return parseMessageDocument(messageContentObject);
-    if (messageContentObject["@type"].toString() == "messageVideo")
+    if (messageContentType == "messageVideo")
         return parseMessageVideo(messageContentObject);
-    if (messageContentObject["@type"].toString() == "messageVideoNote")
+    if (messageContentType == "messageVideoNote")
         return parseMessageVideoNote(messageContentObject);
-    if (messageContentObject["@type"].toString() == "messageVoiceNote")
+    if (messageContentType == "messageVoiceNote")
         return parseMessageVoiceNote(messageContentObject);
-    if (messageContentObject["@type"].toString() == "messageChatJoinByLink") {
-        if (messageContentObject["@type"].toString() != "messageChatJoinByLink")
-            return QSharedPointer<messageChatJoinByLink>(new messageChatJoinByLink);
-        auto resultMessage = QSharedPointer<messageChatJoinByLink>(new messageChatJoinByLink);
-        return resultMessage;
+    if (messageContentType == "messageChatJoinByLink") {
+        return QSharedPointer<messageChatJoinByLink>(new messageChatJoinByLink);
     }
-    if (messageContentObject["@type"].toString() == "messageContactRegistered") {
-        if (messageContentObject["@type"].toString() != "messageContactRegistered")
-            return QSharedPointer<messageContactRegistered>(new messageContactRegistered);
-        auto resultMessage = QSharedPointer<messageContactRegistered>(new messageContactRegistered);
-        return resultMessage;
+    if (messageContentType == "messageContactRegistered") {
+        return QSharedPointer<messageContactRegistered>(new messageContactRegistered);
     }
-    if (messageContentObject["@type"].toString() == "messageSupergroupChatCreate") {
-        if (messageContentObject["@type"].toString() != "messageSupergroupChatCreate")
-            return QSharedPointer<messageSupergroupChatCreate>(new messageSupergroupChatCreate);
+    if (messageContentType == "messageSupergroupChatCreate") {
         auto resultMessage = QSharedPointer<messageSupergroupChatCreate>(new messageSupergroupChatCreate);
         resultMessage->title_ = messageContentObject["title"].toString().toStdString();
         return resultMessage;
     }
-    if (messageContentObject["@type"].toString() == "messageBasicGroupChatCreate") {
+    if (messageContentType == "messageBasicGroupChatCreate") {
         return parseMessageBasicGroupChatCreate(messageContentObject);
+    }
+    if (messageContentType == "messageChatAddMembers") {
+        auto resultMessage = QSharedPointer<messageChatAddMembers>(new messageChatAddMembers);
+        for (auto val : messageContentObject["member_user_ids"].toArray())
+            resultMessage->member_user_ids_.push_back(val.toInt());
+#warning "TODO handle member_user_ids_"
+        return resultMessage;
     }
 
 #warning parseMessageEndsHere
     return typeMessageText;
-    if (messageContentObject["@type"].toString() == "messageChatChangePhoto") {
-        if (messageContentObject["@type"].toString() != "messageChatChangePhoto")
-            return QSharedPointer<messageChatChangePhoto>(new messageChatChangePhoto);
+    if (messageContentType == "messageChatChangePhoto") {
         auto resultMessage = QSharedPointer<messageChatChangePhoto>(new messageChatChangePhoto);
         resultMessage->photo_ = parsePhoto(messageContentObject["photo"].toObject());
         return resultMessage;
     }
-    if (messageContentObject["@type"].toString() == "messageChatChangeTitle") {
-        if (messageContentObject["@type"].toString() != "messageChatChangeTitle")
-            return QSharedPointer<messageChatChangeTitle>(new messageChatChangeTitle);
+    if (messageContentType == "messageChatChangeTitle") {
         auto resultMessage = QSharedPointer<messageChatChangeTitle>(new messageChatChangeTitle);
         resultMessage->title_ = messageContentObject["title"].toString().toStdString();
         return resultMessage;
     }
-    if (messageContentObject["@type"].toString() == "messageUnsupported") {
-        if (messageContentObject["@type"].toString() != "messageUnsupported")
-            return QSharedPointer<messageUnsupported>(new messageUnsupported);
-        auto resultMessage = QSharedPointer<messageUnsupported>(new messageUnsupported);
-        return resultMessage;
+    if (messageContentType == "messageUnsupported") {
+        return QSharedPointer<messageUnsupported>(new messageUnsupported);
     }
 
-    if (messageContentObject["@type"].toString() == "messageCall") {
-        if (messageContentObject["@type"].toString() != "messageCall")
-            return QSharedPointer<messageCall>(new messageCall);
+    if (messageContentType == "messageCall") {
         auto resultMessage = QSharedPointer<messageCall>(new messageCall);
         resultMessage->duration_ = messageContentObject["duration"].toInt();
         resultMessage->discard_reason_ = QSharedPointer<CallDiscardReason>(nullptr);
 #warning "TODO discard_reason_"
         return resultMessage;
     }
-    if (messageContentObject["@type"].toString() == "messageChatAddMembers") {
-        if (messageContentObject["@type"].toString() != "messageChatAddMembers")
-            return QSharedPointer<messageChatAddMembers>(new messageChatAddMembers);
-        auto resultMessage = QSharedPointer<messageChatAddMembers>(new messageChatAddMembers);
-        for (auto val : messageContentObject["member_user_ids"].toArray())
-            resultMessage->member_user_ids_.push_back(val.toInt());
-        return resultMessage;
-    }
-    if (messageContentObject["@type"].toString() == "messageChatDeleteMember") {
-        if (messageContentObject["@type"].toString() != "messageChatDeleteMember")
-            return QSharedPointer<messageChatDeleteMember>(new messageChatDeleteMember);
+    if (messageContentType == "messageChatDeleteMember") {
         auto resultMessage = QSharedPointer<messageChatDeleteMember>(new messageChatDeleteMember);
         resultMessage->user_id_ = messageContentObject["user_id"].toInt();
         return resultMessage;
     }
-    if (messageContentObject["@type"].toString() == "messageChatDeletePhoto") {
-        if (messageContentObject["@type"].toString() != "messageChatDeletePhoto")
-            return QSharedPointer<messageChatDeletePhoto>(new messageChatDeletePhoto);
+    if (messageContentType == "messageChatDeletePhoto") {
         auto resultMessage = QSharedPointer<messageChatDeletePhoto>(new messageChatDeletePhoto);
         return resultMessage;
     }
-    if (messageContentObject["@type"].toString() == "messageChatSetTtl") {
-        if (messageContentObject["@type"].toString() != "messageChatSetTtl")
-            return QSharedPointer<messageChatSetTtl>(new messageChatSetTtl);
+    if (messageContentType == "messageChatSetTtl") {
         auto resultMessage = QSharedPointer<messageChatSetTtl>(new messageChatSetTtl);
         resultMessage->ttl_ = messageContentObject["ttl"].toInt();
         return resultMessage;
     }
-    if (messageContentObject["@type"].toString() == "messageChatUpgradeFrom") {
-        if (messageContentObject["@type"].toString() != "messageChatUpgradeFrom")
-            return QSharedPointer<messageChatUpgradeFrom>(new messageChatUpgradeFrom);
+    if (messageContentType == "messageChatUpgradeFrom") {
         auto resultMessage = QSharedPointer<messageChatUpgradeFrom>(new messageChatUpgradeFrom);
         resultMessage->title_ = messageContentObject["title"].toString().toStdString();
         resultMessage->basic_group_id_ = messageContentObject["basic_group_id"].toInt();
 
         return resultMessage;
     }
-    if (messageContentObject["@type"].toString() == "messageChatUpgradeTo") {
-        if (messageContentObject["@type"].toString() != "messageChatUpgradeTo")
-            return QSharedPointer<messageChatUpgradeTo>(new messageChatUpgradeTo);
+    if (messageContentType == "messageChatUpgradeTo") {
         auto resultMessage = QSharedPointer<messageChatUpgradeTo>(new messageChatUpgradeTo);
         resultMessage->supergroup_id_ = messageContentObject["supergroup_id"].toInt();
         return resultMessage;
     }
-    if (messageContentObject["@type"].toString() == "messageCustomServiceAction") {
-        if (messageContentObject["@type"].toString() != "messageCustomServiceAction")
-            return QSharedPointer<messageCustomServiceAction>(new messageCustomServiceAction);
+    if (messageContentType == "messageCustomServiceAction") {
         auto resultMessage = QSharedPointer<messageCustomServiceAction>(new messageCustomServiceAction);
         resultMessage->text_ = messageContentObject["text"].toString().toStdString();
         return resultMessage;
     }
-    if (messageContentObject["@type"].toString() == "messageExpiredPhoto") {
-        if (messageContentObject["@type"].toString() != "messageExpiredPhoto")
-            return QSharedPointer<messageExpiredPhoto>(new messageExpiredPhoto);
-        auto resultMessage = QSharedPointer<messageExpiredPhoto>(new messageExpiredPhoto);
-        return resultMessage;
+    if (messageContentType == "messageExpiredPhoto") {
+        return QSharedPointer<messageExpiredPhoto>(new messageExpiredPhoto);
     }
-    if (messageContentObject["@type"].toString() == "messageExpiredVideo") {
-        if (messageContentObject["@type"].toString() != "messageExpiredVideo")
-            return QSharedPointer<messageExpiredVideo>(new messageExpiredVideo);
-        auto resultMessage = QSharedPointer<messageExpiredVideo>(new messageExpiredVideo);
-        return resultMessage;
+    if (messageContentType == "messageExpiredVideo") {
+        return QSharedPointer<messageExpiredVideo>(new messageExpiredVideo);
     }
-    if (messageContentObject["@type"].toString() == "messageGame") {
-        if (messageContentObject["@type"].toString() != "messageGame")
-            return QSharedPointer<messageGame>(new messageGame);
+    if (messageContentType == "messageGame") {
         auto resultMessage = QSharedPointer<messageGame>(new messageGame);
         resultMessage->game_ = QSharedPointer<game>(nullptr);
 #warning "TODO game"
         return resultMessage;
     }
-    if (messageContentObject["@type"].toString() == "messageGameScore") {
-        if (messageContentObject["@type"].toString() != "messageGameScore")
-            return QSharedPointer<messageGameScore>(new messageGameScore);
+    if (messageContentType == "messageGameScore") {
         auto resultMessage = QSharedPointer<messageGameScore>(new messageGameScore);
         resultMessage->game_message_id_ = getInt64(messageContentObject["game_message_id"]);
         resultMessage->game_id_ = getInt64(messageContentObject["game_id"]);
         resultMessage->score_ = messageContentObject["score"].toInt();
         return resultMessage;
     }
-    if (messageContentObject["@type"].toString() == "messageInvoice") {
-        if (messageContentObject["@type"].toString() != "messageInvoice")
-            return QSharedPointer<messageInvoice>(new messageInvoice);
+    if (messageContentType == "messageInvoice") {
         auto resultMessage = QSharedPointer<messageInvoice>(new messageInvoice);
         resultMessage->title_ = messageContentObject["title"].toString().toStdString();
         resultMessage->description_ = messageContentObject["description"].toString().toStdString();
@@ -931,9 +889,7 @@ QSharedPointer<MessageContent> ParseObject::parseMessageContent(const QJsonObjec
 
         return resultMessage;
     }
-    if (messageContentObject["@type"].toString() == "messageLocation") {
-        if (messageContentObject["@type"].toString() != "messageLocation")
-            return QSharedPointer<messageLocation>(new messageLocation);
+    if (messageContentType == "messageLocation") {
         auto resultMessage = QSharedPointer<messageLocation>(new messageLocation);
         resultMessage->location_ = QSharedPointer<location>(nullptr);
 #warning "TODO location"
@@ -941,18 +897,14 @@ QSharedPointer<MessageContent> ParseObject::parseMessageContent(const QJsonObjec
         resultMessage->expires_in_ =  messageContentObject["expires_in"].toInt();
         return resultMessage;
     }
-    if (messageContentObject["@type"].toString() == "messagePaymentSuccessful") {
-        if (messageContentObject["@type"].toString() != "messagePaymentSuccessful")
-            return QSharedPointer<messagePaymentSuccessful>(new messagePaymentSuccessful);
+    if (messageContentType == "messagePaymentSuccessful") {
         auto resultMessage = QSharedPointer<messagePaymentSuccessful>(new messagePaymentSuccessful);
         resultMessage->total_amount_ = getInt64(messageContentObject["total_amount"]);
         resultMessage->invoice_message_id_ = getInt64(messageContentObject["invoice_message_id"]);
         resultMessage->currency_ = messageContentObject["currency"].toString().toStdString();
         return resultMessage;
     }
-    if (messageContentObject["@type"].toString() == "messagePaymentSuccessfulBot") {
-        if (messageContentObject["@type"].toString() != "messagePaymentSuccessfulBot")
-            return QSharedPointer<messagePaymentSuccessfulBot>(new messagePaymentSuccessfulBot);
+    if (messageContentType == "messagePaymentSuccessfulBot") {
         auto resultMessage = QSharedPointer<messagePaymentSuccessfulBot>(new messagePaymentSuccessfulBot);
         resultMessage->order_info_ = QSharedPointer<orderInfo>(nullptr);
 #warning "TODO orderinfo"
@@ -965,22 +917,15 @@ QSharedPointer<MessageContent> ParseObject::parseMessageContent(const QJsonObjec
         resultMessage->total_amount_ = getInt64(messageContentObject["total_amount"]);
         return resultMessage;
     }
-    if (messageContentObject["@type"].toString() == "messagePinMessage") {
-        if (messageContentObject["@type"].toString() != "messagePinMessage")
-            return QSharedPointer<messagePinMessage>(new messagePinMessage);
+    if (messageContentType == "messagePinMessage") {
         auto resultMessage = QSharedPointer<messagePinMessage>(new messagePinMessage);
         resultMessage->message_id_ = getInt64(messageContentObject["message_id"]);
         return resultMessage;
     }
-    if (messageContentObject["@type"].toString() == "messageScreenshotTaken") {
-        if (messageContentObject["@type"].toString() != "messageScreenshotTaken")
-            return QSharedPointer<messageScreenshotTaken>(new messageScreenshotTaken);
-        auto resultMessage = QSharedPointer<messageScreenshotTaken>(new messageScreenshotTaken);
-        return resultMessage;
+    if (messageContentType == "messageScreenshotTaken") {
+        return QSharedPointer<messageScreenshotTaken>(new messageScreenshotTaken);
     }
-    if (messageContentObject["@type"].toString() == "messageVenue") {
-        if (messageContentObject["@type"].toString() != "messageVenue")
-            return QSharedPointer<messageVenue>(new messageVenue);
+    if (messageContentType == "messageVenue") {
         auto resultMessage = QSharedPointer<messageVenue>(new messageVenue);
         resultMessage->venue_ = QSharedPointer<venue>(nullptr);
 #warning "TODO venue"

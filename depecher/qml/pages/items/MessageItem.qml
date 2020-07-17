@@ -67,6 +67,7 @@ ListItem {
                  currentMessageType != MessagingModel.VIDEO_NOTE &&
                  currentMessageType != MessagingModel.SYSTEM_NEW_MESSAGE &&
                  currentMessageType != MessagingModel.JOINBYLINK &&
+                 currentMessageType != MessagingModel.ADD_MEMBERS &&
                  currentMessageType != MessagingModel.CONTACT_REGISTERED &&
                  currentMessageType != MessagingModel.CHAT_CREATED &&
                  index != 0
@@ -132,6 +133,7 @@ ListItem {
                                           is_outgoing ? parent.right : undefined
         anchors.rightMargin:currentMessageType != MessagingModel.SYSTEM_NEW_MESSAGE &&
                             currentMessageType != MessagingModel.JOINBYLINK &&
+                            currentMessageType != MessagingModel.ADD_MEMBERS &&
                             currentMessageType != MessagingModel.CONTACT_REGISTERED &&
                             currentMessageType != MessagingModel.CHAT_CREATED ?
                                 is_outgoing ?Theme.horizontalPageMargin * 2 : Theme.horizontalPageMargin
@@ -140,6 +142,7 @@ ListItem {
                                          is_outgoing ? undefined : parent.left
         anchors.leftMargin:currentMessageType != MessagingModel.SYSTEM_NEW_MESSAGE &&
                            currentMessageType != MessagingModel.JOINBYLINK &&
+                           currentMessageType != MessagingModel.ADD_MEMBERS &&
                            currentMessageType != MessagingModel.CONTACT_REGISTERED &&
                            currentMessageType != MessagingModel.CHAT_CREATED ? Theme.horizontalPageMargin :
                                                                                0
@@ -152,6 +155,7 @@ ListItem {
             spacing: Theme.paddingMedium
             x:currentMessageType != MessagingModel.SYSTEM_NEW_MESSAGE &&
               currentMessageType != MessagingModel.JOINBYLINK &&
+              currentMessageType != MessagingModel.ADD_MEMBERS &&
               currentMessageType != MessagingModel.CONTACT_REGISTERED &&
               currentMessageType != MessagingModel.CHAT_CREATED ? Theme.paddingMedium : 0
             width: Math.max(metaInfoRow.width,replyLoader.width,
@@ -173,11 +177,13 @@ ListItem {
                         fallbackItemVisible: sender_photo ? false : true
                         visible: oneAligningValue.value ? currentMessageType != MessagingModel.SYSTEM_NEW_MESSAGE &&
                                                           currentMessageType != MessagingModel.JOINBYLINK &&
+                                                          currentMessageType != MessagingModel.ADD_MEMBERS &&
                                                           currentMessageType != MessagingModel.CONTACT_REGISTERED &&
                                                           currentMessageType != MessagingModel.CHAT_CREATED  &&
                                                           !messagingModel.chatType["is_channel"]
                                                         : !is_outgoing && currentMessageType != MessagingModel.SYSTEM_NEW_MESSAGE &&
                                                          currentMessageType != MessagingModel.JOINBYLINK &&
+                                                         currentMessageType != MessagingModel.ADD_MEMBERS &&
                                                          currentMessageType != MessagingModel.CONTACT_REGISTERED &&
                                                          currentMessageType != MessagingModel.CHAT_CREATED  &&
                                                          !messagingModel.chatType["is_channel"]  &&
@@ -205,6 +211,7 @@ ListItem {
                         visible: {
                             if(currentMessageType == MessagingModel.SYSTEM_NEW_MESSAGE ||
                                     currentMessageType == MessagingModel.JOINBYLINK ||
+                                    currentMessageType == MessagingModel.ADD_MEMBERS ||
                                     currentMessageType == MessagingModel.CONTACT_REGISTERED ||
                                     currentMessageType == MessagingModel.CHAT_CREATED ) {
                                 return false
@@ -345,6 +352,9 @@ ListItem {
                         else if(currentMessageType == MessagingModel.JOINBYLINK) {
                             return "delegates/JoinByLinkDelegate.qml"
                         }
+                        else if(currentMessageType == MessagingModel.ADD_MEMBERS) {
+                            return "delegates/JoinedDelegate.qml"
+                        }
                         else if(currentMessageType == MessagingModel.CONTACT_REGISTERED) {
                             return "delegates/JoinedDelegate.qml"
                         }
@@ -362,6 +372,7 @@ ListItem {
                     id: metaInfoRow
                     visible: currentMessageType !== MessagingModel.SYSTEM_NEW_MESSAGE &&
                              currentMessageType != MessagingModel.JOINBYLINK &&
+                             currentMessageType != MessagingModel.ADD_MEMBERS &&
                              currentMessageType != MessagingModel.CONTACT_REGISTERED &&
                              currentMessageType != MessagingModel.CHAT_CREATED
 
