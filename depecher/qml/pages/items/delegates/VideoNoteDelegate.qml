@@ -52,7 +52,7 @@ Column{
             Image {
                 id:animationThumbnail
                 anchors.fill: parent
-                source: "image://depecherDb/"+media_preview
+                source: media_preview ? ("image://depecherDb/"+media_preview) : ""
                 visible:  mediaPlayer.playbackState != MediaPlayer.PlayingState || !file_downloading_completed;
                 Rectangle {
                     id:dimmedColor

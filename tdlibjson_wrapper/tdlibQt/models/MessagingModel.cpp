@@ -321,14 +321,20 @@ QVariant MessagingModel::data(const QModelIndex &index, int role) const
         if (m_messages[rowIndex]->content_->get_id() == messageAnimation::ID) {
             auto contentAnimationPtr = static_cast<messageAnimation *>
                                        (m_messages[rowIndex]->content_.data());
-            return (float)contentAnimationPtr->animation_->width_ / (float)
-                   contentAnimationPtr->animation_->height_;
+            auto animation = contentAnimationPtr->animation_;
+            if (animation)
+                return (float)animation->width_ / (float)animation->height_;
+            else
+                return 0.1;
         }
         if (m_messages[rowIndex]->content_->get_id() == messageVideoNote::ID) {
             auto contentVideoPtr = static_cast<messageVideoNote *>
                                    (m_messages[rowIndex]->content_.data());
-            return (float)contentVideoPtr->video_note_->thumbnail_->width_ / (float)
-                   contentVideoPtr->video_note_->thumbnail_->height_;
+            auto thumbnail = contentVideoPtr->video_note_->thumbnail_;
+            if (thumbnail)
+                return (float)thumbnail->width_ / (float)thumbnail->height_;
+            else
+                return 0.1;
         }
         return QVariant();
     }
@@ -476,6 +482,8 @@ QVariant MessagingModel::data(const QModelIndex &index, int role) const
     case MEDIA_PREVIEW:
         if (m_messages[rowIndex]->content_->get_id() == messageAnimation::ID) {
             auto contentAnimationPtr = static_cast<messageAnimation *>(m_messages[rowIndex]->content_.data());
+            if (!contentAnimationPtr->animation_->thumbnail_)
+                return QVariant();
             if (contentAnimationPtr->animation_->thumbnail_->photo_->local_->is_downloading_completed_)
                 return QString::fromStdString(contentAnimationPtr->animation_->thumbnail_->photo_->local_->path_);
             else {
@@ -496,6 +504,8 @@ QVariant MessagingModel::data(const QModelIndex &index, int role) const
         }
         if (m_messages[rowIndex]->content_->get_id() == messageVideoNote::ID) {
             auto contentVideoPtr = static_cast<messageVideoNote *>(m_messages[rowIndex]->content_.data());
+            if (!contentVideoPtr->video_note_->thumbnail_)
+                return QVariant();
             if (contentVideoPtr->video_note_->thumbnail_->photo_->local_->is_downloading_completed_)
                 return QString::fromStdString(contentVideoPtr->video_note_->thumbnail_->photo_->local_->path_);
             else {

@@ -47,15 +47,15 @@ Column{
                 id:animationGif
                 property int maxWidth:JsUtils.getWidth()-Theme.itemSizeExtraSmall - Theme.paddingMedium - 2*Theme.horizontalPageMargin
                 property int maxHeight: JsUtils.getHeight() / 2
-                width: photo_aspect > 1 ? maxWidth : maxHeight * photo_aspect
-                height: photo_aspect > 1 ? maxWidth/photo_aspect : maxHeight
+                width: media_preview ? (photo_aspect > 1 ? maxWidth : maxHeight * photo_aspect) : Theme.itemSizeExtraLarge
+                height: media_preview ? (photo_aspect > 1 ? maxWidth/photo_aspect : maxHeight) : Theme.itemSizeExtraLarge
                 fillMode: VideoOutput.PreserveAspectFit
                 source: file_downloading_completed ? "file://"+content : ""
                 playing: false
                 Image {
                     id:animationThumbnail
                     anchors.fill: parent
-                    source: "image://depecherDb/"+media_preview
+                    source: media_preview ? ("image://depecherDb/" + media_preview) : ""
                     visible:  mediaPlayer.playbackState != MediaPlayer.PlayingState || !file_downloading_completed;
                     Rectangle {
                         id:dimmedColor
@@ -159,8 +159,8 @@ Column{
                 id: animationVideo
                 property int maxWidth: JsUtils.getWidth() - Theme.itemSizeExtraSmall - Theme.paddingMedium - 2*Theme.horizontalPageMargin
                 property int maxHeight: JsUtils.getHeight() / 2
-                width: photo_aspect > 1 ? maxWidth : maxHeight * photo_aspect
-                height: photo_aspect > 1 ? maxWidth / photo_aspect : maxHeight
+                width: media_preview ? (photo_aspect > 1 ? maxWidth : maxHeight * photo_aspect) : Theme.itemSizeExtraLarge
+                height: media_preview ? (photo_aspect > 1 ? maxWidth / photo_aspect : maxHeight) : Theme.itemSizeExtraLarge
                 fillMode: VideoOutput.PreserveAspectFit
                 
                 source: MediaPlayer {
@@ -181,7 +181,7 @@ Column{
                 Image {
                     id:animationThumbnail
                     anchors.fill: parent
-                    source: "image://depecherDb/"+media_preview
+                    source: media_preview ? ("image://depecherDb/" + media_preview) : ""
                     visible:  mediaPlayer.playbackState != MediaPlayer.PlayingState || !file_downloading_completed;
                     Rectangle {
                         id:dimmedColor
@@ -199,7 +199,7 @@ Column{
                     }
                     Image {
                         id: downloadIcon
-                        visible: !file_downloading_completed || progress.visible
+                        visible: !!media_preview && (!file_downloading_completed || progress.visible)
                         source: progress.visible ? "image://theme/icon-s-clear-opaque-cross"
                                                  : "image://theme/icon-s-update"
                         anchors.centerIn: parent
