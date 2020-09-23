@@ -48,6 +48,7 @@ INSTALLS += webp dbus dbus_interface systemd
 
 DEPENDPATH += $$OUT_PWD/../tdlibjson_wrapper
 INCLUDEPATH = $$PWD/../tdlibjson_wrapper
+PRE_TARGETDEPS += $$OUT_PWD/../tdlibjson_wrapper/libtdlibjson_wrapper.a
 
 notificationcategories.files=$$PWD/notificationcategories/*.conf
 notificationcategories.path=/usr/share/lipstick/notificationcategories
