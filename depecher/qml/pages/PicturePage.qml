@@ -3,13 +3,12 @@
 import QtQuick 2.5
 import Sailfish.Silica 1.0
 import depecherUtils 1.0
-import org.nemomobile.notifications 1.0
+import Nemo.Notifications 1.0
 
 Page {
     id:root
     property alias imagePath: imagePreview.source
     property int remoteFileId
-    allowedOrientations: Orientation.All
     backNavigation: drawer.opened
     FileWorker{
         id:fileWorker

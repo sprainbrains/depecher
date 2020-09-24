@@ -1,12 +1,7 @@
-import QtQuick 2.0
+import QtQuick 2.6
 import Sailfish.Silica 1.0
 import TelegramModels 1.0
 import tdlibQtEnums 1.0
-import QtMultimedia 5.6
-import Nemo.Configuration 1.0
-import Nemo.DBus 2.0
-import QtQml.Models 2.3
-import depecherUtils 1.0
 import "../components"
 import "delegates"
 
@@ -14,7 +9,6 @@ ListItem {
     id: messageListItem
     width: parent.width
     contentHeight:  columnWrapper.height + inlineView.height
-    property string settingsPath:  "/apps/depecher/ui/message"
     property int currentMessageType: message_type ? message_type : 0
     onCurrentMessageTypeChanged: contentLoader.reload()
     signal replyMessageClicked(int source_message_index,string replied_message_index)
@@ -27,36 +21,6 @@ ListItem {
         onTriggered: messageListItem.highlighted = false
     }
 
-    ConfigurationValue {
-        id:radiusValue
-        key:settingsPath +"/radius"
-        defaultValue: 0
-    }
-    ConfigurationValue {
-        id:opacityValue
-        key:settingsPath +"/opacity"
-        defaultValue: 0
-    }
-    ConfigurationValue {
-        id:colorValue
-        key:settingsPath +"/color"
-        defaultValue: Theme.secondaryColor
-    }
-    ConfigurationValue {
-        id:incomingColorValue
-        key:settingsPath +"/incomingColor"
-        defaultValue: Theme.secondaryColor
-    }
-    ConfigurationValue {
-        id:timeValue
-        key:settingsPath +"/timepoint"
-        defaultValue: Formatter.Timepoint
-    }
-    ConfigurationValue {
-        id:oneAligningValue
-        key:settingsPath +"/oneAlign"
-        defaultValue: false//Theme.highlightDimmerColor
-    }
     Rectangle {
         id:background
         width:  columnWrapper.width + columnWrapper.anchors.leftMargin
@@ -72,11 +36,11 @@ ListItem {
                  currentMessageType != MessagingModel.CHAT_CREATED &&
                  index != 0
 
-        radius: radiusValue.value
-        opacity: opacityValue.value
+        radius: settingsUIMessage.radius
+        opacity: settingsUIMessage.opacity
         color: messageListItem.ListView.isCurrentItem ? Theme.highlightColor
-                                                      :            is_outgoing ? getColor(colorValue.value)
-                                                                               : getColor(incomingColorValue.value)
+                                                      : is_outgoing ? getColor(settingsUIMessage.color)
+                                                                    : getColor(settingsUIMessage.incomingColor)
 
         function getColor(colorEnum) {
             if(typeof colorEnum == "number") {
@@ -129,7 +93,7 @@ ListItem {
     Column {
         id: columnWrapper
         width: contentWrapper.width
-        anchors.right: oneAligningValue.value ? undefined :
+        anchors.right: settingsUIMessage.oneAligning ? undefined :
                                           is_outgoing ? parent.right : undefined
         anchors.rightMargin:currentMessageType != MessagingModel.SYSTEM_NEW_MESSAGE &&
                             currentMessageType != MessagingModel.JOINBYLINK &&
@@ -138,7 +102,7 @@ ListItem {
                             currentMessageType != MessagingModel.CHAT_CREATED ?
                                 is_outgoing ?Theme.horizontalPageMargin * 2 : Theme.horizontalPageMargin
                                                                               : 0
-        anchors.left: oneAligningValue.value ? parent.left :
+        anchors.left: settingsUIMessage.oneAligning ? parent.left :
                                          is_outgoing ? undefined : parent.left
         anchors.leftMargin:currentMessageType != MessagingModel.SYSTEM_NEW_MESSAGE &&
                            currentMessageType != MessagingModel.JOINBYLINK &&
@@ -162,7 +126,7 @@ ListItem {
                             userAvatarLoader.width + contentColumn.width +
                             (userAvatarLoader.width == 0 ? 0:spacing))
             //                       height: Math.max(userAvatarLoader.height+replyLoader.height,contentLoader.height+replyLoader.height)
-            layoutDirection:oneAligningValue.value ?  Qt.LeftToRight :
+            layoutDirection: settingsUIMessage.oneAligning ?  Qt.LeftToRight :
                                                      is_outgoing ? Qt.RightToLeft : Qt.LeftToRight
             Loader {
                 id: userAvatarLoader
@@ -175,7 +139,7 @@ ListItem {
                         source: sender_photo ? "image://depecherDb/"+sender_photo : ""
                         fallbackText: author ? author.charAt(0) : ""
                         fallbackItemVisible: sender_photo ? false : true
-                        visible: oneAligningValue.value ? currentMessageType != MessagingModel.SYSTEM_NEW_MESSAGE &&
+                        visible: settingsUIMessage.oneAligning ? currentMessageType != MessagingModel.SYSTEM_NEW_MESSAGE &&
                                                           currentMessageType != MessagingModel.JOINBYLINK &&
                                                           currentMessageType != MessagingModel.ADD_MEMBERS &&
                                                           currentMessageType != MessagingModel.CONTACT_REGISTERED &&

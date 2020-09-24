@@ -58,7 +58,7 @@ void ListenObject::listen()
                 }
             } catch (std::logic_error err) {
 #ifdef QT_DEBUG
-                qDebug() << "Logic error caught";
+                //qDebug() << "Logic error caught";
 #endif
                 if (qApp->applicationState() != Qt::ApplicationActive) {
                     setIsActiveTrue();

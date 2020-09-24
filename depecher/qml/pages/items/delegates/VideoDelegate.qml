@@ -2,11 +2,7 @@ import QtQuick 2.0
 import Sailfish.Silica 1.0
 import TelegramModels 1.0
 import tdlibQtEnums 1.0
-import QtMultimedia 5.6
-import Nemo.Configuration 1.0
-import Nemo.DBus 2.0
 import QtQml.Models 2.3
-import depecherUtils 1.0
 import "utils.js" as JsUtils
 
 
@@ -19,15 +15,10 @@ Column{
         property bool marginCorrection: currentWidth < currentHeight*photo_aspect ||
                                         currentHeight*photo_aspect > currentWidth - Theme.horizontalPageMargin + 10
 
-        ConfigurationValue {
-            id: fullSizeInChannels
-            key:"/apps/depecher/ui/message/fullSizeInChannels"
-            defaultValue: false
-        }
         states: [
             State {
                 name: "fullSize"
-                when: fullSizeInChannels.value && messagingModel.chatType["is_channel"] &&
+                when: settingsUIMessage.fullSizeInChannels && messagingModel.chatType["is_channel"] &&
                       !marginCorrection
                 PropertyChanges {
                     target: image
@@ -39,7 +30,7 @@ Column{
             }, State {
                 name: "fullSizeWithMarginCorrection"
                 extend: "fullSize"
-                when: fullSizeInChannels.value && messagingModel.chatType["is_channel"] &&
+                when: settingsUIMessage.fullSizeInChannels && messagingModel.chatType["is_channel"] &&
                       marginCorrection
                 PropertyChanges {
                     target: captionText

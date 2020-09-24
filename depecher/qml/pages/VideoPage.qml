@@ -10,7 +10,7 @@ Page {
     property alias mimeType: videoPoster.mimeType
 
     property bool autoPlay: false
-    orientation: Orientation.All
+
     VideoPoster {
         id:videoPoster
         source: root.thumbnail ? root.thumbnail : root.source

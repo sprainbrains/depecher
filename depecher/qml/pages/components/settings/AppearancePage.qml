@@ -1,4 +1,4 @@
-import QtQuick 2.0
+import QtQuick 2.6
 import Sailfish.Silica 1.0
 import Nemo.Configuration 1.0
 import TelegramModels 1.0
@@ -8,12 +8,15 @@ import "../../items"
 Page {
     id:root
     property string settingsUiPath:  "/apps/depecher/ui"
-    property string settingsMessagePath:  "/apps/depecher/ui/message"
-    ConfigurationValue {
-        id:hideNameplate
-        key:settingsUiPath + "/hideNameplate"
-        defaultValue: false
+    property string settingsPath: "/apps/depecher/"
+
+    MsgPageSettings {
+        id: msgPageSettings
     }
+    property alias settingsBehavior: msgPageSettings.settingsBehavior
+    property alias settingsUI: msgPageSettings.settingsUI
+    property alias settingsUIMessage: msgPageSettings.settingsUIMessage
+
     ConfigurationValue {
         id:nightMode
         key:settingsUiPath + "/nightMode"
@@ -85,47 +88,17 @@ Page {
                     section:1533848400
                 }
             }
-            ConfigurationValue {
-                id:radiusValue
-                key:settingsMessagePath +"/radius"
-                defaultValue: 0
-            }
-            ConfigurationValue {
-                id:opacityValue
-                key:settingsMessagePath +"/opacity"
-                defaultValue: 0
-            }
-            ConfigurationValue {
-                id:colorValue
-                key:settingsMessagePath +"/color"
-                defaultValue: 1//Theme.secondaryColor
-            }
-            ConfigurationValue {
-                id:incomingColorValue
-                key:settingsMessagePath +"/incomingColor"
-                defaultValue: 5//Theme.highlightDimmerColor
-            }
-            ConfigurationValue {
-                id:oneAligningValue
-                key:settingsMessagePath +"/oneAlign"
-                defaultValue: false//Theme.highlightDimmerColor
-            }
-            ConfigurationValue {
-                id: fullSizeInChannels
-                key: settingsMessagePath +"/fullSizeInChannels"
-                defaultValue: false
-            }
 
             PageHeader {
                 id: nameplate
-                title: hideNameplate.value ? "" : messagingModel.userName
-                height: hideNameplate.value ? actionLabel.height + Theme.paddingMedium : Math.max(_preferredHeight, _titleItem.y + _titleItem.height + actionLabel.height + Theme.paddingMedium)
+                title: settingsUI.hideNameplate ? "" : messagingModel.userName
+                height: settingsUI.hideNameplate ? actionLabel.height + Theme.paddingMedium : Math.max(_preferredHeight, _titleItem.y + _titleItem.height + actionLabel.height + Theme.paddingMedium)
                 Label {
                     id: actionLabel
                     width: parent.width - parent.leftMargin - parent.rightMargin
                     anchors {
-                        top: hideNameplate.value ? parent.top : parent._titleItem.bottom
-                        topMargin: hideNameplate.value ? Theme.paddingSmall : 0
+                        top: settingsUI.hideNameplate ? parent.top : parent._titleItem.bottom
+                        topMargin: settingsUI.hideNameplate ? Theme.paddingSmall : 0
                         right: parent.right
                         rightMargin: parent.rightMargin
                     }
@@ -163,8 +136,8 @@ Page {
                 stepSize:1
                 valueText: value
                 label: qsTr("Radius")
-                value: radiusValue.value
-                onValueChanged: radiusValue.value = value
+                value: settingsUIMessage.radius
+                onValueChanged: settingsUIMessage.radius = value
             }
             Slider {
                 id:opacitySlider
@@ -172,10 +145,10 @@ Page {
                 minimumValue: 0
                 maximumValue: 1
                 stepSize: 0.1
-                value: opacityValue.value
+                value: settingsUIMessage.opacity
                 valueText: value.toFixed(1)
                 label: qsTr("Opacity")
-                onValueChanged: opacityValue.value = value
+                onValueChanged: settingsUIMessage.opacity = value
             }
             BackgroundItem {
                 id: incomingColorPickerButton
@@ -189,7 +162,7 @@ Page {
                         id: incomingColorIndicator
                         width: height
                         height: parent.height
-                        color: outcomingColorIndicator.getColor(incomingColorValue.value)
+                        color: outcomingColorIndicator.getColor(settingsUIMessage.incomingColor)
                     }
                     Label {
                         width: Math.min(paintedWidth,parent.width - incomingColorIndicator.width)
@@ -206,29 +179,7 @@ Page {
                                                       Theme.highlightColor,Theme.highlightBackgroundColor,
                                                       Theme.secondaryHighlightColor,Theme.highlightDimmerColor]})
                     page.colorClicked.connect(function(color) {
-                        switch(color) {
-                        case Theme.primaryColor:
-                            incomingColorValue.value = 0
-                            break;
-                        case Theme.secondaryColor:
-                            incomingColorValue.value = 1
-                            break;
-                        case Theme.highlightColor:
-                            incomingColorValue.value = 2
-                            break;
-                        case Theme.highlightBackgroundColor:
-                            incomingColorValue.value = 3
-                            break;
-                        case Theme.secondaryHighlightColor:
-                            incomingColorValue.value = 4
-                            break;
-                        case Theme.highlightDimmerColor:
-                            incomingColorValue.value = 5
-                            break;
-                        default:
-                            incomingColorValue.value = color
-                            break;
-                        }
+                        settingsUIMessage.incomingColor = content.themeColorToInt(color)
                         pageStack.pop()
                     })
                 }
@@ -246,7 +197,7 @@ Page {
                         id: outcomingColorIndicator
                         width: height
                         height: parent.height
-                        color: getColor(colorValue.value)
+                        color: getColor(settingsUIMessage.color)
                         function getColor(colorEnum) {
                             if(typeof colorEnum == "number") {
                                 switch(colorEnum) {
@@ -284,55 +235,51 @@ Page {
                                                       Theme.secondaryHighlightColor,Theme.highlightDimmerColor]
                                               })
                     page.colorClicked.connect(function(color) {
-                        switch(color) {
-                        case Theme.primaryColor:
-                            colorValue.value = 0
-                            break;
-                        case Theme.secondaryColor:
-                            colorValue.value = 1
-                            break;
-                        case Theme.highlightColor:
-                            colorValue.value = 2
-                            break;
-                        case Theme.highlightBackgroundColor:
-                            colorValue.value = 3
-                            break;
-                        case Theme.secondaryHighlightColor:
-                            colorValue.value = 4
-                            break;
-                        case Theme.highlightDimmerColor:
-                            colorValue.value = 5
-                            break;
-                        default:
-                            colorValue.value = color
-                            break;
-
-                        }
+                        settingsUIMessage.color = content.themeColorToInt(color)
                         pageStack.pop()
                     })
                 }
             }
 
+            function themeColorToInt(color) {
+                switch(color) {
+                case Theme.primaryColor:
+                    return 0
+                case Theme.secondaryColor:
+                    return 1
+                case Theme.highlightColor:
+                    return 2
+                case Theme.highlightBackgroundColor:
+                    return 3
+                case Theme.secondaryHighlightColor:
+                    return 4
+                case Theme.highlightDimmerColor:
+                    return 5
+                default:
+                    return color
+                }
+            }
+
             TextSwitch {
                 width: parent.width -2*x
                 x:Theme.horizontalPageMargin
-                checked: hideNameplate.value
+                checked: settingsUI.hideNameplate
                 automaticCheck: false
                 text: qsTr("Minimize nameplate")
                 onClicked: {
-                    hideNameplate.value = !checked
-                    hideNameplate.sync()
+                    settingsUI.hideNameplate = !checked
+                    settingsUI.sync()
                 }
             }
             TextSwitch {
                 width: parent.width -2*x
                 x:Theme.horizontalPageMargin
-                checked: oneAligningValue.value
+                checked: settingsUIMessage.oneAligning
                 automaticCheck: false
                 text: qsTr("Always align messages to left")
                 onClicked: {
-                    oneAligningValue.value = !checked
-                    oneAligningValue.sync()
+                    settingsUIMessage.oneAligning = !checked
+                    settingsUIMessage.sync()
                 }
             }
             SectionHeader {
@@ -343,12 +290,12 @@ Page {
             TextSwitch {
                 width: parent.width -2*x
                 x:Theme.horizontalPageMargin
-                checked: fullSizeInChannels.value
+                checked: settingsUIMessage.fullSizeInChannels
                 automaticCheck: false
                 text: qsTr("Show full screen images in channels")
                 onClicked: {
-                    fullSizeInChannels.value = !checked
-                    fullSizeInChannels.sync()
+                    settingsUIMessage.fullSizeInChannels = !checked
+                    settingsUIMessage.sync()
                 }
             }
 
@@ -455,20 +402,22 @@ Page {
                 text:qsTr("Reset to default")
                 anchors.horizontalCenter: parent.horizontalCenter
                 onClicked: {
-                    radiusValue.value = radiusValue.defaultValue
-                    opacityValue.value = opacityValue.defaultValue
-                    colorValue.value = colorValue.defaultValue
-                    incomingColorValue.value = incomingColorValue.defaultValue
-                    hideNameplate.value = hideNameplate.defaultValue
+                    settingsUIMessage.radius = 0
+                    settingsUIMessage.opacity = 0
+                    settingsUIMessage.color = 1
+                    settingsUIMessage.incomingColor = 5
+                    settingsUIMessage.oneAligning = false
+                    settingsUIMessage.fullSizeInChannels = false
+                    settingsUI.hideNameplate = false
+
                     nightModeTill.value = nightModeTill.defaultValue
                     nightModeFrom.value = nightModeFrom.defaultValue
                     nightMode.value = nightMode.defaultValue
                     nightModeSchedule.value = nightModeSchedule.defaultValue
-                    radiusSlider.value = radiusValue.value
-                    opacitySlider.value = opacityValue.value
+                    radiusSlider.value = settingsUIMessage.radius
+                    opacitySlider.value = settingsUIMessage.opacity
                 }
             }
-
         }
     }
 }

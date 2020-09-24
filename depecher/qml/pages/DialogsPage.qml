@@ -7,7 +7,6 @@ import "components"
 
 Page {
     id: page
-    allowedOrientations: Orientation.All
 
     property string titleHeader: "Depecher"
     //for search in pageStack

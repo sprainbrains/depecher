@@ -10,7 +10,6 @@ import "../js/utils.js" as Utils
 import "items"
 Page {
     id: page
-    allowedOrientations: Orientation.All
     property alias nameplateHeight: nameplate.height
     property alias chatId: messagingModel.peerId
     property var forwardMessages: ({})
@@ -49,16 +48,14 @@ Page {
         appName: "Depecher"
         expireTimeout: 1
     }
-    ConfigurationValue {
-        id:sendByEnter
-        key:"/apps/depecher/behavior/sendByEnter"
-        defaultValue: false
+
+    MsgPageSettings {
+        id: msgPageSettings
     }
-    ConfigurationValue {
-        id:hideNameplate
-        key:"/apps/depecher/ui/hideNameplate"
-        defaultValue: false
-    }
+    property alias settingsBehavior: msgPageSettings.settingsBehavior
+    property alias settingsUI: msgPageSettings.settingsUI
+    property alias settingsUIMessage: msgPageSettings.settingsUIMessage
+
     MessagingModel{
         id: messagingModel
         isActive: page.status === PageStatus.Active && Qt.application.active
@@ -139,7 +136,7 @@ Page {
                 if (writer.textArea.state === "searchMember" && writer.chatMembersList.count)
                     return [Qt.Key_Return, Qt.Key_Enter, Qt.Key_Up, Qt.Key_Down]
                 else
-                    return sendByEnter.value ? [Qt.Key_Return, Qt.Key_Enter] : []
+                    return settingsBehavior.sendByEnter ? [Qt.Key_Return, Qt.Key_Enter] : []
             }
 
             onKeyPressed: {
@@ -154,7 +151,7 @@ Page {
             }
         }
 
-        EnterKey.iconSource: sendByEnter.value ? "image://theme/icon-m-enter-next" : "image://theme/icon-m-enter"
+        EnterKey.iconSource: settingsBehavior.sendByEnter ? "image://theme/icon-m-enter-next" : "image://theme/icon-m-enter"
         EnterKey.onClicked: {
             if (textArea.state === "searchMember" && chatMembersList.currentIndex >= 0) {
                 var targetCursorPos
@@ -170,7 +167,7 @@ Page {
                 }
                 textArea.cursorPosition = targetCursorPos
                 chatMembersList.currentIndex = -1
-            } else if (sendByEnter.value) {
+            } else if (settingsBehavior.sendByEnter) {
                 sendText(textArea.text, writer.reply_id)
             }
         }
@@ -241,14 +238,14 @@ Page {
             anchors.bottomMargin: writer.sendAreaHeight
             PageHeader {
                 id: nameplate
-                title: hideNameplate.value ? "" : messagingModel.userName
-                height: hideNameplate.value ? actionLabel.height + Theme.paddingMedium : Math.max(_preferredHeight, _titleItem.y + _titleItem.height + actionLabel.height  + Theme.paddingMedium)
+                title: settingsUI.hideNameplate ? "" : messagingModel.userName
+                height: settingsUI.hideNameplate ? actionLabel.height + Theme.paddingMedium : Math.max(_preferredHeight, _titleItem.y + _titleItem.height + actionLabel.height  + Theme.paddingMedium)
                 Label {
                     id: actionLabel
                     width: parent.width - parent.leftMargin - parent.rightMargin
                     anchors {
-                        top: hideNameplate.value ? parent.top : parent._titleItem.bottom
-                        topMargin: hideNameplate.value ? Theme.paddingSmall : 0
+                        top: settingsUI.hideNameplate ? parent.top : parent._titleItem.bottom
+                        topMargin: settingsUI.hideNameplate ? Theme.paddingSmall : 0
                         right: parent.right
                         rightMargin: parent.rightMargin
                     }
@@ -269,10 +266,8 @@ Page {
                 signal hideDateSection()
 
                 onHeightChanged: {
-                    if(messageList.indexAt(width/2,height+contentY) >= count - 2)
-{
+                    if (messageList.indexAt(width/2,height+contentY) >= count - 2)
                         messageList.positionViewAtEnd()
-}
                 }
                 onMovementStarted: {
                     showDateSection()
@@ -389,6 +384,7 @@ Page {
                 }
                 delegate: MessageItem {
                     id: myDelegate
+                    menu: contextMenu
                     onReplyMessageClicked:    {
                         if(messagingModel.findIndexById(replied_message_index) !== -1) {
                             arrayIndex.push(source_message_index)
@@ -397,145 +393,117 @@ Page {
                             messageList.positionViewAtIndex(messagingModel.findIndexById(replied_message_index)+ 1,ListView.Center)
                             messageList.currentIndex =messagingModel.findIndexById(replied_message_index)+ 1
                         }/* else {
-                                                                                  messagingModel.loadAndRefreshRepliedByIndex(source_message_index)
-                                                                              }*/
+                            messagingModel.loadAndRefreshRepliedByIndex(source_message_index)
+                        }*/
                     }
 
-                    ListView.onAdd: AddAnimation {
-                        target: myDelegate
+                    property bool messageEditable: {
+                        return typeof can_be_edited !== "undefined" &&
+                                can_be_edited && (message_type == MessagingModel.TEXT
+                                                  || message_type == MessagingModel.PHOTO
+                                                  || message_type == MessagingModel.VIDEO
+                                                  || message_type == MessagingModel.DOCUMENT
+                                                  || message_type == MessagingModel.ANIMATION
+                                                  || message_type == MessagingModel.VOICE
+                                                  || message_type == MessagingModel.AUDIO)
                     }
-                    RemorseItem {
-                        id: remorseDelete
-                    }
-                    ListView.onRemove: RemoveAnimation {
-                        target: myDelegate
-                    }
-
-                    property alias messageEditable: editEntry.visible
                     signal triggerEdit()
                     onTriggerEdit: editEntry.clicked()
-                    menu: ContextMenu {
-                        MenuItem {
-                            text: qsTr("Reply")
-                            visible:  ((messagingModel.chatType["type"] == TdlibState.Supergroup && !messagingModel.chatType["is_channel"]) ||
-                                        messagingModel.chatType["type"] == TdlibState.BasicGroup ||
-                                        messagingModel.chatType["type"] == TdlibState.Private)
-                            onClicked: {
-                                writer.reply_id = id
-                                writer.replyMessageAuthor = author
-                                writer.replyMessageText = replyMessageContent()
+
+                    Component {
+                        id: contextMenu
+                        ContextMenu {
+                            MenuItem {
+                                text: qsTr("Reply")
+                                visible:  ((messagingModel.chatType["type"] == TdlibState.Supergroup && !messagingModel.chatType["is_channel"]) ||
+                                           messagingModel.chatType["type"] == TdlibState.BasicGroup ||
+                                           messagingModel.chatType["type"] == TdlibState.Private)
+                                onClicked: {
+                                    writer.reply_id = id
+                                    writer.replyMessageAuthor = author
+                                    writer.replyMessageText = replyMessageContent()
+                                }
                             }
+                            MenuItem {
+                                id: editEntry
+                                text:qsTr("Edit")
+                                visible: myDelegate.messageEditable
+
+                                onClicked: {
+                                    if(message_type == MessagingModel.TEXT)
+                                        writer.state = "editText"
+                                    else
+                                        writer.state = "editCaption"
+
+                                    writer.edit_message_id = id
+                                    writer.replyMessageText = replyMessageContent()
+                                    writer.text = message_type == MessagingModel.TEXT ? content : file_caption
+                                    writer.textArea.focus = true
+                                    writer.textArea.cursorPosition = writer.text.length
+                                }
+                            }
+                            MenuItem {
+                                text: qsTr("Forward")
+                                visible: typeof can_be_forwarded !== "undefined" &&
+                                         can_be_forwarded && !writer.textArea.activeFocus
+                                onClicked: {
+                                    pageStack.push("SelectChatDialog.qml",{"from_chat_id": chatId,
+                                                       "messages": [id]})
+                                }
+                            }
+                            MenuItem {
+                                text:message_type == MessagingModel.TEXT || file_caption ? qsTr("Copy text") : qsTr("Copy path")
+                                onClicked: {
+                                    if(message_type == MessagingModel.TEXT)
+                                        Clipboard.text = content
+                                    else if (file_caption)
+                                        Clipboard.text = file_caption
+                                    else
+                                        Clipboard.text = content
+                                }
+                            }
+                            MenuItem {
+                                text: qsTr("Delete Message")
+                                visible: can_be_deleted_only_for_yourself && !writer.textArea.activeFocus ? can_be_deleted_only_for_yourself : false
+                                onClicked: {
+                                    showRemorseDelete(false)
+                                }
+                            }
+                            MenuItem {
+                                text: qsTr("Delete for everyone")
+                                visible: can_be_deleted_for_all_users && !writer.textArea.activeFocus ? can_be_deleted_for_all_users : false
+                                onClicked: {
+                                    showRemorseDelete(true)
+                                }
+                            }
+
+                            function showRemorseDelete(forEveryone) {
+                                // index and messagingModel are not available in RemorseItem context
+                                var _index = index
+                                var _messagingModel = messagingModel
+                                myDelegate.remorseAction(qsTr("Deleting..."), function() {
+                                    _messagingModel.deleteMessage(_index, forEveryone)
+                                })
+                            }
+
                             function replyMessageContent() {
-                                if(message_type == MessagingModel.TEXT) {
+                                switch (message_type) {
+                                case MessagingModel.TEXT:
                                     return content
-                                }
-                                else if(message_type == MessagingModel.PHOTO) {
+                                case MessagingModel.PHOTO:
                                     return qsTr("Photo")
-                                }
-                                else if(message_type == MessagingModel.STICKER) {
+                                case MessagingModel.STICKER:
                                     return qsTr("Sticker")
-                                }
-                                else if(message_type == MessagingModel.DOCUMENT) {
+                                case MessagingModel.DOCUMENT:
                                     return qsTr("Document")
-                                }
-                                else if(message_type == MessagingModel.ANIMATION) {
+                                case MessagingModel.ANIMATION:
                                     return qsTr("Animation")
-                                }
-                                else if(message_type == MessagingModel.CONTACT) {
+                                case MessagingModel.CONTACT:
                                     return qsTr("Contact")
                                 }
-                                return qsTr("Message");
+                                return qsTr("Message")
                             }
                         }
-                        MenuItem {
-                        id: editEntry
-                        text:qsTr("Edit")
-                        visible: can_be_edited && (message_type == MessagingModel.TEXT
-                                                || message_type == MessagingModel.PHOTO
-                                                || message_type == MessagingModel.VIDEO
-                                                || message_type == MessagingModel.DOCUMENT
-                                                || message_type == MessagingModel.ANIMATION
-                                                || message_type == MessagingModel.VOICE
-                                                || message_type == MessagingModel.AUDIO)
-
-
-
-                        onClicked: {
-                            if(message_type == MessagingModel.TEXT)
-                            writer.state = "editText"
-                            else
-                            writer.state = "editCaption"
-
-                            writer.edit_message_id = id
-                            writer.replyMessageText = replyMessageContent()
-                            writer.text = message_type == MessagingModel.TEXT ? content : file_caption
-                            writer.textArea.focus = true
-                            writer.textArea.cursorPosition = writer.text.length
-                            function replyMessageContent() {
-                                if(message_type == MessagingModel.TEXT) {
-                                    return content
-                                }
-                                else if(message_type == MessagingModel.PHOTO) {
-                                    return qsTr("Photo")
-                                }
-                                else if(message_type == MessagingModel.STICKER) {
-                                    return qsTr("Sticker")
-                                }
-                                else if(message_type == MessagingModel.DOCUMENT) {
-                                    return qsTr("Document")
-                                }
-                                else if(message_type == MessagingModel.ANIMATION) {
-                                    return qsTr("Animation")
-                                }
-                                else if(message_type == MessagingModel.CONTACT) {
-                                    return qsTr("Contact")
-                                }
-                                return qsTr("Message");
-                            }
-
-                        }
-                        }
-                        MenuItem {
-                            text: qsTr("Forward")
-                            visible: can_be_forwarded && !writer.textArea.activeFocus
-                            onClicked: {
-                                pageStack.push("SelectChatDialog.qml",{"from_chat_id": chatId,
-                                                    "messages": [id]})
-                            }
-                        }
-                        MenuItem {
-                            text:message_type == MessagingModel.TEXT || file_caption ? qsTr("Copy text") : qsTr("Copy path")
-                            onClicked: {
-                                if(message_type == MessagingModel.TEXT)
-                                    Clipboard.text = content
-                                else if (file_caption)
-                                    Clipboard.text = file_caption
-                                else
-                                    Clipboard.text = content
-                            }
-                        }
-                        MenuItem {
-                            text: qsTr("Delete Message")
-                            visible: can_be_deleted_only_for_yourself && !writer.textArea.activeFocus ? can_be_deleted_only_for_yourself : false
-                            onClicked: {
-                                showRemorseDelete()
-                            }
-                        }
-                        MenuItem {
-                            text: qsTr("Delete for everyone")
-                            visible: can_be_deleted_for_all_users && !writer.textArea.activeFocus ? can_be_deleted_for_all_users : false
-                            onClicked: {
-                                showRemorseDeleteToAll()
-                            }
-                        }
-                    }
-                    function showRemorseDeleteToAll() {
-                        remorseDelete.execute(myDelegate, qsTr("Deleting..."), function() {
-                            messagingModel.deleteMessage(index,true) }
-                        )
-                    }
-                    function showRemorseDelete() {
-                        remorseDelete.execute(myDelegate, qsTr("Deleting..."), function() { messagingModel.deleteMessage(index) } )
                     }
                 }
 
@@ -568,7 +536,6 @@ Page {
                 Component.onCompleted: {
                     centerTimer.start()
                 }
-
             }
         }
 

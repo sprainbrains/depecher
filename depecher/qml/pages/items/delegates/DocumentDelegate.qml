@@ -6,8 +6,6 @@ import QtMultimedia 5.6
 import Nemo.Configuration 1.0
 import Nemo.DBus 2.0
 import QtQml.Models 2.3
-import depecherUtils 1.0
-
 
 Column{
     property int maxWidth: messageListItem.width *2/3 - Theme.horizontalPageMargin * 2

@@ -10,7 +10,6 @@ Dialog {
     property string selected_chat_id: ""
     property string from_chat_id: ""
     property var messages: []
-    allowedOrientations: Orientation.All
     onAccepted: {
         var page = pageStack.find(function (page) {
             return page.__chat_page !== undefined;

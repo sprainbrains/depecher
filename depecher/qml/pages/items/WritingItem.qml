@@ -33,11 +33,6 @@ Drawer {
 
     property string settingsUiPath:  "/apps/depecher/ui"
     property string settingsBehaviorPath:  "/apps/depecher/behavior"
-    ConfigurationValue {
-        id:sendByEnter
-        key:settingsBehaviorPath +"/sendByEnter"
-        defaultValue: false
-    }
 
     ConfigurationValue {
         id: showVoiceMessageButton
@@ -258,7 +253,7 @@ Drawer {
                         width: parent.width
                         maximumLineCount: 1
                         elide: TruncationMode.Fade
-                        visible: authorsText != ""
+                        visible: false //Not defined at all: authorsText != ""
                     }
                 }
 
@@ -407,7 +402,7 @@ Drawer {
                             }
                             PropertyChanges {
                                 target:sendButton
-                                visible:!sendByEnter.value || reply_id == "-1"
+                                visible:!settingsBehavior.sendByEnter || reply_id == "-1"
                             }
                         },
                         State  {
@@ -564,7 +559,7 @@ Drawer {
                 icon.source: "image://theme/icon-m-message"
                 highlighted: false
                 width: visible ? Theme.itemSizeMedium : 0
-                visible: !sendByEnter.value || reply_id == "-1"
+                visible: !settingsBehavior.sendByEnter || reply_id == "-1"
                 anchors.bottom: parent.bottom
             }
         }
@@ -572,7 +567,6 @@ Drawer {
             id:labelTime
             property int leftMarginOne: stickerButton.visible ? stickerButton.width : 0
             property int leftMarginTwo: skrepkaWizard.visible ? skrepkaWizard.width : 0
-            font: Theme.fontSizeTiny
 
             x: leftMarginTwo + leftMarginOne + Theme.horizontalPageMargin
             anchors.leftMargin: Theme.horizontalPageMargin
