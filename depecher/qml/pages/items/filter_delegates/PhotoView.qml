@@ -1,9 +1,8 @@
-import QtQuick 2.0
+import QtQuick 2.6
 import Sailfish.Silica 1.0
 import TelegramModels 1.0
 import tdlibQtEnums 1.0
-import "../../../js/utils.js" as Utils
-import QtMultimedia 5.6
+
 Page {
     id:page
     property alias chatId: itemsModel.peerId
@@ -41,6 +40,9 @@ Page {
                     source: content
                     fillMode: Image.PreserveAspectCrop
                     anchors.fill: parent
+                    asynchronous: true
+                    sourceSize.width: width
+                    sourceSize.height: height
                 }
             }
 
