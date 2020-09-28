@@ -140,6 +140,7 @@ signals:
     void updateMessageSendSucceeded(const QJsonObject &updateMessageSendSucceededObject);
     void updateMessageSendFailed(const QJsonObject &updateMessageSendFailedObject);
     void updateNotificationSettingsReceived(const QJsonObject &updateNotificationSettingsObject);
+    void updateChatNotificationSettingsReceived(const QJsonObject &updateChatNotificationSettingsObject);
     void chatIds(const QVariantList &ids);
     void getChat(const qint64 id, const QString &extra);
     void chatsReceived(const QJsonObject &chatsObject);

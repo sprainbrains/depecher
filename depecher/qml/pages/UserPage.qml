@@ -258,8 +258,9 @@ Page {
                         text: qsTr("Notifications")
                         description: checked ? qsTr("Click to disable notifications") :  qsTr("Click to enable notifications")
                         icon.source: checked ? "image://theme/icon-m-speaker-on" :  "image://theme/icon-m-speaker-mute"
+                        automaticCheck: false
                         checked: userInfo.muteFor == 0
-                        onClicked: userInfo.changeNotifications(!checked)
+                        onClicked: userInfo.changeNotifications(checked)
                     }
                 }
                 Item {
@@ -608,10 +609,10 @@ Page {
                         text: qsTr("Notifications")
                         description: checked ? qsTr("Click to disable notifications") :  qsTr("Click to enable notifications")
                         icon.source: checked ? "image://theme/icon-m-speaker-on" :  "image://theme/icon-m-speaker-mute"
+                        automaticCheck: false
                         checked: channelInfo.muteFor == 0
-                        onClicked:
-                        {
-                            channelInfo.changeNotifications(!checked)
+                        onClicked: {
+                            channelInfo.changeNotifications(checked)
                         }
                     }
                 }

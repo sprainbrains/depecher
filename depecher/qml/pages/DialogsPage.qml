@@ -1,4 +1,4 @@
-import QtQuick 2.0
+import QtQuick 2.6
 import Sailfish.Silica 1.0
 import tdlibQtEnums 1.0
 import TelegramModels 1.0
@@ -26,6 +26,7 @@ Page {
 
     }
     SilicaListView {
+        id: listView
         anchors.fill: parent
         model:   ChatsModel {
             id:chatsModel
@@ -87,6 +88,10 @@ Page {
                 }
                 pageStack.navigateForward()
             }
+        }
+
+        VerticalScrollDecorator {
+            flickable: listView
         }
     }
 

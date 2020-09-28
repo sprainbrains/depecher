@@ -100,6 +100,8 @@ void TdlibJsonWrapper::startListen()
             this, &TdlibJsonWrapper::updateNotificationSettingsReceived);
 
 
+    connect(parseObject, &ParseObject::updateChatNotificationSettingsReceived,
+            this, &TdlibJsonWrapper::updateChatNotificationSettingsReceived);
     connect(parseObject, &ParseObject::updateNewChat,
             this, &TdlibJsonWrapper::updateNewChat);
     connect(parseObject, &ParseObject::updateUserReceived,
@@ -1164,6 +1166,22 @@ void TdlibJsonWrapper::close()
         {"@type", "close"}
     };
     sendJsonObjToTelegram(query);
+}
+
+void TdlibJsonWrapper::changeNotificationSettings(const qint64 &chatId, bool mute)
+{
+    setChatNotificationSettings muteFunction;
+    muteFunction.chat_id_ = chatId;
+    if (mute)
+        muteFunction.notification_settings_ = QSharedPointer<chatNotificationSettings>(new chatNotificationSettings(false, std::numeric_limits<int>::max(), true, std::string(""), true, false, true, false, false, false));
+    else
+        muteFunction.notification_settings_ = QSharedPointer<chatNotificationSettings>(new chatNotificationSettings(false, 0, true, std::string(""), true, false, true, false, false, false));
+
+    TlStorerToString jsonConverter;
+    muteFunction.store(jsonConverter, "muteFunction");
+    QString jsonString = QJsonDocument::fromVariant(jsonConverter.doc["muteFunction"]).toJson();
+    jsonString = jsonString.replace("\"null\"", "null");
+    sendMessage(jsonString);
 }
 
 }// namespace tdlibQt

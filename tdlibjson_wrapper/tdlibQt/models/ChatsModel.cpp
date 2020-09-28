@@ -36,6 +36,8 @@ ChatsModel::ChatsModel(QObject *parent) : QAbstractListModel(parent),
     connect(tdlibJson, &tdlibQt::TdlibJsonWrapper::updateNotificationSettingsReceived,
             this, &tdlibQt::ChatsModel::updateNotificationSettings);
 
+    connect(tdlibJson, &tdlibQt::TdlibJsonWrapper::updateChatNotificationSettingsReceived,
+            this, &tdlibQt::ChatsModel::updateChatNotificationSettings);
     connect(tdlibJson, &tdlibQt::TdlibJsonWrapper::updateUserChatAction,
             this, &tdlibQt::ChatsModel::updateChatAction);
     connect(tdlibJson, &tdlibQt::TdlibJsonWrapper::updateChatMention,
@@ -128,6 +130,7 @@ void ChatsModel::updateMentionRead(const QJsonObject &messageMentionReadObject)
 
 void ChatsModel::updateNotificationSettings(const QJsonObject &updateNotificationSettingsObject)
 {
+#warning "parse scope"
     qint64 chat_id = ParseObject::getInt64(updateNotificationSettingsObject["chat_id"]);
     auto settings = ParseObject::parseNotificationSettings(updateNotificationSettingsObject["notification_settings"].toObject());
     for (int i = 0; i < m_chats.size(); i++) {
@@ -139,6 +142,25 @@ void ChatsModel::updateNotificationSettings(const QJsonObject &updateNotificatio
             break;
         }
     }
+}
+
+void ChatsModel::updateChatNotificationSettings(const QJsonObject &updateChatNotificationSettingsObject)
+{
+    qint64 chat_id = ParseObject::getInt64(updateChatNotificationSettingsObject["chat_id"]);
+    auto settings = ParseObject::parseNotificationSettings(updateChatNotificationSettingsObject["notification_settings"].toObject());
+    for (int i = 0; i < m_chats.size(); i++) {
+        if (m_chats[i]->id_ == chat_id) {
+            m_chats[i]->notification_settings_ = settings;
+            QVector<int> roles;
+            roles.append(MUTE_FOR);
+            emit dataChanged(index(i), index(i), roles);
+            break;
+        }
+    }
+    // Update UsersModel::m_chats so InfoProvider will have correct muteFor information
+    auto chat = UsersModel::instance()->getChat(chat_id);
+    if (chat)
+        chat->notification_settings_ = settings;
 }
 
 void ChatsModel::updateChatIsMarkedAsUnread(const QJsonObject &updateChatIsMarkedAsUnreadObject)
@@ -174,24 +196,7 @@ void ChatsModel::changeNotificationSettings(const QString &chatId, bool mute)
     qint64 chat_id = chatId.toLongLong(&ok, 10);
     if (!ok)
         return;
-    setChatNotificationSettings muteFunction;
-    muteFunction.chat_id_ = chat_id;
-    if (mute)
-        muteFunction.notification_settings_ = QSharedPointer<chatNotificationSettings>(new chatNotificationSettings(false, std::numeric_limits<int>::max(), true, std::string(""), true, false, true, false, false, false));
-    else
-        muteFunction.notification_settings_ = QSharedPointer<chatNotificationSettings>(new chatNotificationSettings(false, 0, true, std::string(""), true, false, true, false, false, false));
-
-    TlStorerToString jsonConverter;
-    muteFunction.store(jsonConverter, "muteFunction");
-    QString jsonString = QJsonDocument::fromVariant(jsonConverter.doc["muteFunction"]).toJson();
-    jsonString = jsonString.replace("\"null\"", "null");
-    int rowIndex = getIndex(chat_id);
-    QVector<int> roles;
-    roles.append(MUTE_FOR);
-    emit dataChanged(index(rowIndex), index(rowIndex), roles);
-
-
-    tdlibJson->sendMessage(jsonString);
+    tdlibJson->changeNotificationSettings(chat_id, mute);
 }
 
 void ChatsModel::markAsUnread(const QString &chatId, bool unread)

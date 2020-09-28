@@ -14,6 +14,8 @@ InfoProvider::InfoProvider(QObject *parent) : QObject(parent)
             this, &InfoProvider::countReceived);
     connect(m_tdlibJson, &TdlibJsonWrapper::fileReceived,
             this, &InfoProvider::processFile);
+    connect(m_tdlibJson, &TdlibJsonWrapper::updateChatNotificationSettingsReceived,
+            this, &InfoProvider::updateChatNotificationSettings);
 }
 void InfoProvider::processFile(const QJsonObject &fileObject)
 {
@@ -39,8 +41,6 @@ QString InfoProvider::avatar() const
     }
     return QString();
 }
-
-
 
 void InfoProvider::countReceived(const QJsonObject &countObject)
 {
@@ -71,6 +71,13 @@ void InfoProvider::countReceived(const QJsonObject &countObject)
             break;
         }
     }
+}
+
+void InfoProvider::updateChatNotificationSettings(const QJsonObject &updateChatNotificationSettingsObject)
+{
+    qint64 chat_id = ParseObject::getInt64(updateChatNotificationSettingsObject["chat_id"]);
+    if (chat_id == m_chatId)
+        emit muteForChanged();
 }
 
 
@@ -104,27 +111,9 @@ int InfoProvider::muteFor() const
 }
 void InfoProvider::changeNotifications(bool mute)
 {
-    qDebug() << mute;
     if (m_chatId != -1) {
-        qDebug() << mute;
-
         qint64 chat_id = (qint64)m_chatId;
-        setChatNotificationSettings muteFunction;
-        muteFunction.chat_id_ = chat_id;
-        if (mute)
-            muteFunction.notification_settings_ = QSharedPointer<chatNotificationSettings>(new chatNotificationSettings(false, std::numeric_limits<int>::max(), true, std::string(""), true, false, true, false, false, false));
-        else
-            muteFunction.notification_settings_ = QSharedPointer<chatNotificationSettings>(new chatNotificationSettings(false, 0, true, std::string(""), true, false, true, false, false, false));
-
-        TlStorerToString jsonConverter;
-        muteFunction.store(jsonConverter, "muteFunction");
-        QString jsonString = QJsonDocument::fromVariant(jsonConverter.doc["muteFunction"]).toJson();
-        jsonString = jsonString.replace("\"null\"", "null");
-
-        qDebug() << jsonString;
-        m_tdlibJson->sendMessage(jsonString);
-
-        emit muteForChanged();
+        m_tdlibJson->changeNotificationSettings(chat_id, mute);
     }
 }
 void InfoProvider::joinChat()

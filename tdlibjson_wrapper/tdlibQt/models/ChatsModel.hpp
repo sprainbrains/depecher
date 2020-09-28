@@ -79,6 +79,7 @@ private slots:
     void updateChatMentionCount(const QJsonObject &chatMentionCountObject);
     void updateMentionRead(const QJsonObject &messageMentionReadObject);
     void updateNotificationSettings(const QJsonObject &updateNotificationSettingsObject);
+    void updateChatNotificationSettings(const QJsonObject &updateChatNotificationSettingsObject);
     void updateChatIsMarkedAsUnread(const QJsonObject &updateChatIsMarkedAsUnreadObject);
     void onAuthorizationStateChanged(const Enums::AuthorizationState state);
 

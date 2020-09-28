@@ -109,6 +109,7 @@ signals:
     void updateMessageContent(const QJsonObject &updateMessageContentObject);
     void updateDeleteMessages(const QJsonObject &updateDeleteMessagesObject);
     void updateNotificationSettingsReceived(const QJsonObject &updateNotificationSettingsObject);
+    void updateChatNotificationSettingsReceived(const QJsonObject &updateChatNotificationSettingsObject);
     void updateUserChatAction(const QJsonObject &chatAction);
     void updateChatMention(const QJsonObject &chatAction);
     void updateChatIsMarkedAsUnread(const QJsonObject &chatOrderObject);
@@ -232,6 +233,7 @@ public slots:
     void getSupergroupMembers(const int supergroup_id,
                               const QString &search, const int offset, const int limit, const QString &extra);
     void close();
+    void changeNotificationSettings(const qint64 &chatId, bool mute);
 };
 } //namespace tdlibQt
 #endif // TDLIBJSONWRAPPER_HPP

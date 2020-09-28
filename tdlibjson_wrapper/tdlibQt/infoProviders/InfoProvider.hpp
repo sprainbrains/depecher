@@ -120,6 +120,7 @@ signals:
 
 private slots:
     void countReceived(const QJsonObject &countObject);
+    void updateChatNotificationSettings(const QJsonObject &updateChatNotificationSettingsObject);
     void setPhotoCount(int photoCount)
     {
         if (m_photoCount == photoCount)

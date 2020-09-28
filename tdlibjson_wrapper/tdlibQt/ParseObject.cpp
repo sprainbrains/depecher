@@ -213,6 +213,8 @@ void ParseObject::parseResponse(const QByteArray &json)
     if (typeField == "updateFileGenerationStop")
         emit updateFileGenerationStopReceived(doc.object());
 
+    if (typeField == "updateChatNotificationSettings")
+        emit updateChatNotificationSettingsReceived(doc.object());
     if (typeField == "updateChatOrder") {
         emit updateChatOrder(doc.object());
     }

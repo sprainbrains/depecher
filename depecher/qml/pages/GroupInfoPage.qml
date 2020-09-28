@@ -113,8 +113,9 @@ Page {
                     text: qsTr("Notifications")
                     description: checked ? qsTr("Click to disable notifications") :  qsTr("Click to enable notifications")
                     icon.source: checked ? "image://theme/icon-m-speaker-on" :  "image://theme/icon-m-speaker-mute"
+                    automaticCheck: false
                     checked: groupInfo.muteFor == 0
-                    onClicked: groupInfo.changeNotifications(!checked)
+                    onClicked: groupInfo.changeNotifications(checked)
                 }
             }
             Item {
