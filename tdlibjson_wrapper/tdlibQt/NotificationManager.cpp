@@ -81,16 +81,24 @@ void NotificationManager::processNotificationGroup(QSharedPointer<notificationGr
             QString chatTitle = UsersModel::instance()->getChatTitle(chatId);
             notificationSummary = chatTitle;
             QString userName = UsersModel::instance()->getUserFullName(messageItem->sender_user_id_);
-            notificationBody = userName + ":";
+            notificationBody = userName + ": ";
+            auto messageTypeId = messageItem->content_->get_id();
 
-            if (messageItem->content_->get_id() == messageText::ID) {
+            switch (messageTypeId) {
+            case messageText::ID: {
                 auto one = static_cast<messageText *>(messageItem->content_.data());
                 auto two = static_cast<formattedText *>(one->text_.data());
-                notificationBody.append(" " +
-                                        QString::fromStdString(two->text_));
-            } else
-                notificationBody.append(" " +
-                                        ParseObject::messageTypeToString(messageItem->content_->get_id()));
+                notificationBody.append(QString::fromStdString(two->text_));
+                break;
+            }
+            case messageChatAddMembers::ID:
+            case messageChatJoinByLink::ID:
+                notificationBody.append(tr("joined Telegram"));
+                break;
+            default:
+                notificationBody.append(ParseObject::messageTypeToString(messageTypeId));
+                break;
+            }
 
             if (qApp->applicationState() != Qt::ApplicationActive)
                 notifySummary(notificationTimestamp, notificationSummary,
