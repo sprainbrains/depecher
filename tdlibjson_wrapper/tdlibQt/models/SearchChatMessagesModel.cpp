@@ -709,29 +709,38 @@ QVariant SearchChatMessagesModel::data(const QModelIndex &index, int role) const
     case MEDIA_PREVIEW:
         if (m_messages[rowIndex]->content_->get_id() == messageAnimation::ID) {
             auto contentAnimationPtr = static_cast<messageAnimation *>(m_messages[rowIndex]->content_.data());
-            if (contentAnimationPtr->animation_->thumbnail_->photo_->local_->is_downloading_completed_)
-                return QString::fromStdString(contentAnimationPtr->animation_->thumbnail_->photo_->local_->path_);
-            else {
-                int fileId = contentAnimationPtr->animation_->thumbnail_->photo_->id_;
-                emit downloadFileStart(fileId, 12, rowIndex);
+            auto thumbnail = contentAnimationPtr->animation_->thumbnail_;
+            if (thumbnail) {
+                if (thumbnail->photo_->local_->is_downloading_completed_)
+                    return QString::fromStdString(thumbnail->photo_->local_->path_);
+                else {
+                    int fileId = thumbnail->photo_->id_;
+                    emit downloadFileStart(fileId, 12, rowIndex);
+                }
             }
         }
         if (m_messages[rowIndex]->content_->get_id() == messageVideo::ID) {
             auto contentVideoPtr = static_cast<messageVideo *>(m_messages[rowIndex]->content_.data());
-            if (contentVideoPtr->video_->thumbnail_->photo_->local_->is_downloading_completed_)
-                return QString::fromStdString(contentVideoPtr->video_->thumbnail_->photo_->local_->path_);
-            else {
-                int fileId = contentVideoPtr->video_->thumbnail_->photo_->id_;
-                emit downloadFileStart(fileId, 12, rowIndex);
+            auto thumbnail = contentVideoPtr->video_->thumbnail_;
+            if (thumbnail) {
+                if (thumbnail->photo_->local_->is_downloading_completed_)
+                    return QString::fromStdString(thumbnail->photo_->local_->path_);
+                else {
+                    int fileId = thumbnail->photo_->id_;
+                    emit downloadFileStart(fileId, 12, rowIndex);
+                }
             }
         }
         if (m_messages[rowIndex]->content_->get_id() == messageVideoNote::ID) {
             auto contentVideoPtr = static_cast<messageVideoNote *>(m_messages[rowIndex]->content_.data());
-            if (contentVideoPtr->video_note_->thumbnail_->photo_->local_->is_downloading_completed_)
-                return QString::fromStdString(contentVideoPtr->video_note_->thumbnail_->photo_->local_->path_);
-            else {
-                int fileId = contentVideoPtr->video_note_->thumbnail_->photo_->id_;
-                emit downloadFileStart(fileId, 12, rowIndex);
+            auto thumbnail = contentVideoPtr->video_note_->thumbnail_;
+            if (thumbnail) {
+                if (thumbnail->photo_->local_->is_downloading_completed_)
+                    return QString::fromStdString(thumbnail->photo_->local_->path_);
+                else {
+                    int fileId = thumbnail->photo_->id_;
+                    emit downloadFileStart(fileId, 12, rowIndex);
+                }
             }
         }
         return QVariant();

@@ -54,11 +54,6 @@ Page {
         }
     }
 
-    ViewPlaceholder {
-        id:errorPlaceholder
-        enabled:resolver.error != ""
-        text: resolver.error
-    }
     Loader {
         id:loader
         anchors.fill: parent
@@ -96,6 +91,13 @@ Page {
             anchors.fill: parent
             visible: !errorPlaceholder.enabled
             contentHeight: content.height + header.height
+
+            ViewPlaceholder {
+                id:errorPlaceholder
+                enabled:resolver.error != ""
+                text: resolver.error
+            }
+
             PageHeader {
                 id:header
                 title:qsTr("User info")
@@ -463,6 +465,13 @@ Page {
             anchors.fill: parent
             visible: !errorPlaceholder.enabled
             contentHeight: content.height + header.height
+
+            ViewPlaceholder {
+                id:errorPlaceholder
+                enabled:resolver.error != ""
+                text: resolver.error
+            }
+
             PageHeader {
                 id:header
                 title:qsTr("Channel info")

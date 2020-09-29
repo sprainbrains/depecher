@@ -1,9 +1,9 @@
-import QtQuick 2.0
+import QtQuick 2.6
 import Sailfish.Silica 1.0
 import TelegramModels 1.0
 import tdlibQtEnums 1.0
 import "../../../js/utils.js" as Utils
-import QtMultimedia 5.6
+
 Page {
     id:page
     property alias chatId: itemsModel.peerId
@@ -12,7 +12,7 @@ Page {
     SearchChatMessagesModel {
         id: itemsModel
     }
-SilicaGridView {
+    SilicaGridView {
         id:grid
         property var currentFilter
         header: PageHeader {
@@ -29,7 +29,7 @@ SilicaGridView {
             width:  Utils.getWidth() / 3
             height: width
             fillMode: Image.PreserveAspectFit
-            source: "image://depecherDb/" + media_preview
+            source: media_preview ? ("image://depecherDb/" + media_preview) : ""
 
             MouseArea{
                 anchors.fill: parent
@@ -72,12 +72,12 @@ SilicaGridView {
                 anchors.centerIn: dimmedPlayColor
             }
             Rectangle {
-            width: durationText.width + Theme.paddingSmall
-            height: durationText.height
-            anchors.centerIn: durationText
-            radius: 10
-            color:Theme.rgba(Theme.secondaryHighlightColor,0.5)
-            z:0
+                width: durationText.width + Theme.paddingSmall
+                height: durationText.height
+                anchors.centerIn: durationText
+                radius: 10
+                color:Theme.rgba(Theme.secondaryHighlightColor,0.5)
+                z:0
             }
 
             Image {
@@ -91,15 +91,10 @@ SilicaGridView {
                     enabled: parent.visible
                     anchors.fill: parent
                     onClicked: {
-                            if(file_is_downloading)
-{
-
-                                itemsModel.cancelDownload(index)
-}
-                            else
-{
+                        if (file_is_downloading)
+                            itemsModel.cancelDownload(index)
+                        else
                             itemsModel.downloadDocument(index)
-}
                     }
                 }
             }
