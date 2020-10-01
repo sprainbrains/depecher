@@ -2,7 +2,7 @@ import QtQuick 2.6
 import Sailfish.Silica 1.0
 import TelegramItems 1.0
 import "../js/utils.js" as Utils
-import org.nemomobile.notifications 1.0
+import Nemo.Notifications 1.0
 import Nemo.DBus 2.0
 import "items"
 import tdlibQtEnums 1.0

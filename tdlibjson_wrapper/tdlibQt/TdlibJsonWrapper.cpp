@@ -6,7 +6,7 @@
 #include "ParseObject.hpp"
 #include <td/telegram/td_log.h>
 #include <MGConfItem>
-
+#include <QStandardPaths>
 
 namespace tdlibQt {
 
@@ -648,7 +648,8 @@ void TdlibJsonWrapper::setTdlibParameters()
     }
 
     QVariantMap parametersObject;
-    parametersObject["database_directory"] = "/home/nemo/.local/share/harbour-depecher";
+    QString userDir = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
+    parametersObject["database_directory"] = userDir + "/.local/share/harbour-depecher";
     parametersObject["files_directory"] = filesDirectory.value("").toString();
     parametersObject["api_id"] = tdlibQt::appid.toInt();
     parametersObject["api_hash"] = tdlibQt::apphash;

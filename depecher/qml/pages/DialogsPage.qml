@@ -12,19 +12,28 @@ Page {
     //for search in pageStack
     property bool __chat_page: true
     property string _opened_chat_id: ""
+
+    function openAuthorizeDialog() {
+        pageStack.completeAnimation()
+        pageStack.replace(Qt.resolvedUrl("AuthorizeDialog.qml"),{},PageStackAction.Immediate)
+    }
+
     Connections {
         target: c_telegramWrapper
         onErrorReceivedMap: {
-            if(errorObject["code"] === 401)
-                pageStack.replace(Qt.resolvedUrl("AuthorizeDialog.qml"),{},PageStackAction.Immediate)
+            if (errorObject["code"] === 401)
+                openAuthorizeDialog()
+        }
+        onAuthorizationStateChanged: {
+            if (c_telegramWrapper.authorizationState == TdlibState.AuthorizationStateWaitPhoneNumber)
+                openAuthorizeDialog()
         }
     }
-    onStatusChanged: {
-    if (status == PageStatus.Active)
-        if(c_telegramWrapper.authorizationState == TdlibState.AuthorizationStateWaitPhoneNumber)
-            pageStack.replace(Qt.resolvedUrl("AuthorizeDialog.qml"),{},PageStackAction.Immediate)
-
+    Component.onCompleted: {
+        if (c_telegramWrapper.authorizationState == TdlibState.AuthorizationStateWaitPhoneNumber)
+            openAuthorizeDialog()
     }
+
     SilicaListView {
         id: listView
         anchors.fill: parent

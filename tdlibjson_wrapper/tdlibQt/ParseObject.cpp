@@ -4,6 +4,7 @@
 #include <QDateTime>
 #include <QGuiApplication>
 #include <QFile>
+#include <QStandardPaths>
 #include "ParseObject.hpp"
 
 namespace tdlibQt {
@@ -24,7 +25,8 @@ void ParseObject::parseResponse(const QByteArray &json)
     qDebug().noquote() << json << "\n";
 #endif
 #ifdef WITH_LOG
-    QFile logFile("/home/nemo/depecherDatabase/depecher.log");
+    QString userDir = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
+    QFile logFile(userDir + "/depecherDatabase/depecher.log");
     if (logFile.open(QIODevice::WriteOnly | QIODevice::Append)) {
         logFile.write(QString("["
                               + QDateTime::currentDateTime().toString("MM.dd hh:mm:ss") +
@@ -359,7 +361,6 @@ QString ParseObject::messageTypeToString(const int messageTypeId)
     default:
         return tr("Message content");
     }
-
 }
 QString ParseObject::getFirstName(int userId)
 {

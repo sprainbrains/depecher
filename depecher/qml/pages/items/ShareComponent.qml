@@ -1,10 +1,10 @@
-import QtQuick 2.0
+import QtQuick 2.6
 import Sailfish.Silica 1.0
 import Sailfish.TransferEngine 1.0
 //import Sailfish.Accounts 1.0
 //import com.jolla.settings.accounts 1.0
 import Sailfish.Gallery 1.0
-import org.nemomobile.thumbnailer 1.0
+import Nemo.Thumbnailer 1.0
 SilicaFlickable {
     id:root
     property url urlOfSharingItem

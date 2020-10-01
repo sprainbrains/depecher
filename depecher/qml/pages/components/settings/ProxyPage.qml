@@ -7,7 +7,7 @@ import "../../items"
 import ".."
 import "../../../js/utils.js" as Utils
 
-import org.nemomobile.notifications 1.0
+import Nemo.Notifications 1.0
 import TelegramItems 1.0
 
 Page {
