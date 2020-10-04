@@ -177,6 +177,15 @@ void TdlibJsonWrapper::startListen()
             this, &TdlibJsonWrapper::meReceived);
     connect(parseObject, &ParseObject::errorReceived,
     [this](const QJsonObject & errorObject) {
+        if (errorObject["code"].toInt() == 420) { // FLOOD_WAIT_X
+            static int floodCounter = 0;
+            qDebug() << "FLOOD error: " << errorObject["message"].toString();
+            ++floodCounter;
+            if (floodCounter >= 5) {
+                qDebug() << "Abandon the ship!";
+                exit(1);
+            }
+        }
         emit errorReceived(errorObject);
         emit errorReceivedMap(errorObject.toVariantMap());
     });
