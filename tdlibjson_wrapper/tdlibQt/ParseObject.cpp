@@ -24,16 +24,20 @@ void ParseObject::parseResponse(const QByteArray &json)
 #ifdef QT_DEBUG
     qDebug().noquote() << doc.toJson();
 #endif
+
 #ifdef WITH_LOG
-    QString userDir = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
-    QFile logFile(userDir + "/depecherDatabase/depecher.log");
-    if (logFile.open(QIODevice::WriteOnly | QIODevice::Append)) {
-        logFile.write(QString("["
-                              + QDateTime::currentDateTime().toString("MM.dd hh:mm:ss") +
-                              "] - " + json
-                              +
-                              "\n").toUtf8());
-        logFile.close();
+    static const bool logToFile = qgetenv("DEPECHER_LOG_TO_FILE").toInt();
+    if (logToFile) {
+        QString userDir = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
+        QFile logFile(userDir + "/depecherDatabase/depecher.log");
+        if (logFile.open(QIODevice::WriteOnly | QIODevice::Append)) {
+            logFile.write(QString("["
+                                  + QDateTime::currentDateTime().toString("MM.dd hh:mm:ss") +
+                                  "] - " + doc.toJson()
+                                  +
+                                  "\n").toUtf8());
+            logFile.close();
+        }
     }
 #endif
     //    switch (doc.object()["@type"].toString()) {

@@ -4,6 +4,7 @@ APP_HASH = $$fromfile(api_secret.pri,APP_HASH)#To build you have to create file 
 
 VERSION =  0.7.7
 DEFINES += APP_VERSION=\"\\\"$${VERSION}\\\"\"
+DEFINES += WITH_LOG=1
 
 TEMPLATE = lib
 TARGET = tdlibjson_wrapper
