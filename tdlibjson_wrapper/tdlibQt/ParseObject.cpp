@@ -22,7 +22,7 @@ void ParseObject::parseResponse(const QByteArray &json)
     }
     QString typeField = doc.object()["@type"].toString();
 #ifdef QT_DEBUG
-    qDebug().noquote() << json << "\n";
+    qDebug().noquote() << doc.toJson();
 #endif
 #ifdef WITH_LOG
     QString userDir = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
