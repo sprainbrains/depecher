@@ -116,7 +116,15 @@ CONFIG += sailfishapp_i18n
 
 # automatic generation of the translation .qm files from .ts files
 system(lrelease $$PWD/translations/*.ts)
-TRANSLATIONS += translations/*.ts
+TRANSLATIONS +=  \
+    translations/depecher-de.ts \
+    translations/depecher-es.ts \
+    translations/depecher-fi.ts \
+    translations/depecher-hu.ts \
+    translations/depecher-it.ts \
+    translations/depecher-sv.ts \
+    translations/depecher-zh_CN.ts \
+    translations/depecher.ts
 
 RESOURCES += \
     resource.qrc
@@ -141,7 +149,6 @@ DISTFILES += \
     events/depecher_im.ini \
     notificationcategories/x-depecher.im.conf \
     notificationcategories/x-depecher.im.fg.conf \
-    translations/depecher-es.ts \
     dbus/org.blacksailer.depecher.service \
     dbus/org.blacksailer.depecher.xml \
     settings/DepecherAppSettings.qml \

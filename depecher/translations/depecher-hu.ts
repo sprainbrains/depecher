@@ -336,6 +336,93 @@
     </message>
 </context>
 <context>
+    <name>DepecherAppSettings</name>
+    <message>
+        <source>Depecher settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start Depecher on bootup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>When this is off, you won&apos;t get Depecher app on boot</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start/stop Depecher daemon. Stopping Depecher daemon will also stop receiving notifications</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Depecher current status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start daemon</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Stop daemon</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close app on closing UI</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>When this is on, Depecher quits after closing ui. No daemon. Autostart should be disabled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Library settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Max number of notification groups to be shown</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Max number of notifications in a group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Path to files directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use file database</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>If set to true, information about downloaded and uploaded files will be saved between application restarts.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use chat info database</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>If set to true, the library will maintain a cache of users, basic groups, supergroups, channels and secret chats.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use message database</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>If set to true, the library will maintain a cache of chats and messages.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable storage optimizer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>If set to true, old files will automatically be deleted.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>DialogsPage</name>
     <message>
         <source>Reset dialogs</source>
