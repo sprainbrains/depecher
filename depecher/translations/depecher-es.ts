@@ -42,7 +42,7 @@
     </message>
     <message>
         <source>Joining chat</source>
-        <translation>Unirse a chat</translation>
+        <translation>Unirse a charla</translation>
     </message>
     <message>
         <source>Error to get invite link</source>
@@ -50,7 +50,7 @@
     </message>
     <message>
         <source>Depecher - Another Telegram client for Sailfish OS based on tdlib.</source>
-        <translation>Depecher - Otro cliente de Telegram para Sailfish OS basado en tdlib.</translation>
+        <translation>Depecher es un cliente de Telegram para Sailfish SO.</translation>
     </message>
     <message>
         <source>Features:</source>
@@ -78,11 +78,11 @@
     </message>
     <message>
         <source>- Manage stickers from chat</source>
-        <translation>- Gestionar stickers desde conversación</translation>
+        <translation>- Gestionar pegatinas desde charla</translation>
     </message>
     <message>
         <source>- Uploading/Downloading photos/docs</source>
-        <translation>- Subida/Descarga de fotos/documentos</translation>
+        <translation>- Subiendo/Bajando fotos/documentos</translation>
     </message>
     <message>
         <source>- Receive notifications</source>
@@ -98,11 +98,11 @@
     </message>
     <message>
         <source>Here enumerated groups where you can ask any questions (general,dev etc.) related to Sailfish OS.</source>
-        <translation>Aquí se enumeran los grupos donde puedes preguntar cualquier duda (general, dev, etc.) sobre Sailfish OS.</translation>
+        <translation>Aquí se enumeran los grupos donde puedes preguntar cualquier duda (general, dev, etc.) sobre Sailfish SO.</translation>
     </message>
     <message>
         <source>This groups lives only because of community and by community around Sailfish OS.</source>
-        <translation>Estos grupos sólo viven por y para la comunidad que rodea a Sailfish OS.</translation>
+        <translation>Estos grupos sólo viven por y para la comunidad que rodea a Sailfish SO.</translation>
     </message>
     <message>
         <source>Version</source>
@@ -110,7 +110,7 @@
     </message>
     <message>
         <source>Be aware, after clicking you will join chat.</source>
-        <translation>Ten en cuenta que al pulsar te unirás al chat.</translation>
+        <translation>Ten en cuenta que al pulsar te unirás a la charla.</translation>
     </message>
     <message>
         <source>Italian speaking community</source>
@@ -133,11 +133,11 @@
     </message>
     <message>
         <source>Incoming message background color</source>
-        <translation>Color-fondo en mensajes recibidos</translation>
+        <translation>Color de fondo en mensajes recibidos</translation>
     </message>
     <message>
         <source>Outcoming message background color</source>
-        <translation>Color-fondo en mensajes enviados</translation>
+        <translation>Color de fondo en mensajes enviados</translation>
     </message>
     <message>
         <source>Reset to default</source>
@@ -145,7 +145,7 @@
     </message>
     <message>
         <source>Minimize nameplate</source>
-        <translation>Ocultar nombre del chat</translation>
+        <translation>Ocultar nombre de charla</translation>
     </message>
     <message>
         <source>Enable night mode</source>
@@ -181,11 +181,11 @@
     </message>
     <message>
         <source>Show voice message button</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostrar botón de mensaje de voz</translation>
     </message>
     <message>
         <source>Show current time below message input</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostrar la hora actual en mensaje</translation>
     </message>
 </context>
 <context>
@@ -227,11 +227,11 @@
     </message>
     <message>
         <source>Home</source>
-        <translation>Home</translation>
+        <translation>principal</translation>
     </message>
     <message>
         <source>Go to Home folder</source>
-        <translation>Ir a carpeta Home</translation>
+        <translation>Ir a carpeta principal</translation>
     </message>
     <message>
         <source>Documents</source>
@@ -250,7 +250,7 @@
     <name>AttachSticker</name>
     <message>
         <source>Sticker preview mode</source>
-        <translation>Modo vista previa de stickers</translation>
+        <translation>Modo vista previa de pegatina</translation>
     </message>
 </context>
 <context>
@@ -264,7 +264,7 @@
     <name>AuthorizeDialog</name>
     <message>
         <source>Insert your phone number and press &apos;Next&apos;</source>
-        <translation>Inserta tu número de teléfono y presiona &apos;Siguiente&apos;</translation>
+        <translation>Introducir el número de teléfono y presionar &apos;Siguiente&apos;</translation>
     </message>
     <message>
         <source>Country Code</source>
@@ -280,11 +280,11 @@
     </message>
     <message>
         <source>Welcome</source>
-        <translation>Bienvenido</translation>
+        <translation>Bienvenido a Depecher</translation>
     </message>
     <message>
         <source>Attention: If Telegram is blocked in your country, first setup proxy server in settings via PulleyMenu</source>
-        <translation>Atención: Si Telegram está bloqueado en tu país, primero configura el servidor proxy en ajustes desde el menú deslizante</translation>
+        <translation>Atención: Si Telegram está bloqueado en su país, primero configurar el servidor proxy en ajustes desde la polea de opciones</translation>
     </message>
 </context>
 <context>
@@ -302,7 +302,7 @@
     <name>ChannelInfoPage</name>
     <message>
         <source>Channel info</source>
-        <translation>Info de canal</translation>
+        <translation>Detalles del canal</translation>
     </message>
 </context>
 <context>
@@ -338,94 +338,94 @@
     <name>DepecherAppSettings</name>
     <message>
         <source>Depecher settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajustes</translation>
     </message>
     <message>
         <source>Start Depecher on bootup</source>
-        <translation type="unfinished"></translation>
+        <translation>Iniciar Depecher en el arranque</translation>
     </message>
     <message>
         <source>When this is off, you won&apos;t get Depecher app on boot</source>
-        <translation type="unfinished"></translation>
+        <translation>Cuando esto está deshabilitado, Depecher no iniciará en el arranque</translation>
     </message>
     <message>
         <source>Start/stop Depecher daemon. Stopping Depecher daemon will also stop receiving notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Iniciar o detener el demonio de Depecher es opcional.</translation>
     </message>
     <message>
         <source>Depecher current status</source>
-        <translation type="unfinished"></translation>
+        <translation>Estado actual de Depecher</translation>
     </message>
     <message>
         <source>Start daemon</source>
-        <translation type="unfinished"></translation>
+        <translation>Iniciar demonio</translation>
     </message>
     <message>
         <source>Stop daemon</source>
-        <translation type="unfinished"></translation>
+        <translation>Detener demonio</translation>
     </message>
     <message>
         <source>Close app on closing UI</source>
-        <translation type="unfinished"></translation>
+        <translation>Cerrar la aplicación al cerrar la interfaz de usuario</translation>
     </message>
     <message>
         <source>When this is on, Depecher quits after closing ui. No daemon. Autostart should be disabled</source>
-        <translation type="unfinished"></translation>
+        <translation>Cuando esto está deshabilitado, Depecher se cierra después de cerrar la interfaz. Sin demonio. El inicio automático debe estar deshabilitado</translation>
     </message>
     <message>
         <source>Library settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajustes de biblioteca</translation>
     </message>
     <message>
         <source>Max number of notification groups to be shown</source>
-        <translation type="unfinished"></translation>
+        <translation>Número máximo  de notificaciones de grupos</translation>
     </message>
     <message>
         <source>Max number of notifications in a group</source>
-        <translation type="unfinished"></translation>
+        <translation>Número máximo  de notificaciones por grupo</translation>
     </message>
     <message>
         <source>Path to files directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Ruta de directorios</translation>
     </message>
     <message>
         <source>Use file database</source>
-        <translation type="unfinished"></translation>
+        <translation>Usar base de datos de archivos</translation>
     </message>
     <message>
         <source>If set to true, information about downloaded and uploaded files will be saved between application restarts.</source>
-        <translation type="unfinished"></translation>
+        <translation>Si está habilitdo, la información sobre los archivos bajados y subidos se guardará entre los reinicios de la aplicación.</translation>
     </message>
     <message>
         <source>Use chat info database</source>
-        <translation type="unfinished"></translation>
+        <translation>Usar base de datos de la charla</translation>
     </message>
     <message>
         <source>If set to true, the library will maintain a cache of users, basic groups, supergroups, channels and secret chats.</source>
-        <translation type="unfinished"></translation>
+        <translation>Si está habilitdo,la biblioteca mantendrá una caché de usuarios, grupos básicos, supergrupos, canales y charlas secretas.</translation>
     </message>
     <message>
         <source>Use message database</source>
-        <translation type="unfinished"></translation>
+        <translation>Usar base de datos de mensajes</translation>
     </message>
     <message>
         <source>If set to true, the library will maintain a cache of chats and messages.</source>
-        <translation type="unfinished"></translation>
+        <translation>Si está habilitdo, la biblioteca mantendrá una caché de charlas y mensajes.</translation>
     </message>
     <message>
         <source>Enable storage optimizer</source>
-        <translation type="unfinished"></translation>
+        <translation>Usar optimizador de almacenamiento</translation>
     </message>
     <message>
         <source>If set to true, old files will automatically be deleted.</source>
-        <translation type="unfinished"></translation>
+        <translation>Si está habilitdo, los archivos antiguos se eliminarán automáticamente.</translation>
     </message>
 </context>
 <context>
     <name>DialogsPage</name>
     <message>
         <source>Reset dialogs</source>
-        <translation>Restablecer diálogos</translation>
+        <translation>Restablecer</translation>
     </message>
     <message>
         <source>Settings</source>
@@ -463,7 +463,7 @@
     <name>GroupInfoPage</name>
     <message>
         <source>Group info</source>
-        <translation>Info de grupo</translation>
+        <translation>Detalles de grupo</translation>
     </message>
     <message>
         <source>%1 members</source>
@@ -479,7 +479,7 @@
     </message>
     <message>
         <source>Click to enable notifications</source>
-        <translation>Pulsa para activar notificaciones</translation>
+        <translation>Pulsa para habilitar las notificaciones</translation>
     </message>
 </context>
 <context>
@@ -493,7 +493,7 @@
     <name>JoinedDelegate</name>
     <message>
         <source>%1 joined Telegram!</source>
-        <translation>¡%1 se unió a Telegram!</translation>
+        <translation>%1 se unió a Telegram</translation>
     </message>
 </context>
 <context>
@@ -541,7 +541,7 @@
     </message>
     <message>
         <source>Sticker</source>
-        <translation>Sticker</translation>
+        <translation>Pegatina</translation>
     </message>
     <message>
         <source>Document</source>
@@ -610,7 +610,7 @@
     </message>
     <message>
         <source>Image saved to gallery!</source>
-        <translation>¡Imagen guardada en Galería!</translation>
+        <translation>Imagen guardada en Galería</translation>
     </message>
     <message>
         <source>Share function will be here soon</source>
@@ -621,30 +621,30 @@
     <name>PreviewStickerSetDialog</name>
     <message>
         <source>Sticker preview mode</source>
-        <translation>Modo vista previa de stickers</translation>
+        <translation>Modo vista previa de pegatina</translation>
     </message>
     <message>
         <source>Remove %1 stickers</source>
-        <translation>Eliminar %1 stickers</translation>
+        <translation>Quitar %1 pegatinas</translation>
     </message>
     <message>
         <source>Add %1 stickers</source>
-        <translation>Añadir %1 stickers</translation>
+        <translation>Añadir %1 pegatinas</translation>
     </message>
     <message>
         <source>Back</source>
-        <translation>Volver</translation>
+        <translation>Atrás</translation>
     </message>
 </context>
 <context>
     <name>ProxyDialog</name>
     <message>
         <source>Server address</source>
-        <translation>Dirección del servidor</translation>
+        <translation>Dirección de servidor</translation>
     </message>
     <message>
         <source>Server port</source>
-        <translation>Puerto del servidor</translation>
+        <translation>Puerto de servidor</translation>
     </message>
     <message>
         <source>port</source>
@@ -723,7 +723,7 @@
     </message>
     <message>
         <source>Remove</source>
-        <translation>Eliminar</translation>
+        <translation>Quitar</translation>
     </message>
     <message>
         <source>Add proxy</source>
@@ -734,7 +734,7 @@
     <name>SelectChatDialog</name>
     <message>
         <source>Select chat</source>
-        <translation>Seleccionar chat</translation>
+        <translation>Seleccionar charla</translation>
     </message>
 </context>
 <context>
@@ -757,7 +757,7 @@
     </message>
     <message>
         <source>About program</source>
-        <translation>Acerca del programa</translation>
+        <translation>Acerca de Depecher</translation>
     </message>
     <message>
         <source>Credits and stuff</source>
@@ -773,7 +773,7 @@
     </message>
     <message>
         <source>Daemon settings</source>
-        <translation>Ajustes de daemon</translation>
+        <translation>Ajustes de demonio</translation>
     </message>
     <message>
         <source>Logging out</source>
@@ -788,7 +788,7 @@
     <name>ShareUI</name>
     <message>
         <source>Choose chat</source>
-        <translation>Elige chat</translation>
+        <translation>Eligir charla</translation>
     </message>
     <message>
         <source>%1 selected</source>
@@ -800,11 +800,11 @@
     </message>
     <message>
         <source>Ensure that depecher is running</source>
-        <translation>Asegúrate de que depecher se está ejecutando</translation>
+        <translation>Asegúrate de que Depecher se está ejecutando</translation>
     </message>
     <message>
         <source>Do not close until media is transfered</source>
-        <translation>No cierres hasta que el contenido multimedia se haya transferido</translation>
+        <translation>No cerrar hasta que el contenido multimedia se haya transferido</translation>
     </message>
 </context>
 <context>
@@ -862,7 +862,7 @@
     </message>
     <message>
         <source>Enter your password</source>
-        <translation>Introduce tu contraseña</translation>
+        <translation>Introducir la contraseña</translation>
     </message>
     <message>
         <source>Password</source>
@@ -896,7 +896,7 @@
     </message>
     <message>
         <source>Wait for the message via %1 containing the activation code and press %2</source>
-        <translation>Espera el mensaje de %1 con el código de activación y presiona %2</translation>
+        <translation>Espera el mensaje de %1 con el código de activación y presionar %2</translation>
     </message>
     <message>
         <source>recovery code sent to %1</source>
@@ -908,11 +908,11 @@
     </message>
     <message>
         <source>Enter code</source>
-        <translation>Introduce código</translation>
+        <translation>Introducir código</translation>
     </message>
     <message>
         <source>Enter password</source>
-        <translation>Introduce contraseña</translation>
+        <translation>Introducir contraseña</translation>
     </message>
     <message>
         <source>Authentication state</source>
@@ -923,7 +923,7 @@
     <name>UserPage</name>
     <message>
         <source>User info</source>
-        <translation>Info de usuario</translation>
+        <translation>Detalles de usuario</translation>
     </message>
     <message>
         <source>Send message</source>
@@ -935,11 +935,11 @@
     </message>
     <message>
         <source>Click to disable notifications</source>
-        <translation>Pulsa para desactivar notificaciones</translation>
+        <translation>Pulsa para deshabilitar notificaciones</translation>
     </message>
     <message>
         <source>Click to enable notifications</source>
-        <translation>Pulsa para activar notificaciones</translation>
+        <translation>Pulsa para habilitar notificaciones</translation>
     </message>
     <message>
         <source>%1 groups in common</source>
@@ -947,7 +947,7 @@
     </message>
     <message>
         <source>Channel info</source>
-        <translation>Info de canal</translation>
+        <translation>Detalles de canal</translation>
     </message>
     <message>
         <source>Leave channel</source>
@@ -971,19 +971,19 @@
     </message>
     <message>
         <source>Copy</source>
-        <translation type="unfinished"></translation>
+        <translation>Copiar</translation>
     </message>
     <message>
         <source>Copy link</source>
-        <translation type="unfinished"></translation>
+        <translation>Copiar enlace</translation>
     </message>
     <message>
         <source>Bio</source>
-        <translation type="unfinished"></translation>
+        <translation>Biografía</translation>
     </message>
     <message>
         <source>%1 members</source>
-        <translation type="unfinished">%1 miembros</translation>
+        <translation>%1 miembros</translation>
     </message>
 </context>
 <context>
@@ -1039,23 +1039,23 @@
     </message>
     <message>
         <source>Wait lib parameters</source>
-        <translation>Espera parámetros de lib</translation>
+        <translation>Esperar parámetros de lib</translation>
     </message>
     <message>
         <source>Wait encryption key</source>
-        <translation>Espera clave de cifrado</translation>
+        <translation>Esperar clave de cifrado</translation>
     </message>
     <message>
         <source>Wait phone number</source>
-        <translation>Espera número de teléfono</translation>
+        <translation>Esperar número de teléfono</translation>
     </message>
     <message>
         <source>Wait code</source>
-        <translation>Espera código</translation>
+        <translation>Esperar código</translation>
     </message>
     <message>
         <source>Wait password</source>
-        <translation>Espera contraseña</translation>
+        <translation>Esperar contraseña</translation>
     </message>
     <message>
         <source>Wait logging out</source>
@@ -1063,15 +1063,15 @@
     </message>
     <message>
         <source>Wait closing</source>
-        <translation>Cerrando espera</translation>
+        <translation>Espera a que cierre</translation>
     </message>
     <message>
         <source>Wait closed</source>
-        <translation>Espera cerrada</translation>
+        <translation>Espera a cerrarse</translation>
     </message>
     <message>
         <source>Today</source>
-        <translation type="unfinished"></translation>
+        <translation>Hoy</translation>
     </message>
 </context>
 </TS>
