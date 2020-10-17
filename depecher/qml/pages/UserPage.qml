@@ -670,7 +670,7 @@ Page {
                 SearchField {
                     id: searchField
                     width: membersList.width
-                    placeholderText: "Search"
+                    placeholderText: qsTr("Search")
                     inputMethodHints: Qt.ImhNoAutoUppercase
                     focusOutBehavior: FocusBehavior.ClearItemFocus
                     autoScrollEnabled: false
