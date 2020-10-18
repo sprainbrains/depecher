@@ -985,6 +985,10 @@ Beachte! Danach wird die 2FA Autorisierung deaktiviert werden.</translation>
         <source>%1 members</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Search</source>
+        <translation type="unfinished">Suchen</translation>
+    </message>
 </context>
 <context>
     <name>VideoView</name>

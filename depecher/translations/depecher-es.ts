@@ -985,6 +985,10 @@
         <source>%1 members</source>
         <translation>%1 miembros</translation>
     </message>
+    <message>
+        <source>Search</source>
+        <translation type="unfinished">Buscar</translation>
+    </message>
 </context>
 <context>
     <name>VideoView</name>

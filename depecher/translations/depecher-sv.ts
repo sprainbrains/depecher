@@ -985,6 +985,10 @@ Observera att efter detta, kommer 2-faktorsauktoriseringen att inaktiveras</tran
         <source>%1 members</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Search</source>
+        <translation type="unfinished">S??k</translation>
+    </message>
 </context>
 <context>
     <name>VideoView</name>

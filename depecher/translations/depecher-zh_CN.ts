@@ -985,6 +985,10 @@
         <source>%1 members</source>
         <translation type="unfinished">%1 位成员</translation>
     </message>
+    <message>
+        <source>Search</source>
+        <translation type="unfinished">搜索</translation>
+    </message>
 </context>
 <context>
     <name>VideoView</name>
