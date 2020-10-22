@@ -451,6 +451,14 @@
         <source>Contacts</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Leave chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Left chat</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>DocumentView</name>
@@ -487,6 +495,18 @@
     <message>
         <source>%1 joined by invite link</source>
         <translation>%1 è entrato tramite link d&apos;invito</translation>
+    </message>
+</context>
+<context>
+    <name>JoinChatDialog</name>
+    <message>
+        <source>Join</source>
+        <extracomment>Join to channel</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Join Channel: </source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
