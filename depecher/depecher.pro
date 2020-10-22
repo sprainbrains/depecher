@@ -14,8 +14,8 @@ TARGET = depecher
 
 QT += core sql dbus multimedia network
 
-##Application must be also changed in depecher.yaml file and tdlibjsonwrapper.pro
-VERSION = 0.7.7
+##Application must be also changed in depecher.spec file and tdlibjsonwrapper.pro
+VERSION = 0.7.8
 DEFINES += APP_VERSION=\"\\\"$${VERSION}\\\"\"
 
 CONFIG += sailfishapp
@@ -44,7 +44,10 @@ dbus_interface.path= /usr/share/dbus-1/interfaces
 systemd.files = $$PWD/systemd/org.blacksailer.depecher.service
 systemd.path = /usr/lib/systemd/user
 
-INSTALLS += webp dbus dbus_interface systemd
+desktop_mimetype.files = $$PWD/depecher-openurl.desktop
+desktop_mimetype.path = /usr/share/applications
+
+INSTALLS += webp dbus dbus_interface systemd desktop_mimetype
 
 DEPENDPATH += $$OUT_PWD/../tdlibjson_wrapper
 INCLUDEPATH = $$PWD/../tdlibjson_wrapper
@@ -132,15 +135,16 @@ RESOURCES += \
 DISTFILES += \
     qml/js/countries.js \
     depecher.desktop \
+    depecher-openurl.desktop \
     qml/pages/GroupInfoPage.qml \
     qml/pages/UserPage.qml \
+    qml/pages/JoinChatDialog.qml \
     qml/pages/items/MsgPageSettings.qml \
     qml/pages/items/filter_delegates/AudioView.qml \
     qml/pages/items/filter_delegates/DocumentView.qml \
     qml/pages/items/filter_delegates/LinkView.qml \
     qml/pages/items/filter_delegates/PhotoView.qml \
     qml/pages/items/filter_delegates/VoiceView.qml \
-    rpm/depecher.yaml \
     rpm/depecher.spec \
     rpm/depecher.changes.in \
     ../README.md \

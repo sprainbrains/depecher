@@ -34,11 +34,22 @@ Page {
             openAuthorizeDialog()
     }
 
+    Connections {
+        target: c_joinManager
+        onInviteLinkReady: {
+            pageStack.push(Qt.resolvedUrl("JoinChatDialog.qml"), { title: title, link: link })
+        }
+        // FIXME: open chat instead
+        onInviteIdReady: {
+            pageStack.push(Qt.resolvedUrl("JoinChatDialog.qml"), { title: title, chatId: chatId })
+        }
+    }
+
     SilicaListView {
         id: listView
         anchors.fill: parent
-        model:   ChatsModel {
-            id:chatsModel
+        model: ChatsModel {
+            id: chatsModel
         }
 
         header:  PageHeader {
@@ -73,6 +84,16 @@ Page {
                 MenuItem {
                     text: is_marked_unread ? qsTr("Mark as read") : qsTr("Mark as unread")
                     onClicked: chatsModel.markAsUnread(id,!is_marked_unread)
+                }
+                MenuItem {
+                    text: qsTr("Leave chat")
+                    onClicked: {
+                        chatDelegate.remorseAction(qsTr("Left chat"), function () {
+                            c_telegramWrapper.leaveChat(id)
+                            if (page.canNavigateForward && _opened_chat_id === id)
+                                pageStack.popAttached(page, PageStackAction.Immediate)
+                        })
+                    }
                 }
             }
 

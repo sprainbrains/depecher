@@ -11,5 +11,9 @@
 <arg direction="in" type="as" name="item"/>
 <annotation value="true" name="org.freedesktop.DBus.Method.NoReply"/>
 </method>
+    <method name="openUrl">
+        <arg direction="in" type="as" name="url"/>
+        <annotation value="true" name="org.freedesktop.DBus.Method.NoReply"/>
+    </method>
 </interface>
 </node>

@@ -145,6 +145,7 @@ signals:
     void getChat(const qint64 id, const QString &extra);
     void chatsReceived(const QJsonObject &chatsObject);
     void chatReceived(const QJsonObject &chatItem);
+    void chatInviteLinkInfoReceived(const QJsonObject &chatInfo);
     void newMessages(const QJsonObject &messageItem);
     void newMessageFromUpdate(const QJsonObject &messageItem);
     void updateTotalCount(int totalCount);

@@ -47,6 +47,7 @@ void UsernameResolver::chatReceived(const QJsonObject &chatObject)
     if (chatObject["@extra"].toString() == c_extra) {
         auto chat = ParseObject::parseChat(chatObject);
         setResolvedChatId(chat->id_);
+        setResolvedTitle(QString::fromStdString(chat->title_));
         switch (chat->type_->get_id()) {
         case chatTypePrivate::ID:
             setResolvedId(static_cast<chatTypePrivate *>(chat->type_.data())->user_id_);

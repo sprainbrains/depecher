@@ -91,6 +91,7 @@ signals:
     void newAuthorizationState(const QSharedPointer<AuthorizationState> authState);
     void connectionStateChanged(tdlibQt::Enums::ConnectionState connectionState);
     void chatReceived(const QJsonObject &chatObject);
+    void chatInviteLinkInfoReceived(const QJsonObject &chatInfo);
     void proxiesReceived(const QJsonObject &proxiesObject);
     void proxyReceived(const QJsonObject &proxyObject);
     void updateFile(const QJsonObject &fileObject);
@@ -222,6 +223,7 @@ public slots:
     void joinChatByInviteLink(const QString &link, const QString &extra = "");
     void joinChat(const qint64 chatId, const QString &extra = "");
     void leaveChat(const qint64 chatId, const QString &extra = "");
+    void checkChatInviteLink(const QString &link, const QString &extra = "");
     void getBasicGroup(const qint64  basicGroupId, const QString &extra = "");
     void getBasicGroupFullInfo(const int groupId, const QString &extra = "");
     void searchChatMessages(const qint64 chat_id = 0, const qint64 from_message_id = 0, const QString &query = "",

@@ -168,6 +168,7 @@ Page {
                 inputMethodHints: Qt.ImhNoAutoUppercase
                 focusOutBehavior: FocusBehavior.ClearItemFocus
                 autoScrollEnabled: false
+                visible: membersList.count
 
                 Component.onCompleted: membersList.searchField = searchField
 
@@ -184,7 +185,7 @@ Page {
             SilicaListView {
                 id:membersList
                 width: parent.width
-                height: page.height - searchField.height
+                height: membersList.count ? (page.height - searchField.height) : 0
                 interactive: flickable.atYEnd || !membersList.atYBeginning
                 clip:true
                 property SearchField searchField

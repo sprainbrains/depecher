@@ -2,7 +2,7 @@ APPID = $$fromfile(api_secret.pri,APPID)#To build you have to create file api_se
 APP_HASH = $$fromfile(api_secret.pri,APP_HASH)#To build you have to create file api_secret.pri app_hash, or replace with your app_hash
 
 
-VERSION =  0.7.7
+VERSION =  0.7.8
 DEFINES += APP_VERSION=\"\\\"$${VERSION}\\\"\"
 DEFINES += WITH_LOG=1
 
@@ -23,6 +23,7 @@ CONFIG (debug, debug|release) {
 MOC_DIR = build/mocs
 
 HEADERS += \
+    tdlibQt/JoinManager.hpp \
     tdlibQt/TdlibJsonWrapper.hpp \
     tdlibQt/ListenObject.hpp \
     tdlibQt/ParseObject.hpp \
@@ -54,6 +55,7 @@ HEADERS += \
     tdlibQt/models/FilterContactsModel.hpp
 
 SOURCES += \
+    tdlibQt/JoinManager.cpp \
     tdlibQt/TdlibJsonWrapper.cpp \
     tdlibQt/ListenObject.cpp \
     tdlibQt/ParseObject.cpp \

@@ -279,6 +279,10 @@ void ParseObject::parseResponse(const QByteArray &json)
         auto chatItem = doc.object();
         emit chatReceived(chatItem);
     }
+    if (typeField == "chatInviteLinkInfo") {
+        emit chatInviteLinkInfoReceived(doc.object());
+    }
+
     if (typeField == "user") {
         auto userItem = doc.object();
         if (userItem["@extra"].toString() == "getMe")

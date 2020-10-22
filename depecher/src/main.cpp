@@ -50,6 +50,7 @@ int main(int argc, char *argv[])
     auto tdlib = tdlibQt::TdlibJsonWrapper::instance();
     auto NotificationManager = tdlibQt::NotificationManager::instance();
     auto usersmodel = tdlibQt::UsersModel::instance();
+    Q_UNUSED(usersmodel)
     tdlib->startListen();
     //used in authenticationhandler too.
 //    tdlib->setEncryptionKey();

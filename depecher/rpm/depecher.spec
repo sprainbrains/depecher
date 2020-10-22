@@ -7,7 +7,7 @@ Name:       depecher
 %{!?qtc_make:%define qtc_make make}
 %{?qtc_builddir:%define _builddir %qtc_builddir}
 Summary:    Telegram client for Sailfish OS
-Version:    0.7.7
+Version:    0.7.8
 Release:    1
 Group:      Applications/Communications
 License:    LICENSE
@@ -69,6 +69,9 @@ systemctl-user daemon-reload
 #systemctl-user enable org.blacksailer.depecher.service || true
 #systemctl-user restart org.blacksailer.depecher.service || true
 
+echo "Update desktop database"
+update-desktop-database 2>&1 | grep -v x-maemo-highlight
+
 
 %preun
 systemctl-user stop org.blacksailer.depecher.service || true
@@ -83,6 +86,7 @@ fi
 %{_bindir}
 %{_datadir}/%{name}
 %{_datadir}/applications/%{name}.desktop
+%{_datadir}/applications/%{name}-openurl.desktop
 %{_datadir}/icons/hicolor/*/apps/%{name}.png
 %{_datadir}/lipstick/notificationcategories/*.conf
 %{_datadir}/ngfd/events.d/*.ini
@@ -91,7 +95,7 @@ fi
 %{_datadir}/dbus-1/services/org.blacksailer.depecher.service
 %{_datadir}/dbus-1/interfaces/org.blacksailer.depecher.xml
 %{_datadir}/jolla-settings/entries/%{name}.json
-%{_libdir}/systemd/user/org.blacksailer.depecher.service
+%{_prefix}/lib/systemd/user/org.blacksailer.depecher.service
 %{_libdir}/nemo-transferengine/plugins/*
 %{_sysconfdir}/%{name}/depecher-dbus-access.conf
 %{_datadir}/themes/%{theme}/meegotouch/z1.0/icons/*.png

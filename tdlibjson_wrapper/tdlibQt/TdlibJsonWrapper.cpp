@@ -139,6 +139,8 @@ void TdlibJsonWrapper::startListen()
         }
         emit chatReceived(chat);
     });
+    connect(parseObject, &ParseObject::chatInviteLinkInfoReceived,
+            this, &TdlibJsonWrapper::chatInviteLinkInfoReceived);
     connect(parseObject, &ParseObject::updateFile,
             this, &TdlibJsonWrapper::updateFile);
     connect(parseObject, &ParseObject::newMessages,
@@ -390,44 +392,38 @@ void TdlibJsonWrapper::cancelUploadFile(int fileId)
 
 void TdlibJsonWrapper::joinChatByInviteLink(const QString &link, const QString &extra)
 {
-    QString joinChatByInviteLink =
-        "{\"@type\":\"joinChatByInviteLink\","
-        "\"invite_link\":\"%1\"}";
-    joinChatByInviteLink = joinChatByInviteLink.arg(link);
-    if (extra != "") {
-        joinChatByInviteLink.remove(joinChatByInviteLink.size() - 1, 1);
-        joinChatByInviteLink.append(",\"@extra\":\"" + extra + "\"}");
-    }
-
-    sendToTelegram(client, joinChatByInviteLink.toStdString().c_str());
+    QJsonObject query {
+        {"@type", "joinChatByInviteLink"},
+        {"invite_link", link}
+    };
+    sendJsonObjToTelegram(query, extra);
 }
 
 void TdlibJsonWrapper::joinChat(const qint64 chatId, const QString &extra)
 {
-    QString joinChat =
-        "{\"@type\":\"joinChat\","
-        "\"chat_id\":\"%1\"}";
-    joinChat = joinChat.arg(QString::number(chatId));
-    if (extra != "") {
-        joinChat.remove(joinChat.size() - 1, 1);
-        joinChat.append(",\"@extra\":\"" + extra + "\"}");
-    }
-
-    sendToTelegram(client, joinChat.toStdString().c_str());
+    QJsonObject query {
+        {"@type", "joinChat"},
+        {"chat_id", chatId}
+    };
+    sendJsonObjToTelegram(query, extra);
 }
 
 void TdlibJsonWrapper::leaveChat(const qint64 chatId, const QString &extra)
 {
-    QString leaveChat =
-        "{\"@type\":\"leaveChat\","
-        "\"chat_id\":\"%1\"}";
-    leaveChat = leaveChat.arg(QString::number(chatId));
-    if (extra != "") {
-        leaveChat.remove(leaveChat.size() - 1, 1);
-        leaveChat.append(",\"@extra\":\"" + extra + "\"}");
-    }
+    QJsonObject query {
+        {"@type", "leaveChat"},
+        {"chat_id", chatId}
+    };
+    sendJsonObjToTelegram(query, extra);
+}
 
-    sendToTelegram(client, leaveChat.toStdString().c_str());
+void TdlibJsonWrapper::checkChatInviteLink(const QString &link, const QString &extra)
+{
+    QJsonObject query {
+        {"@type", "checkChatInviteLink"},
+        {"invite_link", link}
+    };
+    sendJsonObjToTelegram(query, extra);
 }
 
 void TdlibJsonWrapper::getBasicGroup(const qint64 basicGroupId, const QString &extra)
@@ -778,26 +774,18 @@ void TdlibJsonWrapper::markChatUnread(const qint64 chatId, const bool flag)
 
 void TdlibJsonWrapper::downloadFile(int fileId, int priority, const QString &extra)
 {
-    if (priority > 32)
-        priority = 32;
-    if (priority < 1)
-        priority = 1;
+    priority = qBound(1, priority, 32);
     bool sync = false;
-    QString getFile = "{\"@type\":\"downloadFile\","
-                      "\"file_id\":\"%1\","
-                      "\"priority\":%2,"
-                      "\"offset\":%3,"
-                      "\"limit\":%4,"
-                      "\"synchronous\":%5"
-                      "}";
 
-    getFile = getFile.arg(QString::number(fileId), QString::number(priority),
-                          QString::number(0), QString::number(0), sync ? QString("true") : QString("false"));
-    if (extra != "") {
-        getFile.remove(getFile.size() - 1, 1);
-        getFile.append(",\"@extra\":\"" + extra + "\"}");
-    }
-    sendToTelegram(client, getFile.toUtf8().constData());
+    QJsonObject query {
+        {"@type", "downloadFile"},
+        {"file_id", fileId},
+        {"priority", priority},
+        {"offset", 0},
+        {"limit", 0},
+        {"synchronous", sync}
+    };
+    sendJsonObjToTelegram(query, extra);
 }
 
 void TdlibJsonWrapper::getChatHistory(qint64 chat_id, qint64 from_message_id,
@@ -951,14 +939,11 @@ void TdlibJsonWrapper::getSupergroupFullInfo(const int supergroup_id, const QStr
 }
 void TdlibJsonWrapper::searchPublicChat(const QString &username, const QString extra)
 {
-    QString query = "{\"@type\":\"searchPublicChat\","
-                    "\"username\":\"%1\"}";
-    query = query.arg(username);
-    if (extra != "") {
-        query.remove(query.size() - 1, 1);
-        query.append(",\"@extra\":\"" + extra + "\"}");
-    }
-    sendToTelegram(client, query.toStdString().c_str());
+    QJsonObject query {
+        {"@type", "searchPublicChat"},
+        {"username", username}
+    };
+    sendJsonObjToTelegram(query, extra);
 }
 
 void TdlibJsonWrapper::getAttachedStickerSets(const int file_id)
@@ -976,14 +961,11 @@ void TdlibJsonWrapper::getStickerSet(const qint64 set_id)
 }
 void TdlibJsonWrapper::getInstalledStickerSets(const bool is_masks)
 {
-    QString getInstalledStickerSetsStr = QString("{\"@type\":\"getInstalledStickerSets\","
-                                         "\"is_masks\":");
-    if (is_masks)
-        getInstalledStickerSetsStr.append("true");
-    else
-        getInstalledStickerSetsStr.append("false");
-    getInstalledStickerSetsStr.append(",\"@extra\": \"getInstalledStickerSets\"}");
-    sendToTelegram(client, getInstalledStickerSetsStr.toStdString().c_str());
+    QJsonObject query {
+        {"@type", "getInstalledStickerSets"},
+        {"is_masks", is_masks}
+    };
+    sendJsonObjToTelegram(query, "getInstalledStickerSets");
 }
 void TdlibJsonWrapper::getTrendingStickerSets()
 {

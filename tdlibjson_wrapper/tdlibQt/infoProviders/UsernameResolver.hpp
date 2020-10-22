@@ -18,6 +18,7 @@ class UsernameResolver : public QObject
 
     TdlibJsonWrapper *m_tdlibJson;
     QString m_username = "";
+    QString m_resolvedTitle;
 
     double m_resolvedId = 0;
 
@@ -51,6 +52,11 @@ public:
     QString error() const
     {
         return m_error;
+    }
+
+    QString resolvedTitle() const
+    {
+        return m_resolvedTitle;
     }
 
 signals:
@@ -87,6 +93,13 @@ public slots:
 
         m_error = error;
         emit errorChanged(m_error);
+    }
+
+    void setResolvedTitle(const QString &title)
+    {
+        if (m_resolvedTitle == title)
+            return;
+        m_resolvedTitle = title;
     }
 protected slots:
     void errorReceived(const QJsonObject &errorObject);

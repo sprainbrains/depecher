@@ -3,7 +3,6 @@
 #include "FileWorker.hpp"
 #include "components/AudioRecorder.hpp"
 #include "KeysEater.h"
-
 #include "tdlibQt/TdlibJsonWrapper.hpp"
 #include "tdlibQt/models/StickerModel.hpp"
 #include "tdlibQt/models/ChatsModel.hpp"
@@ -26,6 +25,7 @@
 #include "tdlibQt/infoProviders/BasicGroupInfoProvider.hpp"
 
 #include "tdlibQt/infoProviders/UsernameResolver.hpp"
+#include "tdlibQt/JoinManager.hpp"
 #include <QDebug>
 #include <QQuickView>
 #include <QQmlContext>
@@ -42,6 +42,7 @@ DBusAdaptor::DBusAdaptor(QGuiApplication *parent) : app(parent)
 {
 //    connect(app, &QGuiApplication::destroyed, this, &DBusAdaptor::stopDaemon);
     tdlibJson = tdlibQt::TdlibJsonWrapper::instance();
+    joinManager = new tdlibQt::JoinManager(this);
     QDBusConnection dbus = QDBusConnection::sessionBus();
     new DepecherAdaptor(this);
     pagesStarter = new PageAppStarter(this);
@@ -130,6 +131,7 @@ void DBusAdaptor::showApp(const QStringList &cmd)
         view->setTitle("Depecher");
         view->rootContext()->setContextProperty("c_telegramWrapper", tdlibQt::TdlibJsonWrapper::instance());
         view->rootContext()->setContextProperty("c_PageStarter", pagesStarter);
+        view->rootContext()->setContextProperty("c_joinManager", joinManager);
         view->rootContext()->setContextProperty("detectedCountry", QLocale::countryToString(QLocale::system().country()));
         view->engine()->addImageProvider(QLatin1String("depecherDb"), new tdlibQt::TelegramProfileProvider);
         view->setSource(SailfishApp::pathTo("qml/app.qml"));
@@ -146,7 +148,16 @@ void DBusAdaptor::showApp(const QStringList &cmd)
 void DBusAdaptor::openConversation(const qlonglong &chatId)
 {
     pagesStarter->addPage(chatId);
-    showApp(QStringList());
+    showApp();
+}
+
+void DBusAdaptor::openUrl(const QStringList &arg)
+{
+    if (arg.isEmpty() || arg.first().isEmpty())
+        return;
+    QString url = arg.first();
+    joinManager->openUrl(url);
+    showApp();
 }
 
 void DBusAdaptor::onViewDestroyed()

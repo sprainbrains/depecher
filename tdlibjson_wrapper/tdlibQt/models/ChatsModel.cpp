@@ -508,8 +508,17 @@ void ChatsModel::updateChatOrder(const QJsonObject &chatOrderObject)
 {
     qint64 chatId = ParseObject::getInt64(chatOrderObject["chat_id"]);
     qint64 order =  ParseObject::getInt64(chatOrderObject["order"]);
-    changeChatOrderOrAdd(chatId, order);
-    //If no chat, get chat
+    if (order == 0) {
+        int idx = getIndex(chatId);
+        if (idx < 0)
+            return;
+        beginRemoveRows(QModelIndex(), idx, idx);
+        m_chats.removeAt(idx);
+        endRemoveRows();
+    } else {
+        //If no chat, get chat
+        changeChatOrderOrAdd(chatId, order);
+    }
 }
 
 void ChatsModel::updateChatLastMessage(const QJsonObject &chatLastMessageObject)

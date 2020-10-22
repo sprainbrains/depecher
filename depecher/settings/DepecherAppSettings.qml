@@ -214,7 +214,6 @@ Page {
             }
             TextSwitch {
                 id: autostart
-                //% "Start Depecher on bootup"
                 text: qsTr("Start Depecher on bootup")
                 description: qsTr("When this is off, you won't get Depecher app on boot")
                 enabled: root.ready && !quitOnCloseUiSwitch.checked
@@ -260,7 +259,6 @@ Page {
 
                 Button {
                     enabled: root.ready && root.depecherRunning
-                    //% "Stop"
                     text: qsTr("Stop daemon")
                     width: (content.width - 2*Theme.horizontalPageMargin - parent.spacing) / 2
                     onClicked: manager.stopDepecherUnit()
@@ -269,7 +267,6 @@ Page {
 
             TextSwitch {
                 id: quitOnCloseUiSwitch
-                //% "Start Depecher on bootup"
                 text: qsTr("Close app on closing UI")
                 description: qsTr("When this is on, Depecher quits after closing ui. No daemon. Autostart should be disabled")
                 enabled: !autostart.checked
