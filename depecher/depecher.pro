@@ -112,6 +112,7 @@ SAILFISHAPP_ICONS = 86x86 108x108 128x128 256x256
 # following CONFIG line
 CONFIG += sailfishapp_i18n
 TRANSLATION_SOURCES += $$PWD/settings
+TRANSLATION_SOURCES += $$PWD/../tdlibjson_wrapper/tdlibQt
 
 # German translation is enabled as an example. If you aren't
 # planning to localize your app, remember to comment out the
