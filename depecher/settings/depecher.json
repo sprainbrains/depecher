@@ -1,5 +1,5 @@
 {
-    "translation_catalog" : "depecher",
+    "translation_catalog" : "../depecher/translations/depecher",
     "entries": [
         {
             "path": "applications/depecher.desktop",
