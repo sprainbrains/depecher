@@ -62,7 +62,7 @@
     </message>
     <message>
         <source>- View/Send stickers</source>
-        <translation>- Ver/Enviar stickers</translation>
+        <translation>- Ver/Enviar pegatinas</translation>
     </message>
     <message>
         <source>- Manage stickers from chat</source>
@@ -78,7 +78,7 @@
     </message>
     <message>
         <source>- 2FA authorization enabled</source>
-        <translation>- Autorización 2FA habilitado</translation>
+        <translation>- Autorización de 2FA</translation>
     </message>
     <message>
         <source>Thanks to:</source>
@@ -90,31 +90,31 @@
     </message>
     <message>
         <source>Groups</source>
-        <translation type="unfinished"></translation>
+        <translation>Grupos</translation>
     </message>
     <message>
         <source>Here is enumerated the groups in Telegram where you can ask any questions (general,dev etc.) related to Sailfish OS.</source>
-        <translation type="unfinished"></translation>
+        <translation>Aquí se enumeran los grupos en Telegram donde se puede hacer cualquier pregunta (general, desarrollo, etc.) relacionada con Sailfish OS.</translation>
     </message>
     <message>
         <source>These groups live only for the community and for the community around Sailfish OS.</source>
-        <translation type="unfinished"></translation>
+        <translation>Estos grupos viven solo por la comunidad y para la comunidad  de Sailfish OS.</translation>
     </message>
     <message>
         <source>SailfishOS community of FanClub</source>
-        <translation type="unfinished"></translation>
+        <translation>Comunidad SailfishSO de FanClub</translation>
     </message>
     <message>
         <source>English speaking group</source>
-        <translation type="unfinished"></translation>
+        <translation>Grupo de habla inglés</translation>
     </message>
     <message>
         <source>SailfishOS community of Spain</source>
-        <translation type="unfinished"></translation>
+        <translation>Comunidad SailfishSO de España</translation>
     </message>
     <message>
         <source>Spanish speaking group</source>
-        <translation type="unfinished"></translation>
+        <translation>Grupo de habla español</translation>
     </message>
 </context>
 <context>
@@ -177,7 +177,7 @@
     </message>
     <message>
         <source>Show full screen images in channels</source>
-        <translation>Mostrar mensajes a pantalla completa en los canales</translation>
+        <translation>Mostrar mensajes completos en canales</translation>
     </message>
     <message>
         <source>Show voice message button</source>
@@ -185,18 +185,18 @@
     </message>
     <message>
         <source>Show current time below message input</source>
-        <translation>Mostrar la hora actual en mensaje</translation>
+        <translation>Mostrar la hora  en mensajes</translation>
     </message>
     <message>
         <source>Alternative send sticker icon</source>
-        <translation type="unfinished"></translation>
+        <translation>mostrar icono  de envío alternativo</translation>
     </message>
 </context>
 <context>
     <name>AreYouSureDialog</name>
     <message>
         <source>Is phone correct?</source>
-        <translation>¿Es correcto el teléfono?</translation>
+        <translation>¿Es correcto el número?</translation>
     </message>
     <message>
         <source>Connection status: </source>
@@ -235,19 +235,19 @@
     </message>
     <message>
         <source>Picture</source>
-        <translation type="unfinished"></translation>
+        <translation>imágenes</translation>
     </message>
     <message>
         <source>Files</source>
-        <translation type="unfinished"></translation>
+        <translation>Archivos</translation>
     </message>
     <message>
         <source>Documents</source>
-        <translation type="unfinished">Documentos</translation>
+        <translation>Documentos</translation>
     </message>
     <message>
         <source>Send a document</source>
-        <translation type="unfinished"></translation>
+        <translation>Enviar un documento</translation>
     </message>
 </context>
 <context>
@@ -284,11 +284,11 @@
     </message>
     <message>
         <source>Welcome to Depecher</source>
-        <translation type="unfinished"></translation>
+        <translation>Bienvenidos a Depecher</translation>
     </message>
     <message>
         <source>Country Code:</source>
-        <translation type="unfinished"></translation>
+        <translation>Código de país:</translation>
     </message>
 </context>
 <context>
@@ -306,7 +306,7 @@
     <name>ChannelInfoPage</name>
     <message>
         <source>Channel info</source>
-        <translation>Detalles del canal</translation>
+        <translation>Datos del canal</translation>
     </message>
 </context>
 <context>
@@ -437,7 +437,7 @@
     </message>
     <message>
         <source>Unmute</source>
-        <translation>Dejar de silenciar</translation>
+        <translation>Sonar</translation>
     </message>
     <message>
         <source>Mute</source>
@@ -457,11 +457,11 @@
     </message>
     <message>
         <source>Leave chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Salir de charla</translation>
     </message>
     <message>
         <source>Left chat</source>
-        <translation type="unfinished"></translation>
+        <translation>dejó la  charla</translation>
     </message>
 </context>
 <context>
@@ -475,7 +475,7 @@
     <name>GroupInfoPage</name>
     <message>
         <source>Group info</source>
-        <translation>Detalles de grupo</translation>
+        <translation>Datos del grupo</translation>
     </message>
     <message>
         <source>%1 members</source>
@@ -495,7 +495,7 @@
     </message>
     <message>
         <source>Search</source>
-        <translation type="unfinished">Buscar</translation>
+        <translation>Buscar</translation>
     </message>
 </context>
 <context>
@@ -510,11 +510,11 @@
     <message>
         <source>Join</source>
         <extracomment>Join to channel</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Aceptar</translation>
     </message>
     <message>
         <source>Join Channel: </source>
-        <translation type="unfinished"></translation>
+        <translation>Unirse al grupo: </translation>
     </message>
 </context>
 <context>
@@ -653,15 +653,15 @@
     </message>
     <message>
         <source>Remove %1 stickers</source>
-        <translation>Quitar %1 pegatinas</translation>
+        <translation>Quitar %1</translation>
     </message>
     <message>
         <source>Add %1 stickers</source>
-        <translation>Añadir %1 pegatinas</translation>
+        <translation>Añadir %1</translation>
     </message>
     <message>
         <source>Back</source>
-        <translation>Atrás</translation>
+        <translation>Cancelar</translation>
     </message>
 </context>
 <context>
@@ -805,11 +805,11 @@
     </message>
     <message>
         <source>Daemon</source>
-        <translation type="unfinished"></translation>
+        <translation>Demonio</translation>
     </message>
     <message>
         <source>About of</source>
-        <translation type="unfinished"></translation>
+        <translation>Acerca de</translation>
     </message>
 </context>
 <context>
@@ -1015,15 +1015,15 @@
     </message>
     <message>
         <source>Search</source>
-        <translation type="unfinished">Buscar</translation>
+        <translation>Buscar</translation>
     </message>
     <message>
         <source>Phone number</source>
-        <translation type="unfinished"></translation>
+        <translation>Número de teléfono</translation>
     </message>
     <message>
         <source>Description</source>
-        <translation type="unfinished"></translation>
+        <translation>Descripción</translation>
     </message>
 </context>
 <context>
@@ -1055,177 +1055,177 @@
     <name>tdlibQt::AuthenticationHandler</name>
     <message>
         <source>SMS</source>
-        <translation type="unfinished"></translation>
+        <translation>SMS</translation>
     </message>
     <message>
         <source>Call</source>
-        <translation type="unfinished"></translation>
+        <translation>Llamar</translation>
     </message>
     <message>
         <source>Flash call</source>
-        <translation type="unfinished"></translation>
+        <translation>Llamada rápida</translation>
     </message>
     <message>
         <source>Telegram</source>
-        <translation type="unfinished"></translation>
+        <translation>Telegram</translation>
     </message>
 </context>
 <context>
     <name>tdlibQt::ChatsModel</name>
     <message>
         <source> are typing</source>
-        <translation type="unfinished"></translation>
+        <translation> están escribiendo</translation>
     </message>
     <message>
         <source> is typing</source>
-        <translation type="unfinished"></translation>
+        <translation> está escribiendo</translation>
     </message>
 </context>
 <context>
     <name>tdlibQt::NotificationManager</name>
     <message>
         <source>new messages</source>
-        <translation type="unfinished"></translation>
+        <translation>nuevos mensajes</translation>
     </message>
     <message>
         <source>joined Telegram</source>
-        <translation type="unfinished"></translation>
+        <translation>se unió a Telegram</translation>
     </message>
     <message>
         <source>unknown chat</source>
-        <translation type="unfinished"></translation>
+        <translation>charla desconocida</translation>
     </message>
     <message>
         <source>unknown user</source>
-        <translation type="unfinished"></translation>
+        <translation>usuario desconocido</translation>
     </message>
 </context>
 <context>
     <name>tdlibQt::ParseObject</name>
     <message>
         <source>Photo</source>
-        <translation type="unfinished">Foto</translation>
+        <translation>image</translation>
     </message>
     <message>
         <source>Document</source>
-        <translation type="unfinished">Documento</translation>
+        <translation>Documento</translation>
     </message>
     <message>
         <source>Contact</source>
-        <translation type="unfinished">Contacto</translation>
+        <translation>Contacto</translation>
     </message>
     <message>
         <source>Sticker</source>
-        <translation type="unfinished">Pegatina</translation>
+        <translation>Pegatina</translation>
     </message>
     <message>
         <source>Text</source>
-        <translation type="unfinished"></translation>
+        <translation>Texto</translation>
     </message>
     <message>
         <source>Video</source>
-        <translation type="unfinished"></translation>
+        <translation>Vídeo</translation>
     </message>
     <message>
         <source>Audio</source>
-        <translation type="unfinished"></translation>
+        <translation>Audio</translation>
     </message>
     <message>
         <source>Video note</source>
-        <translation type="unfinished"></translation>
+        <translation>Nota de video</translation>
     </message>
     <message>
         <source>GIF</source>
-        <translation type="unfinished"></translation>
+        <translation>Imagen animada</translation>
     </message>
     <message>
         <source>Call</source>
-        <translation type="unfinished"></translation>
+        <translation>Llamar</translation>
     </message>
     <message>
         <source>Audio note</source>
-        <translation type="unfinished"></translation>
+        <translation>Nota de audio</translation>
     </message>
     <message>
         <source>Venue</source>
-        <translation type="unfinished"></translation>
+        <translation>Lugar</translation>
     </message>
     <message>
         <source>Unsupported</source>
-        <translation type="unfinished"></translation>
+        <translation>No soportado</translation>
     </message>
     <message>
         <source>Message content</source>
-        <translation type="unfinished"></translation>
+        <translation>Contenido de mensaje</translation>
     </message>
 </context>
 <context>
     <name>tdlibQt::StickerModel</name>
     <message>
         <source>Favorite</source>
-        <translation type="unfinished"></translation>
+        <translation>Favorito</translation>
     </message>
     <message>
         <source>Recent</source>
-        <translation type="unfinished"></translation>
+        <translation>Reciente</translation>
     </message>
 </context>
 <context>
     <name>tdlibQt::UsernameResolver</name>
     <message>
         <source>Username %1 not found</source>
-        <translation type="unfinished"></translation>
+        <translation>Nombre de usuario %1 no encontrado</translation>
     </message>
 </context>
 <context>
     <name>tdlibQt::UsersModel</name>
     <message>
         <source>Uknown chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Charla desconocida</translation>
     </message>
     <message>
         <source>Unknown user</source>
-        <translation type="unfinished"></translation>
+        <translation>Usuario desconocido</translation>
     </message>
     <message>
         <source>last seen within a month</source>
-        <translation type="unfinished"></translation>
+        <translation>hace un mes</translation>
     </message>
     <message>
         <source>last seen a week ago</source>
-        <translation type="unfinished"></translation>
+        <translation>hace una semana</translation>
     </message>
     <message>
         <source>last seen recently</source>
-        <translation type="unfinished"></translation>
+        <translation>recientemente</translation>
     </message>
     <message>
         <source>last seen</source>
-        <translation type="unfinished"></translation>
+        <translation>hace</translation>
     </message>
     <message>
         <source>last seen %1 days ago</source>
-        <translation type="unfinished"></translation>
+        <translation>hace %1 días</translation>
     </message>
     <message>
         <source>last seen %1 hours ago</source>
-        <translation type="unfinished"></translation>
+        <translation>hace  %1 horas</translation>
     </message>
     <message>
         <source>last seen %1 hour ago</source>
-        <translation type="unfinished"></translation>
+        <translation>hace  %1 hora</translation>
     </message>
     <message>
         <source>last seen %1 minutes ago</source>
-        <translation type="unfinished"></translation>
+        <translation>hace %1 minutos</translation>
     </message>
     <message>
         <source>last seen %1 minute ago</source>
-        <translation type="unfinished"></translation>
+        <translation>hace %1  minuto</translation>
     </message>
     <message>
         <source>online</source>
-        <translation type="unfinished"></translation>
+        <translation>en línea</translation>
     </message>
 </context>
 <context>
