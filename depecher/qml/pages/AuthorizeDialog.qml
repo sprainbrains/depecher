@@ -30,7 +30,7 @@ Dialog {
             spacing: Theme.paddingLarge
             width: authorizeDialog.width
 
-            PageHeader { title: qsTr("Welcome") }
+            PageHeader { title: qsTr("Welcome to Depecher") }
 
             Label{
                 anchors { left: parent.left; right: parent.right; leftMargin: Theme.paddingMedium; rightMargin: Theme.paddingMedium }
@@ -54,7 +54,7 @@ Dialog {
             {
                 id: cbxcountrycodes
                 width: parent.width
-                label: qsTr("Country Code")
+                label: qsTr("Country Code:")
 
                 menu: ContextMenu {
                     Repeater {

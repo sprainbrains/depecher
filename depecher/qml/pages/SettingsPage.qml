@@ -154,7 +154,7 @@ Page {
                 width: parent.width
                 height: Theme.itemSizeSmall
                 Label {
-                    text: qsTr("Daemon settings")
+                    text: qsTr("Daemon")
                     anchors.verticalCenter: parent.verticalCenter
                     x:Theme.horizontalPageMargin
                 }
@@ -188,7 +188,7 @@ Page {
                 Column {
                     width: parent.width
                     Label{
-                        text:qsTr("About program")
+                        text:qsTr("About of")
                         x: Theme.horizontalPageMargin
                         color: parent.pressed ? Theme.highlightColor : Theme.primaryColor
                     }

@@ -50,7 +50,7 @@ Page {
                       qsTr("- View photos") + "<br>" +
                       qsTr("- View animations (gifs)") + "<br>" +
                       qsTr("- View/Send stickers") + "<br>" +
-                      qsTr("- Manage stickers from chat") + "<br>" +
+                      qsTr("- Manage. stickers from chat") + "<br>" +
                       qsTr("- Uploading/Downloading photos/docs") + "<br>" +
                       qsTr("- Receive notifications") + "<br>" +
                       qsTr("- 2FA authorization enabled") + "<br><br>" +
@@ -100,7 +100,7 @@ Page {
                 onClicked: Qt.openUrlExternally("https://github.com/blacksailer/depecher")
             }
             SectionHeader{
-                text: qsTr("Groups in Telegram")
+                text: qsTr("Groups")
             }
 
             Label {
@@ -109,8 +109,8 @@ Page {
                 x: Theme.horizontalPageMargin
                 wrapMode: Text.WordWrap
                 font.pixelSize: Theme.fontSizeSmall
-                text: qsTr("Here enumerated groups where you can ask any questions (general,dev etc.) related to Sailfish OS.") + "<br>" +
-                      qsTr("This groups lives only because of community and by community around Sailfish OS.") +"</p>"
+                text: qsTr("Here is enumerated the groups in Telegram where you can ask any questions (general,dev etc.) related to Sailfish OS.") + "<br>" +
+                      qsTr("These groups live only for the community and for the community around Sailfish OS.") +"</p>"
             }
             Label {
                 width: parent.width - 2 * x
@@ -131,19 +131,57 @@ Page {
                     Image {
                         width: parent.height
                         height: width
+                        source: "qrc:/qml/assets/icons/sailfis_es.jpg"
+                    }
+                    Column {
+                        width: parent.width - parent.height - parent.spacing
+                        Label{
+                            width: parent.width
+                            text:qsTr("SailfishOS community of Spain")
+                            truncationMode: TruncationMode.Fade
+                            color: parent.pressed ? Theme.highlightColor : Theme.primaryColor
+                        }
+                        Label{
+                            width: parent.width
+                            text:qsTr("Spanish speaking group")
+                            truncationMode: TruncationMode.Fade
+                            font.pixelSize: Theme.fontSizeSmall
+                            color: parent.pressed ? Theme.secondaryHighlightColor : Theme.secondaryColor
+                        }
+                    }
+                }
+                RemorsePopup {
+                    id:joinPopup
+                }
+                onClicked: joinPopup.execute(qsTr("Joining chat"), function() {
+                    c_telegramWrapper.joinChatByInviteLink("https://t.me/sailfish_es","ES-Sailfish")
+                } )
+
+            }
+            BackgroundItem {
+                width: parent.width
+                height: Theme.itemSizeMedium
+                Row{
+                    width:parent.width - 2 * x
+                    height: parent.height
+                    x:Theme.horizontalPageMargin
+                    spacing:Theme.paddingMedium
+                    Image {
+                        width: parent.height
+                        height: width
                         source: "qrc:/qml/assets/icons/en_sailfish.jpg"
                     }
                     Column {
                         width: parent.width - parent.height - parent.spacing
                         Label{
                             width: parent.width
-                            text:"Sailfish OS Fan Club"
+                            text:qsTr("SailfishOS community of FanClub")
                             truncationMode: TruncationMode.Fade
                             color: parent.pressed ? Theme.highlightColor : Theme.primaryColor
                         }
                         Label{
                             width: parent.width
-                            text:qsTr("English speaking community")
+                            text:qsTr("English speaking group")
                             truncationMode: TruncationMode.Fade
                             font.pixelSize: Theme.fontSizeSmall
                             color: parent.pressed ? Theme.secondaryHighlightColor : Theme.secondaryColor
@@ -182,13 +220,13 @@ Page {
                         width: parent.width - parent.height - parent.spacing
                         Label{
                             width: parent.width
-                            text:"Jolla Community Italian Club"
+                            text:qsTr("SailfishOS Community of Italian")
                             truncationMode: TruncationMode.Fade
                             color: parent.pressed ? Theme.highlightColor : Theme.primaryColor
                         }
                         Label{
                             width: parent.width
-                            text:qsTr("Italian speaking community")
+                            text:qsTr("Italian speaking group")
                             truncationMode: TruncationMode.Fade
                             font.pixelSize: Theme.fontSizeSmall
                             color: parent.pressed ? Theme.secondaryHighlightColor : Theme.secondaryColor

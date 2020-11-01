@@ -183,6 +183,12 @@ Page {
                                 text:userInfo.phoneNumber
                                 anchors.verticalCenter: parent.verticalCenter
                             }
+                            Label {
+                                    font.pixelSize: Theme.fontSizeTiny
+                                    color:Theme.secondaryColor
+                                    text: qsTr("Phone number")
+                                    width:parent.width
+                                }
                         }
                     }
                     BackgroundItem {
@@ -607,7 +613,7 @@ Page {
                                 Label {
                                     font.pixelSize: Theme.fontSizeTiny
                                     color:Theme.secondaryColor
-                                    text: "Description"
+                                    text: qsTr("Description")
                                     width:parent.width
                                 }
                             }

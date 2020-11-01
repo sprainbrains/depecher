@@ -23,8 +23,11 @@ Item {
         width: parent.width
         label: qsTr("Type")
         menu: ContextMenu {
-            MenuItem { text: qsTr("Photo") } //Порядок жестко определен. В родителе перечесление
-               MenuItem { text: qsTr("Document") }
+            MenuItem { text: qsTr("Picture") } //Порядок жестко определен. В родителе перечесление
+         // MenuItem { text: qsTr("Document") }
+         // MenuItem { text: qsTr("Music") }
+         // MenuItem { text: qsTr("Video") }
+            MenuItem { text: qsTr("Files") }
         }
         onCurrentIndexChanged:
         {
@@ -49,11 +52,11 @@ Item {
             subtitle: qsTr("Go to Home folder")
         }
 
-        ListElement {
-            iconPath: "image://theme/icon-m-file-folder"
-            title: qsTr("Documents")
-            subtitle: qsTr("Send a document")
-        }
+      // ListElement {
+      //    iconPath: "image://theme/icon-m-file-folder"
+      //  title: qsTr("Documents")
+      //subtitle: qsTr("Send a document")
+      //  }
     }
 
     Component {
