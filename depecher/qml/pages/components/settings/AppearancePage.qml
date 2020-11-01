@@ -323,6 +323,18 @@ Page {
                 }
             }
 
+            TextSwitch {
+                width: parent.width -2*x
+                x:Theme.horizontalPageMargin
+                checked: settingsUI.alternativeSendStickerIcon
+                automaticCheck: false
+                text: qsTr("Alternative send sticker icon")
+                onClicked: {
+                    settingsUI.alternativeSendStickerIcon = !checked
+                    settingsUI.sync()
+                }
+            }
+
             ExpandingSectionGroup {
                 width: parent.width
                 ExpandingSection {

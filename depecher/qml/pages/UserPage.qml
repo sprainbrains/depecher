@@ -77,7 +77,6 @@ Page {
 
             UserInfo {
                 id:userInfo
-
             }
             Connections {
                 target: userInfo
@@ -178,18 +177,22 @@ Page {
                                 width: Theme.paddingLarge
                                 height: Theme.paddingLarge
                             }
-                            Label {
+                            Column {
                                 width: parent.width - iconPhone.width - Theme.paddingLarge
-                                text:userInfo.phoneNumber
                                 anchors.verticalCenter: parent.verticalCenter
-                            }
-                            Label {
+
+                                Label {
+                                    text: userInfo.phoneNumber
+                                }
+                                Label {
                                     font.pixelSize: Theme.fontSizeTiny
                                     color:Theme.secondaryColor
                                     text: qsTr("Phone number")
-                                    width:parent.width
+                                    width: parent.width
                                 }
+                            }
                         }
+                        onClicked: Qt.openUrlExternally("tel:" + userInfo.phoneNumber)
                     }
                     BackgroundItem {
                         width: parent.width

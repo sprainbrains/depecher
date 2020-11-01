@@ -108,7 +108,8 @@ void TdlibJsonWrapper::startListen()
             this, &TdlibJsonWrapper::updateUserReceived);
     connect(parseObject, &ParseObject::chatReceived,
     [this](const QJsonObject & chat) {
-        if (chat.contains("@extra")) {
+        // TODO handle it in joinManager
+        /*if (chat.contains("@extra")) {
             if (chat["@extra"].toString() == "EnSailfish") {
                 auto chatPtr = ParseObject::parseChat(chat);
                 QVariantMap resultType;
@@ -136,7 +137,7 @@ void TdlibJsonWrapper::startListen()
                                    QString::number(chatPtr->last_read_outbox_message_id_),
                                    QString::number(chatPtr->last_message_->id_));
             }
-        }
+        }*/
         emit chatReceived(chat);
     });
     connect(parseObject, &ParseObject::chatInviteLinkInfoReceived,

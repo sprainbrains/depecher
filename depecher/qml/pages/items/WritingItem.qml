@@ -285,7 +285,7 @@ Drawer {
                 }
                 IconButton {
                     id:stickerButton
-                    icon.source: "qrc:/qml/assets/icons/icon-m-sticker.png"
+                    icon.source: settingsUI.alternativeSendStickerIcon ? "qrc:/qml/assets/icons/icon-m-sticker.png" : "image://theme/icon-m-other"
                     highlighted: false
                     onClicked: {
                         if(!attachDrawer.opened)

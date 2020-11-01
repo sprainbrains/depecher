@@ -1,8 +1,9 @@
-import QtQuick 2.0
+import QtQuick 2.6
 import Sailfish.Silica 1.0
 import Nemo.Notifications 1.0
 import depecherUtils 1.0
 import "components"
+
 Page {
 
     Component.onCompleted:  {
@@ -37,8 +38,7 @@ Page {
             PageHeader{
                 title: qsTr("About")
             }
-            Label
-            {
+            Label {
                 width: parent.width - 2 * x
                 x : Theme.horizontalPageMargin
                 wrapMode: Text.WordWrap
@@ -50,7 +50,7 @@ Page {
                       qsTr("- View photos") + "<br>" +
                       qsTr("- View animations (gifs)") + "<br>" +
                       qsTr("- View/Send stickers") + "<br>" +
-                      qsTr("- Manage. stickers from chat") + "<br>" +
+                      qsTr("- Manage stickers from chat") + "<br>" +
                       qsTr("- Uploading/Downloading photos/docs") + "<br>" +
                       qsTr("- Receive notifications") + "<br>" +
                       qsTr("- 2FA authorization enabled") + "<br><br>" +
@@ -60,14 +60,12 @@ Page {
                       "- @icoderus" + "<br>" +
                       "- @aa13q"
             }
-            Label
-            {
+            Label {
                 width: parent.width - 2 * x
                 x : Theme.horizontalPageMargin
                 wrapMode: Text.WordWrap
                 font.pixelSize: Theme.fontSizeSmall
                 text: qsTr("Version") + " - " + Qt.application.version
-
             }
             SectionHeader{
                 text: qsTr("Sources")
@@ -112,52 +110,7 @@ Page {
                 text: qsTr("Here is enumerated the groups in Telegram where you can ask any questions (general,dev etc.) related to Sailfish OS.") + "<br>" +
                       qsTr("These groups live only for the community and for the community around Sailfish OS.") +"</p>"
             }
-            Label {
-                width: parent.width - 2 * x
-                x: Theme.horizontalPageMargin
-                wrapMode: Text.WordWrap
-                color: Theme.secondaryColor
-                font.pixelSize: Theme.fontSizeTiny
-                text: qsTr("Be aware, after clicking you will join chat.")
-            }
-            BackgroundItem {
-                width: parent.width
-                height: Theme.itemSizeMedium
-                Row{
-                    width:parent.width - 2 * x
-                    height: parent.height
-                    x:Theme.horizontalPageMargin
-                    spacing:Theme.paddingMedium
-                    Image {
-                        width: parent.height
-                        height: width
-                        source: "qrc:/qml/assets/icons/sailfis_es.jpg"
-                    }
-                    Column {
-                        width: parent.width - parent.height - parent.spacing
-                        Label{
-                            width: parent.width
-                            text:qsTr("SailfishOS community of Spain")
-                            truncationMode: TruncationMode.Fade
-                            color: parent.pressed ? Theme.highlightColor : Theme.primaryColor
-                        }
-                        Label{
-                            width: parent.width
-                            text:qsTr("Spanish speaking group")
-                            truncationMode: TruncationMode.Fade
-                            font.pixelSize: Theme.fontSizeSmall
-                            color: parent.pressed ? Theme.secondaryHighlightColor : Theme.secondaryColor
-                        }
-                    }
-                }
-                RemorsePopup {
-                    id:joinPopup
-                }
-                onClicked: joinPopup.execute(qsTr("Joining chat"), function() {
-                    c_telegramWrapper.joinChatByInviteLink("https://t.me/sailfish_es","ES-Sailfish")
-                } )
 
-            }
             BackgroundItem {
                 width: parent.width
                 height: Theme.itemSizeMedium
@@ -173,36 +126,34 @@ Page {
                     }
                     Column {
                         width: parent.width - parent.height - parent.spacing
+                        anchors.verticalCenter: parent.verticalCenter
                         Label{
                             width: parent.width
                             text:qsTr("SailfishOS community of FanClub")
                             truncationMode: TruncationMode.Fade
-                            color: parent.pressed ? Theme.highlightColor : Theme.primaryColor
+                            color: highlighted ? Theme.highlightColor : Theme.primaryColor
                         }
                         Label{
                             width: parent.width
                             text:qsTr("English speaking group")
                             truncationMode: TruncationMode.Fade
                             font.pixelSize: Theme.fontSizeSmall
-                            color: parent.pressed ? Theme.secondaryHighlightColor : Theme.secondaryColor
+                            color: highlighted ? Theme.secondaryHighlightColor : Theme.secondaryColor
                         }
                     }
                 }
-                RemorsePopup {
-                    id:joinPopup
-                }
-                onClicked: joinPopup.execute(qsTr("Joining chat"), function() {
+
+                onClicked: {
                     var url = DNSLookup.inviteLink
-                    if(url.indexOf("t.me/joinchat") != -1)
-                        c_telegramWrapper.joinChatByInviteLink(url,"EnSailfish")
-                    else {
+                    if (url.indexOf("t.me/joinchat") !== -1) {
+                        c_joinManager.openUrl(url)
+                    } else {
                         notificationProxy.previewBody = qsTr("Error to get invite link")
                         notificationProxy.publish()
                     }
-
-                } )
-
+                }
             }
+
             BackgroundItem {
                 width: parent.width
                 height: Theme.itemSizeMedium
@@ -214,31 +165,29 @@ Page {
                     Image {
                         width: parent.height
                         height: width
-                        source: "qrc:/qml/assets/icons/it_sailfish.jpg"
+                        source: "qrc:/qml/assets/icons/sailfis_es.jpg"
                     }
                     Column {
                         width: parent.width - parent.height - parent.spacing
+                        anchors.verticalCenter: parent.verticalCenter
                         Label{
                             width: parent.width
-                            text:qsTr("SailfishOS Community of Italian")
+                            text:qsTr("SailfishOS community of Spain")
                             truncationMode: TruncationMode.Fade
-                            color: parent.pressed ? Theme.highlightColor : Theme.primaryColor
+                            color: highlighted ? Theme.highlightColor : Theme.primaryColor
                         }
                         Label{
                             width: parent.width
-                            text:qsTr("Italian speaking group")
+                            text:qsTr("Spanish speaking group")
                             truncationMode: TruncationMode.Fade
                             font.pixelSize: Theme.fontSizeSmall
-                            color: parent.pressed ? Theme.secondaryHighlightColor : Theme.secondaryColor
+                            color: highlighted ? Theme.secondaryHighlightColor : Theme.secondaryColor
                         }
                     }
                 }
-                onClicked: joinPopup.execute(qsTr("Joining chat"), function() {
-
-                        c_telegramWrapper.joinChat(parseFloat("-1001105250707"),"EnSailfish")
-                } )
-
+                onClicked: c_joinManager.openUrl("https://t.me/sailfish_es")
             }
+
             SectionHeader{
                 text: qsTr("Donations")
             }

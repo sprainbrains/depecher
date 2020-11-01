@@ -52,11 +52,11 @@ Item {
             subtitle: qsTr("Go to Home folder")
         }
 
-      // ListElement {
-      //    iconPath: "image://theme/icon-m-file-folder"
-      //  title: qsTr("Documents")
-      //subtitle: qsTr("Send a document")
-      //  }
+        ListElement {
+            iconPath: "image://theme/icon-m-document"
+            title: qsTr("Documents")
+            subtitle: qsTr("Send a document")
+        }
     }
 
     Component {

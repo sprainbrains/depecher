@@ -18,7 +18,9 @@ Item {
     ConfigurationGroup {
         id: settingsUI
         path: settingsPath + "ui"
-        property bool hideNameplate : false
+        property bool hideNameplate: false
+        // remove when icon will have proper sizes
+        property bool alternativeSendStickerIcon: false
 
         ConfigurationGroup {
             id: settingsUIMessage
