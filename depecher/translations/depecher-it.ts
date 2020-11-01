@@ -29,20 +29,8 @@
         <translation>Sorgenti</translation>
     </message>
     <message>
-        <source>Groups in Telegram</source>
-        <translation>Gruppi in Telegram</translation>
-    </message>
-    <message>
-        <source>English speaking community</source>
-        <translation>Community in inglese</translation>
-    </message>
-    <message>
         <source>Error %1</source>
         <translation>Errore %1</translation>
-    </message>
-    <message>
-        <source>Joining chat</source>
-        <translation>Unisciti</translation>
     </message>
     <message>
         <source>Error to get invite link</source>
@@ -97,23 +85,35 @@
         <translation>Grazie a:</translation>
     </message>
     <message>
-        <source>Here enumerated groups where you can ask any questions (general,dev etc.) related to Sailfish OS.</source>
-        <translation>Qui i gruppi nei quali puoi chiedere qualsiasi cosa relativa a Sailfish OS.</translation>
-    </message>
-    <message>
-        <source>This groups lives only because of community and by community around Sailfish OS.</source>
-        <translation>Questo gruppo vive soltanto e grazie alla community di Sailfish OS.</translation>
-    </message>
-    <message>
         <source>Version</source>
         <translation>Versione</translation>
     </message>
     <message>
-        <source>Be aware, after clicking you will join chat.</source>
+        <source>Groups</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Italian speaking community</source>
+        <source>Here is enumerated the groups in Telegram where you can ask any questions (general,dev etc.) related to Sailfish OS.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>These groups live only for the community and for the community around Sailfish OS.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SailfishOS community of FanClub</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>English speaking group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SailfishOS community of Spain</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Spanish speaking group</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -187,6 +187,10 @@
         <source>Show current time below message input</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Alternative send sticker icon</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>AreYouSureDialog</name>
@@ -206,10 +210,6 @@
 <context>
     <name>AttachComponent</name>
     <message>
-        <source>Photo</source>
-        <translation>Immagine</translation>
-    </message>
-    <message>
         <source>Cancel</source>
         <translation>Annulla</translation>
     </message>
@@ -222,10 +222,6 @@
         <translation>Tipo</translation>
     </message>
     <message>
-        <source>Document</source>
-        <translation>Documento</translation>
-    </message>
-    <message>
         <source>Home</source>
         <translation>Home</translation>
     </message>
@@ -234,16 +230,24 @@
         <translation>Vai alla cartella home</translation>
     </message>
     <message>
+        <source>Files to send</source>
+        <translation>File da inviare</translation>
+    </message>
+    <message>
+        <source>Picture</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Documents</source>
-        <translation>Documenti</translation>
+        <translation type="unfinished">Documenti</translation>
     </message>
     <message>
         <source>Send a document</source>
-        <translation>Invia un documento</translation>
-    </message>
-    <message>
-        <source>Files to send</source>
-        <translation>File da inviare</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -267,10 +271,6 @@
         <translation>Inserisci il tuo numero di telefono e premi &quot;Successivo&quot;</translation>
     </message>
     <message>
-        <source>Country Code</source>
-        <translation>Codice paese</translation>
-    </message>
-    <message>
         <source>Phone Number</source>
         <translation>Numero di telefono</translation>
     </message>
@@ -279,12 +279,16 @@
         <translation>Impostazioni</translation>
     </message>
     <message>
-        <source>Welcome</source>
-        <translation>Benvenuto</translation>
-    </message>
-    <message>
         <source>Attention: If Telegram is blocked in your country, first setup proxy server in settings via PulleyMenu</source>
         <translation>Attenzione: se Telegram è bloccato nel tuo paese, imposta prima il server proxy dalle impostazioni nel pulley menu</translation>
+    </message>
+    <message>
+        <source>Welcome to Depecher</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Country Code:</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -487,6 +491,10 @@
     </message>
     <message>
         <source>Click to enable notifications</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -776,10 +784,6 @@
         <translation>Proxy pronto</translation>
     </message>
     <message>
-        <source>About program</source>
-        <translation>Info app</translation>
-    </message>
-    <message>
         <source>Credits and stuff</source>
         <translation>Crediti</translation>
     </message>
@@ -792,16 +796,20 @@
         <translation>Comportamento</translation>
     </message>
     <message>
-        <source>Daemon settings</source>
-        <translation>Impostazioni demone</translation>
-    </message>
-    <message>
         <source>Logging out</source>
         <translation>Uscita</translation>
     </message>
     <message>
         <source>Proxy</source>
         <translation>Proxy</translation>
+    </message>
+    <message>
+        <source>Daemon</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>About of</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1009,6 +1017,14 @@
         <source>Search</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Phone number</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>VideoView</name>
@@ -1051,6 +1067,17 @@
     </message>
     <message>
         <source>Telegram</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>tdlibQt::ChatsModel</name>
+    <message>
+        <source> are typing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> is typing</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

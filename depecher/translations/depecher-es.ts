@@ -29,20 +29,8 @@
         <translation>Fuentes</translation>
     </message>
     <message>
-        <source>Groups in Telegram</source>
-        <translation>Grupos en Telegram</translation>
-    </message>
-    <message>
-        <source>English speaking community</source>
-        <translation>Comunidad de habla inglesa</translation>
-    </message>
-    <message>
         <source>Error %1</source>
         <translation>Error %1</translation>
-    </message>
-    <message>
-        <source>Joining chat</source>
-        <translation>Unirse a charla</translation>
     </message>
     <message>
         <source>Error to get invite link</source>
@@ -97,24 +85,36 @@
         <translation>Gracias a:</translation>
     </message>
     <message>
-        <source>Here enumerated groups where you can ask any questions (general,dev etc.) related to Sailfish OS.</source>
-        <translation>Aquí se enumeran los grupos donde puedes preguntar cualquier duda (general, dev, etc.) sobre Sailfish SO.</translation>
-    </message>
-    <message>
-        <source>This groups lives only because of community and by community around Sailfish OS.</source>
-        <translation>Estos grupos sólo viven por y para la comunidad que rodea a Sailfish SO.</translation>
-    </message>
-    <message>
         <source>Version</source>
         <translation>Versión</translation>
     </message>
     <message>
-        <source>Be aware, after clicking you will join chat.</source>
-        <translation>Ten en cuenta que al pulsar te unirás a la charla.</translation>
+        <source>Groups</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Italian speaking community</source>
-        <translation>Comunidad de habla italiana</translation>
+        <source>Here is enumerated the groups in Telegram where you can ask any questions (general,dev etc.) related to Sailfish OS.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>These groups live only for the community and for the community around Sailfish OS.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SailfishOS community of FanClub</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>English speaking group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SailfishOS community of Spain</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Spanish speaking group</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -187,6 +187,10 @@
         <source>Show current time below message input</source>
         <translation>Mostrar la hora actual en mensaje</translation>
     </message>
+    <message>
+        <source>Alternative send sticker icon</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>AreYouSureDialog</name>
@@ -206,10 +210,6 @@
 <context>
     <name>AttachComponent</name>
     <message>
-        <source>Photo</source>
-        <translation>Foto</translation>
-    </message>
-    <message>
         <source>Cancel</source>
         <translation>Cancelar</translation>
     </message>
@@ -222,10 +222,6 @@
         <translation>Tipo</translation>
     </message>
     <message>
-        <source>Document</source>
-        <translation>Documento</translation>
-    </message>
-    <message>
         <source>Home</source>
         <translation>principal</translation>
     </message>
@@ -234,16 +230,24 @@
         <translation>Ir a carpeta principal</translation>
     </message>
     <message>
+        <source>Files to send</source>
+        <translation>Archivos para enviar</translation>
+    </message>
+    <message>
+        <source>Picture</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Documents</source>
-        <translation>Documentos</translation>
+        <translation type="unfinished">Documentos</translation>
     </message>
     <message>
         <source>Send a document</source>
-        <translation>Enviar un documento</translation>
-    </message>
-    <message>
-        <source>Files to send</source>
-        <translation>Archivos para enviar</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -267,10 +271,6 @@
         <translation>Introducir el número de teléfono y presionar &apos;Siguiente&apos;</translation>
     </message>
     <message>
-        <source>Country Code</source>
-        <translation>Código de país</translation>
-    </message>
-    <message>
         <source>Phone Number</source>
         <translation>Número de teléfono</translation>
     </message>
@@ -279,12 +279,16 @@
         <translation>Ajustes</translation>
     </message>
     <message>
-        <source>Welcome</source>
-        <translation>Bienvenido a Depecher</translation>
-    </message>
-    <message>
         <source>Attention: If Telegram is blocked in your country, first setup proxy server in settings via PulleyMenu</source>
         <translation>Atención: Si Telegram está bloqueado en su país, primero configurar el servidor proxy en ajustes desde la polea de opciones</translation>
+    </message>
+    <message>
+        <source>Welcome to Depecher</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Country Code:</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -488,6 +492,10 @@
     <message>
         <source>Click to enable notifications</source>
         <translation>Pulsa para habilitar las notificaciones</translation>
+    </message>
+    <message>
+        <source>Search</source>
+        <translation type="unfinished">Buscar</translation>
     </message>
 </context>
 <context>
@@ -776,10 +784,6 @@
         <translation>El Proxy está listo</translation>
     </message>
     <message>
-        <source>About program</source>
-        <translation>Acerca de Depecher</translation>
-    </message>
-    <message>
         <source>Credits and stuff</source>
         <translation>Créditos y demás</translation>
     </message>
@@ -792,16 +796,20 @@
         <translation>Funcionamiento</translation>
     </message>
     <message>
-        <source>Daemon settings</source>
-        <translation>Ajustes de demonio</translation>
-    </message>
-    <message>
         <source>Logging out</source>
         <translation>Cerrar sesión</translation>
     </message>
     <message>
         <source>Proxy</source>
         <translation>Proxy</translation>
+    </message>
+    <message>
+        <source>Daemon</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>About of</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1009,6 +1017,14 @@
         <source>Search</source>
         <translation type="unfinished">Buscar</translation>
     </message>
+    <message>
+        <source>Phone number</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>VideoView</name>
@@ -1051,6 +1067,17 @@
     </message>
     <message>
         <source>Telegram</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>tdlibQt::ChatsModel</name>
+    <message>
+        <source> are typing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> is typing</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

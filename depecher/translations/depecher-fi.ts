@@ -29,20 +29,8 @@
         <translation>Lähteet</translation>
     </message>
     <message>
-        <source>Groups in Telegram</source>
-        <translation>Telegram ryhmät</translation>
-    </message>
-    <message>
-        <source>English speaking community</source>
-        <translation>Englanninkielinen ryhmä</translation>
-    </message>
-    <message>
         <source>Error %1</source>
         <translation>Virhe %1</translation>
-    </message>
-    <message>
-        <source>Joining chat</source>
-        <translation>Liitytään keskusteluun</translation>
     </message>
     <message>
         <source>Error to get invite link</source>
@@ -97,23 +85,35 @@
         <translation>Kiitokset:</translation>
     </message>
     <message>
-        <source>Here enumerated groups where you can ask any questions (general,dev etc.) related to Sailfish OS.</source>
-        <translation>Tässä on lueteltu ryhmiä joissa voit kysyä mitä tahansa (yleistä,devaus jne.) kysymyksiä liittyen Sailfish OS:ään.</translation>
-    </message>
-    <message>
-        <source>This groups lives only because of community and by community around Sailfish OS.</source>
-        <translation>Tämä ryhmä on olemassa vain yhteisön takia ja Sailfish OS yhteisön ansiosta.</translation>
-    </message>
-    <message>
         <source>Version</source>
         <translation>Versio</translation>
     </message>
     <message>
-        <source>Be aware, after clicking you will join chat.</source>
+        <source>Groups</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Italian speaking community</source>
+        <source>Here is enumerated the groups in Telegram where you can ask any questions (general,dev etc.) related to Sailfish OS.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>These groups live only for the community and for the community around Sailfish OS.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SailfishOS community of FanClub</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>English speaking group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SailfishOS community of Spain</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Spanish speaking group</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -187,6 +187,10 @@
         <source>Show current time below message input</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Alternative send sticker icon</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>AreYouSureDialog</name>
@@ -206,10 +210,6 @@
 <context>
     <name>AttachComponent</name>
     <message>
-        <source>Photo</source>
-        <translation>Kuva</translation>
-    </message>
-    <message>
         <source>Cancel</source>
         <translation>Peruuta</translation>
     </message>
@@ -222,10 +222,6 @@
         <translation>Tyyppi</translation>
     </message>
     <message>
-        <source>Document</source>
-        <translation>Dokumentti</translation>
-    </message>
-    <message>
         <source>Home</source>
         <translation>Koti</translation>
     </message>
@@ -234,16 +230,24 @@
         <translation>Mene kotihakemistoon</translation>
     </message>
     <message>
+        <source>Files to send</source>
+        <translation>Lähetettävät tiedostot</translation>
+    </message>
+    <message>
+        <source>Picture</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Documents</source>
-        <translation>Dokumentit</translation>
+        <translation type="unfinished">Dokumentit</translation>
     </message>
     <message>
         <source>Send a document</source>
-        <translation>Lähetä dokumentti</translation>
-    </message>
-    <message>
-        <source>Files to send</source>
-        <translation>Lähetettävät tiedostot</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -267,10 +271,6 @@
         <translation>Syötä puhelinnumerosi ja paina &apos;Seuraava&apos;</translation>
     </message>
     <message>
-        <source>Country Code</source>
-        <translation>Maakoodi</translation>
-    </message>
-    <message>
         <source>Phone Number</source>
         <translation>Puhelinnumero</translation>
     </message>
@@ -279,12 +279,16 @@
         <translation>Asetukset</translation>
     </message>
     <message>
-        <source>Welcome</source>
-        <translation>Tervetuloa</translation>
-    </message>
-    <message>
         <source>Attention: If Telegram is blocked in your country, first setup proxy server in settings via PulleyMenu</source>
         <translation>Huom: Jos Telegram on blokattu maassasi, aseta ensin proxypalvelin asetuksista vetovalikosta</translation>
+    </message>
+    <message>
+        <source>Welcome to Depecher</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Country Code:</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -487,6 +491,10 @@
     </message>
     <message>
         <source>Click to enable notifications</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -779,10 +787,6 @@
         <translation>Välityspalvelin on valmis</translation>
     </message>
     <message>
-        <source>About program</source>
-        <translation>Tietoa ohjelmasta</translation>
-    </message>
-    <message>
         <source>Credits and stuff</source>
         <translation>Ansiot ja muut</translation>
     </message>
@@ -795,16 +799,20 @@
         <translation>Käyttäytyminen</translation>
     </message>
     <message>
-        <source>Daemon settings</source>
-        <translation>Tausta-ajon asetukset</translation>
-    </message>
-    <message>
         <source>Logging out</source>
         <translation>Kirjaudutaan ulos</translation>
     </message>
     <message>
         <source>Proxy</source>
         <translation>Välityspalvelin</translation>
+    </message>
+    <message>
+        <source>Daemon</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>About of</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1012,6 +1020,14 @@
         <source>Search</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Phone number</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>VideoView</name>
@@ -1054,6 +1070,17 @@
     </message>
     <message>
         <source>Telegram</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>tdlibQt::ChatsModel</name>
+    <message>
+        <source> are typing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> is typing</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

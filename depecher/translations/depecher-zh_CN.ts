@@ -29,20 +29,8 @@
         <translation>源代码</translation>
     </message>
     <message>
-        <source>Groups in Telegram</source>
-        <translation>在电报中的群组</translation>
-    </message>
-    <message>
-        <source>English speaking community</source>
-        <translation>讲英语的社区</translation>
-    </message>
-    <message>
         <source>Error %1</source>
         <translation>错误 %1</translation>
-    </message>
-    <message>
-        <source>Joining chat</source>
-        <translation>加入讨论中</translation>
     </message>
     <message>
         <source>Error to get invite link</source>
@@ -97,24 +85,36 @@
         <translation>感谢：</translation>
     </message>
     <message>
-        <source>Here enumerated groups where you can ask any questions (general,dev etc.) related to Sailfish OS.</source>
-        <translation>这里列举了的群组，您可以在这里询问与Sailfish OS相关的任何问题（一般，开发等）。</translation>
-    </message>
-    <message>
-        <source>This groups lives only because of community and by community around Sailfish OS.</source>
-        <translation>这个群组生于社区，服务于Sailfish OS相关的社区。</translation>
-    </message>
-    <message>
         <source>Version</source>
         <translation>版本</translation>
     </message>
     <message>
-        <source>Be aware, after clicking you will join chat.</source>
-        <translation>注意，点击之后你将加入讨论组</translation>
+        <source>Groups</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Italian speaking community</source>
-        <translation>意大利语系社区</translation>
+        <source>Here is enumerated the groups in Telegram where you can ask any questions (general,dev etc.) related to Sailfish OS.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>These groups live only for the community and for the community around Sailfish OS.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SailfishOS community of FanClub</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>English speaking group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SailfishOS community of Spain</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Spanish speaking group</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -187,6 +187,10 @@
         <source>Show current time below message input</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Alternative send sticker icon</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>AreYouSureDialog</name>
@@ -206,10 +210,6 @@
 <context>
     <name>AttachComponent</name>
     <message>
-        <source>Photo</source>
-        <translation>照片</translation>
-    </message>
-    <message>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
@@ -222,10 +222,6 @@
         <translation>类型</translation>
     </message>
     <message>
-        <source>Document</source>
-        <translation>文档</translation>
-    </message>
-    <message>
         <source>Home</source>
         <translation>主页</translation>
     </message>
@@ -234,16 +230,24 @@
         <translation>回到主文件夹</translation>
     </message>
     <message>
+        <source>Files to send</source>
+        <translation>要发送的文件</translation>
+    </message>
+    <message>
+        <source>Picture</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Documents</source>
-        <translation>文档</translation>
+        <translation type="unfinished">文档</translation>
     </message>
     <message>
         <source>Send a document</source>
-        <translation>发送文档</translation>
-    </message>
-    <message>
-        <source>Files to send</source>
-        <translation>要发送的文件</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -267,10 +271,6 @@
         <translation>输入电话号码并按&apos;下一步&apos;</translation>
     </message>
     <message>
-        <source>Country Code</source>
-        <translation>国家代码</translation>
-    </message>
-    <message>
         <source>Phone Number</source>
         <translation>手机号码</translation>
     </message>
@@ -279,12 +279,16 @@
         <translation>设置</translation>
     </message>
     <message>
-        <source>Welcome</source>
-        <translation>欢迎</translation>
-    </message>
-    <message>
         <source>Attention: If Telegram is blocked in your country, first setup proxy server in settings via PulleyMenu</source>
         <translation>注意：如果电报在你的国家被墙，请先通过下拉菜单设置代理服务器</translation>
+    </message>
+    <message>
+        <source>Welcome to Depecher</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Country Code:</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -488,6 +492,10 @@
     <message>
         <source>Click to enable notifications</source>
         <translation>点击启用通知</translation>
+    </message>
+    <message>
+        <source>Search</source>
+        <translation type="unfinished">搜索</translation>
     </message>
 </context>
 <context>
@@ -776,10 +784,6 @@
         <translation>代理可用</translation>
     </message>
     <message>
-        <source>About program</source>
-        <translation>关于程序</translation>
-    </message>
-    <message>
         <source>Credits and stuff</source>
         <translation>荣誉和工作</translation>
     </message>
@@ -792,16 +796,20 @@
         <translation>表现</translation>
     </message>
     <message>
-        <source>Daemon settings</source>
-        <translation>守护进程设置</translation>
-    </message>
-    <message>
         <source>Logging out</source>
         <translation>正在登出</translation>
     </message>
     <message>
         <source>Proxy</source>
         <translation>代理</translation>
+    </message>
+    <message>
+        <source>Daemon</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>About of</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1009,6 +1017,14 @@
         <source>Search</source>
         <translation type="unfinished">搜索</translation>
     </message>
+    <message>
+        <source>Phone number</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>VideoView</name>
@@ -1051,6 +1067,17 @@
     </message>
     <message>
         <source>Telegram</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>tdlibQt::ChatsModel</name>
+    <message>
+        <source> are typing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> is typing</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -33,18 +33,6 @@
         <translation>Fel %1</translation>
     </message>
     <message>
-        <source>Groups in Telegram</source>
-        <translation>Grupper i Telegram</translation>
-    </message>
-    <message>
-        <source>English speaking community</source>
-        <translation>Engelsktalande gemenskap</translation>
-    </message>
-    <message>
-        <source>Joining chat</source>
-        <translation>Gå med i chatten</translation>
-    </message>
-    <message>
         <source>Error to get invite link</source>
         <translation>Fel när inbjudningslänk skulle hämtas</translation>
     </message>
@@ -97,23 +85,35 @@
         <translation>Tack till:</translation>
     </message>
     <message>
-        <source>Here enumerated groups where you can ask any questions (general,dev etc.) related to Sailfish OS.</source>
-        <translation>Här är ett antal grupper där du kan ställa frågor (allmänt, utveckling etc.) relaterade till Sailfish OS.</translation>
-    </message>
-    <message>
-        <source>This groups lives only because of community and by community around Sailfish OS.</source>
-        <translation>Dessa grupper finns bara till på grund av gemenskapen runt Sailfish OS.</translation>
-    </message>
-    <message>
         <source>Version</source>
         <translation>Version</translation>
     </message>
     <message>
-        <source>Be aware, after clicking you will join chat.</source>
+        <source>Groups</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Italian speaking community</source>
+        <source>Here is enumerated the groups in Telegram where you can ask any questions (general,dev etc.) related to Sailfish OS.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>These groups live only for the community and for the community around Sailfish OS.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SailfishOS community of FanClub</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>English speaking group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SailfishOS community of Spain</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Spanish speaking group</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -187,6 +187,10 @@
         <source>Show current time below message input</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Alternative send sticker icon</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>AreYouSureDialog</name>
@@ -210,28 +214,12 @@
         <translation>Typ</translation>
     </message>
     <message>
-        <source>Photo</source>
-        <translation>Bild</translation>
-    </message>
-    <message>
-        <source>Document</source>
-        <translation>Dokument</translation>
-    </message>
-    <message>
         <source>Home</source>
         <translation>Hem</translation>
     </message>
     <message>
         <source>Go to Home folder</source>
         <translation>Gå till hemkatalogen</translation>
-    </message>
-    <message>
-        <source>Documents</source>
-        <translation>Dokument</translation>
-    </message>
-    <message>
-        <source>Send a document</source>
-        <translation>Skicka ett dokument</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -244,6 +232,22 @@
     <message>
         <source>Files to send</source>
         <translation>Filer att skicka</translation>
+    </message>
+    <message>
+        <source>Picture</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Documents</source>
+        <translation type="unfinished">Dokument</translation>
+    </message>
+    <message>
+        <source>Send a document</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -267,10 +271,6 @@
         <translation>Ange ditt telefonnummer och tryck &quot;Nästa&quot;</translation>
     </message>
     <message>
-        <source>Country Code</source>
-        <translation>Landskod</translation>
-    </message>
-    <message>
         <source>Phone Number</source>
         <translation>Telefonnummer</translation>
     </message>
@@ -279,12 +279,16 @@
         <translation>Inställningar</translation>
     </message>
     <message>
-        <source>Welcome</source>
-        <translation>Välkommen</translation>
-    </message>
-    <message>
         <source>Attention: If Telegram is blocked in your country, first setup proxy server in settings via PulleyMenu</source>
         <translation>OBS! Om telegram blockeras i ditt land, måste du först konfigurera en proxyxerver i Inställningar via toppmenyn.</translation>
+    </message>
+    <message>
+        <source>Welcome to Depecher</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Country Code:</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -488,6 +492,10 @@
     <message>
         <source>Click to enable notifications</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search</source>
+        <translation type="unfinished">S??k</translation>
     </message>
 </context>
 <context>
@@ -776,10 +784,6 @@
         <translation>Proxyn är redo</translation>
     </message>
     <message>
-        <source>About program</source>
-        <translation>Om appen</translation>
-    </message>
-    <message>
         <source>Credits and stuff</source>
         <translation>Tack och annat</translation>
     </message>
@@ -792,16 +796,20 @@
         <translation>Beteende</translation>
     </message>
     <message>
-        <source>Daemon settings</source>
-        <translation>Tjänstinställningar</translation>
-    </message>
-    <message>
         <source>Logging out</source>
         <translation>Loggar ut</translation>
     </message>
     <message>
         <source>Proxy</source>
         <translation>Proxy</translation>
+    </message>
+    <message>
+        <source>Daemon</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>About of</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1009,6 +1017,14 @@ Observera att efter detta, kommer 2-faktorsauktoriseringen att inaktiveras</tran
         <source>Search</source>
         <translation type="unfinished">S??k</translation>
     </message>
+    <message>
+        <source>Phone number</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>VideoView</name>
@@ -1051,6 +1067,17 @@ Observera att efter detta, kommer 2-faktorsauktoriseringen att inaktiveras</tran
     </message>
     <message>
         <source>Telegram</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>tdlibQt::ChatsModel</name>
+    <message>
+        <source> are typing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> is typing</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
