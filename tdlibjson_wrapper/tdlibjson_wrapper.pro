@@ -2,7 +2,7 @@ APPID = $$fromfile(api_secret.pri,APPID)#To build you have to create file api_se
 APP_HASH = $$fromfile(api_secret.pri,APP_HASH)#To build you have to create file api_secret.pri app_hash, or replace with your app_hash
 
 
-VERSION =  0.7.8
+VERSION =  0.7.9
 DEFINES += APP_VERSION=\"\\\"$${VERSION}\\\"\"
 DEFINES += WITH_LOG=1
 
@@ -92,5 +92,4 @@ OTHER_FILES += \
     tdlibQt/include/AppApiInfo.hpp.in
 
 DISTFILES += \
-    api_secret.pri \
     api_secret.pri
