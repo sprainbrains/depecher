@@ -1197,7 +1197,7 @@
     </message>
     <message>
         <source>last seen recently</source>
-        <translation>estuvo reciente</translation>
+        <translation>hace instantes</translation>
     </message>
     <message>
         <source>last seen</source>
