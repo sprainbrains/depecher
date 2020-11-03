@@ -26,7 +26,7 @@
     </message>
     <message>
         <source>Sources</source>
-        <translation>Fuentes</translation>
+        <translation>Código fuente</translation>
     </message>
     <message>
         <source>Error %1</source>
@@ -66,7 +66,7 @@
     </message>
     <message>
         <source>- Manage stickers from chat</source>
-        <translation>- Gestionar pegatinas desde charla</translation>
+        <translation>- Gestionar pegatinas desde la charla</translation>
     </message>
     <message>
         <source>- Uploading/Downloading photos/docs</source>
@@ -94,11 +94,11 @@
     </message>
     <message>
         <source>Here is enumerated the groups in Telegram where you can ask any questions (general,dev etc.) related to Sailfish OS.</source>
-        <translation>Aquí se enumeran los grupos en Telegram donde se puede hacer cualquier pregunta (general, desarrollo, etc.) relacionada con Sailfish OS.</translation>
+        <translation>Aquí se enumeran los grupos de Telegram donde se puede hacer cualquier pregunta (general, desarrollo, etc.) relacionada con Sailfish SO.</translation>
     </message>
     <message>
         <source>These groups live only for the community and for the community around Sailfish OS.</source>
-        <translation>Estos grupos viven solo por la comunidad y para la comunidad  de Sailfish OS.</translation>
+        <translation>Estos grupos viven solo por la comunidad y para la comunidad  de Sailfish SO.</translation>
     </message>
     <message>
         <source>SailfishOS community of FanClub</source>
@@ -145,7 +145,7 @@
     </message>
     <message>
         <source>Minimize nameplate</source>
-        <translation>Ocultar nombre de charla</translation>
+        <translation>Ocultar nombre del grupo</translation>
     </message>
     <message>
         <source>Enable night mode</source>
@@ -177,19 +177,19 @@
     </message>
     <message>
         <source>Show full screen images in channels</source>
-        <translation>Mostrar mensajes completos en canales</translation>
+        <translation>Mensajes completos en canales</translation>
     </message>
     <message>
         <source>Show voice message button</source>
-        <translation>Mostrar botón de mensaje de voz</translation>
+        <translation>Botón de mensaje de voz</translation>
     </message>
     <message>
         <source>Show current time below message input</source>
-        <translation>Mostrar la hora  en mensajes</translation>
+        <translation>Hora  en mensajes</translation>
     </message>
     <message>
         <source>Alternative send sticker icon</source>
-        <translation>mostrar icono  de envío alternativo</translation>
+        <translation>Icono  de pegatina alternativo</translation>
     </message>
 </context>
 <context>
@@ -219,7 +219,7 @@
     </message>
     <message>
         <source>Type</source>
-        <translation>Tipo</translation>
+        <translation>Tipo:</translation>
     </message>
     <message>
         <source>Home</source>
@@ -227,7 +227,7 @@
     </message>
     <message>
         <source>Go to Home folder</source>
-        <translation>Ir a carpeta principal</translation>
+        <translation>Ir a carpeta Principal</translation>
     </message>
     <message>
         <source>Files to send</source>
@@ -247,7 +247,7 @@
     </message>
     <message>
         <source>Send a document</source>
-        <translation>Enviar un documento</translation>
+        <translation>Ir a carpeta Documento</translation>
     </message>
 </context>
 <context>
@@ -272,7 +272,7 @@
     </message>
     <message>
         <source>Phone Number</source>
-        <translation>Número de teléfono</translation>
+        <translation>Número</translation>
     </message>
     <message>
         <source>Settings</source>
@@ -306,7 +306,7 @@
     <name>ChannelInfoPage</name>
     <message>
         <source>Channel info</source>
-        <translation>Datos del canal</translation>
+        <translation>Detalles del grupo</translation>
     </message>
 </context>
 <context>
@@ -354,7 +354,7 @@
     </message>
     <message>
         <source>Start/stop Depecher daemon. Stopping Depecher daemon will also stop receiving notifications</source>
-        <translation>Iniciar o detener el demonio de Depecher es opcional.</translation>
+        <translation>Iniciar o detener el servicio de Depecher es opcional.</translation>
     </message>
     <message>
         <source>Depecher current status</source>
@@ -362,11 +362,11 @@
     </message>
     <message>
         <source>Start daemon</source>
-        <translation>Iniciar demonio</translation>
+        <translation>Iniciar depecherd</translation>
     </message>
     <message>
         <source>Stop daemon</source>
-        <translation>Detener demonio</translation>
+        <translation>Detener depecherd</translation>
     </message>
     <message>
         <source>Close app on closing UI</source>
@@ -374,11 +374,11 @@
     </message>
     <message>
         <source>When this is on, Depecher quits after closing ui. No daemon. Autostart should be disabled</source>
-        <translation>Cuando esto está deshabilitado, Depecher se cierra después de cerrar la interfaz. Sin demonio. El inicio automático debe estar deshabilitado</translation>
+        <translation>Cuando esto está deshabilitado, Depecher se cierra después de cerrar la interfaz. Sin depecherd. El inicio automático debe estar deshabilitado</translation>
     </message>
     <message>
         <source>Library settings</source>
-        <translation>Ajustes de biblioteca</translation>
+        <translation>Librería</translation>
     </message>
     <message>
         <source>Max number of notification groups to be shown</source>
@@ -402,11 +402,11 @@
     </message>
     <message>
         <source>Use chat info database</source>
-        <translation>Usar base de datos de la charla</translation>
+        <translation>Usar base de datos de charla</translation>
     </message>
     <message>
         <source>If set to true, the library will maintain a cache of users, basic groups, supergroups, channels and secret chats.</source>
-        <translation>Si está habilitdo,la biblioteca mantendrá una caché de usuarios, grupos básicos, supergrupos, canales y charlas secretas.</translation>
+        <translation>Si está habilitdo,la librería mantendrá una caché de usuarios, grupos básicos, supergrupos, canales y charlas secretas.</translation>
     </message>
     <message>
         <source>Use message database</source>
@@ -414,7 +414,7 @@
     </message>
     <message>
         <source>If set to true, the library will maintain a cache of chats and messages.</source>
-        <translation>Si está habilitdo, la biblioteca mantendrá una caché de charlas y mensajes.</translation>
+        <translation>Si está habilitdo, la librería mantendrá una caché de las charlas y mensajes.</translation>
     </message>
     <message>
         <source>Enable storage optimizer</source>
@@ -461,7 +461,7 @@
     </message>
     <message>
         <source>Left chat</source>
-        <translation>dejó la  charla</translation>
+        <translation>dejó la charla</translation>
     </message>
 </context>
 <context>
@@ -475,7 +475,7 @@
     <name>GroupInfoPage</name>
     <message>
         <source>Group info</source>
-        <translation>Datos del grupo</translation>
+        <translation>Detalles del grupo</translation>
     </message>
     <message>
         <source>%1 members</source>
@@ -692,7 +692,7 @@
     </message>
     <message>
         <source>Add proxy</source>
-        <translation>Añadir proxy</translation>
+        <translation>Aceptar</translation>
     </message>
     <message>
         <source>Proxy type</source>
@@ -805,7 +805,7 @@
     </message>
     <message>
         <source>Daemon</source>
-        <translation>Demonio</translation>
+        <translation>Depecherd</translation>
     </message>
     <message>
         <source>About of</source>
@@ -866,7 +866,7 @@
     <name>SignInDialog</name>
     <message>
         <source>Code</source>
-        <translation>Código</translation>
+        <translation>Introducir el código</translation>
     </message>
     <message>
         <source>First Name</source>
@@ -936,11 +936,11 @@
     </message>
     <message>
         <source>Enter code</source>
-        <translation>Introducir código</translation>
+        <translation>Introducir el código</translation>
     </message>
     <message>
         <source>Enter password</source>
-        <translation>Introducir contraseña</translation>
+        <translation>Introducir la contraseña</translation>
     </message>
     <message>
         <source>Authentication state</source>
@@ -951,7 +951,7 @@
     <name>UserPage</name>
     <message>
         <source>User info</source>
-        <translation>Detalles de usuario</translation>
+        <translation>Detalles del usuario</translation>
     </message>
     <message>
         <source>Send message</source>
@@ -975,27 +975,27 @@
     </message>
     <message>
         <source>Channel info</source>
-        <translation>Detalles de canal</translation>
+        <translation>Detalles del grupo</translation>
     </message>
     <message>
         <source>Leave channel</source>
-        <translation>Dejar canal</translation>
+        <translation>Salir del grupo</translation>
     </message>
     <message>
         <source>Join channel</source>
-        <translation>Unirse a canal</translation>
+        <translation>Unirse al grupo</translation>
     </message>
     <message>
         <source>Leaving</source>
-        <translation>Dejando</translation>
+        <translation>Saliendo</translation>
     </message>
     <message>
         <source>Open channel</source>
-        <translation>Abrir canal</translation>
+        <translation>Abrir grupo</translation>
     </message>
     <message>
         <source>Username</source>
-        <translation>Nombre de usuario</translation>
+        <translation>Usuario</translation>
     </message>
     <message>
         <source>Copy</source>
@@ -1019,7 +1019,7 @@
     </message>
     <message>
         <source>Phone number</source>
-        <translation>Número de teléfono</translation>
+        <translation>Número</translation>
     </message>
     <message>
         <source>Description</source>
@@ -1104,7 +1104,7 @@
     <name>tdlibQt::ParseObject</name>
     <message>
         <source>Photo</source>
-        <translation>image</translation>
+        <translation>Imagen</translation>
     </message>
     <message>
         <source>Document</source>
@@ -1197,11 +1197,11 @@
     </message>
     <message>
         <source>last seen recently</source>
-        <translation>recientemente</translation>
+        <translation>estuvo reciente</translation>
     </message>
     <message>
         <source>last seen</source>
-        <translation>hace</translation>
+        <translation>desde</translation>
     </message>
     <message>
         <source>last seen %1 days ago</source>
@@ -1260,7 +1260,7 @@
     </message>
     <message>
         <source>Wait encryption key</source>
-        <translation>Esperar clave de cifrado</translation>
+        <translation>Esperar clave de encriptación</translation>
     </message>
     <message>
         <source>Wait phone number</source>
@@ -1276,15 +1276,15 @@
     </message>
     <message>
         <source>Wait logging out</source>
-        <translation>Espera cierre de sesión</translation>
+        <translation>Esperar cierre de sesión</translation>
     </message>
     <message>
         <source>Wait closing</source>
-        <translation>Espera a que cierre</translation>
+        <translation>Esperar a que cierre</translation>
     </message>
     <message>
         <source>Wait closed</source>
-        <translation>Espera a cerrarse</translation>
+        <translation>Esperar a cerrarse</translation>
     </message>
     <message>
         <source>Today</source>
