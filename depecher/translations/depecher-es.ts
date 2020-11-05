@@ -1085,11 +1085,11 @@
     <name>tdlibQt::MessagingModel</name>
     <message>
         <source> is typing</source>
-        <translation type="unfinished"> está escribiendo</translation>
+        <translation> está escribiendo</translation>
     </message>
     <message>
         <source> people are typing</source>
-        <translation type="unfinished"></translation>
+        <translation> personas están escribiendo</translation>
     </message>
 </context>
 <context>
