@@ -1082,6 +1082,17 @@
     </message>
 </context>
 <context>
+    <name>tdlibQt::MessagingModel</name>
+    <message>
+        <source> is typing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> people are typing</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>tdlibQt::NotificationManager</name>
     <message>
         <source>new messages</source>

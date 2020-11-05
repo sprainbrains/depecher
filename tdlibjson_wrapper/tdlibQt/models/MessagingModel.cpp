@@ -1523,9 +1523,9 @@ void MessagingModel::updateChatAction(const QJsonObject &chatActionObject)
         chatActionTimer.start();
         userStatusTimer.stop();
         QString userName = UsersModel::instance()->getUserFirstName(chatActionUserMap.first()->user_id_);
-        setAction(userName + " is typing");
+        setAction(userName + tr(" is typing"));
     } else
-        setAction(QString::number(chatActionUserMap.size()) + " people are typing");
+        setAction(QString::number(chatActionUserMap.size()) + tr(" people are typing"));
 
 }
 
