@@ -129,7 +129,7 @@ void ChatMembersModel::processFile(const QJsonObject &fileObject)
 void ChatMembersModel::getFile(const int fileId, const int rowIndex, const int priority)
 {
     if (!avatarPhotoMap.contains(fileId)) {
-        m_tdlibJson->downloadFile(fileId, priority, c_extra);
+        m_tdlibJson->downloadFile(fileId, priority, false, c_extra);
         avatarPhotoMap[fileId] = rowIndex;
     }
 }

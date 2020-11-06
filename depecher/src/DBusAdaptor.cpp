@@ -89,6 +89,7 @@ bool DBusAdaptor::raiseApp()
 
 void DBusAdaptor::showApp(const QStringList &cmd)
 {
+    Q_UNUSED(cmd);
     if (!view) {
         qDebug() << "Construct view";
         view = SailfishApp::createView();

@@ -9,6 +9,8 @@ Image {
     property alias fallbackItemVisible: fallbackitem.visible
     width:parent.height-5
     height: width
+    sourceSize.width: width
+    sourceSize.height: height
     asynchronous: true
 
     layer.enabled:true

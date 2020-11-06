@@ -28,6 +28,8 @@ Page {
             asynchronous: true
             width:  Utils.getWidth() / 3
             height: width
+            sourceSize.width: width
+            sourceSize.height: height
             fillMode: Image.PreserveAspectFit
             source: media_preview ? ("image://depecherDb/" + media_preview) : ""
 

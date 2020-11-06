@@ -46,7 +46,7 @@ class ChatsModel : public QAbstractListModel
     };
     TdlibJsonWrapper *tdlibJson;
     void changeChatOrderOrAdd(qint64 chatId, qint64 order);
-    const int indexByOrder(const qint64 order);
+    int indexByOrder(const qint64 order) const;
     bool isContains(const QSharedPointer<chat> &chat);
     bool fetchPending = false;
     void addItem(const QSharedPointer<chat> &chatItem);

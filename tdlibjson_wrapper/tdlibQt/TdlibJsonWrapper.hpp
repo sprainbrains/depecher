@@ -9,6 +9,9 @@
 #include "include/TdlibNamespace.hpp"
 #include <td/telegram/td_json_client.h>
 #include "ListenScheduler.hpp"
+
+#define INT53_MAX 9007199254740992
+
 class QThread;
 
 namespace tdlibQt {
@@ -81,6 +84,10 @@ public:
 
     int totalUnreadCount() const;
     void checkPassword(const QString &password);
+
+private:
+    QHash<int, int> downloadMap;
+
 signals:
     void updateNewChat(const QJsonObject &updateNewChatObject);
     void updateUserReceived(const QJsonObject &updateNewUserObject);
@@ -174,14 +181,14 @@ public slots:
     void setCodeIfNewUser(const QString &code, const QString &firstName,
                           const QString &lastName); /*TODO check for numbers only and escape characters*/
     void getChats(const qint64 offset_chat_id = 0,
-                  const qint64 offset_order = std::numeric_limits<std::int64_t>::max(),
+                  const qint64 offset_order = INT53_MAX,
                   const int limit = 100,
                   const QString &extra = "");
     void getChat(const qint64 chatId, const QString &extra);
     void searchChatsOnServer(const QString &query, const int limit);
     void searchChats(const QString &query, const int limit);
     void markChatUnread(const qint64 chatId, const bool flag);
-    void downloadFile(int fileId, int priority = 1, const QString &extra = "");
+    void downloadFile(int fileId, int priority = 1, const bool sync = false, const QString &extra = "");
     void getChatHistory(qint64 chat_id = 0, qint64 from_message_id = 0, int offset = 0, int limit = 20,
                         bool only_local = false, const QString &extra = "");
     void getChatMessageCount(qint64 chat_id, Enums::SearchFilter filter, bool return_local, const QString &extra);
@@ -235,6 +242,7 @@ public slots:
     void getSupergroupMembers(const int supergroup_id,
                               const QString &search, const int offset, const int limit, const QString &extra);
     void close();
+    void setLogLevel(int new_verbosity_level);
     void changeNotificationSettings(const qint64 &chatId, bool mute);
 };
 } //namespace tdlibQt

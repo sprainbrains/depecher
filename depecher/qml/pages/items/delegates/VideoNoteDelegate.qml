@@ -52,6 +52,8 @@ Column{
                 anchors.fill: parent
                 source: media_preview ? ("image://depecherDb/"+media_preview) : ""
                 visible:  mediaPlayer.playbackState != MediaPlayer.PlayingState || !file_downloading_completed;
+                sourceSize.width: width
+                sourceSize.height: height
                 Rectangle {
                     id:dimmedColor
                     anchors.fill: parent

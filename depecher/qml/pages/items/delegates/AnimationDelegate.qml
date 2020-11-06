@@ -47,6 +47,8 @@ Column{
                 Image {
                     id:animationThumbnail
                     anchors.fill: parent
+                    sourceSize.width: width
+                    sourceSize.height: height
                     source: media_preview ? ("image://depecherDb/" + media_preview) : ""
                     visible:  mediaPlayer.playbackState != MediaPlayer.PlayingState || !file_downloading_completed;
                     Rectangle {
@@ -173,6 +175,8 @@ Column{
                 Image {
                     id:animationThumbnail
                     anchors.fill: parent
+                    sourceSize.width: width
+                    sourceSize.height: height
                     source: media_preview ? ("image://depecherDb/" + media_preview) : ""
                     visible:  mediaPlayer.playbackState != MediaPlayer.PlayingState || !file_downloading_completed;
                     Rectangle {

@@ -7,6 +7,8 @@ Image {
     id:stickerImage
     asynchronous: true
     anchors.fill: parent
+    sourceSize.width: width
+    sourceSize.height: height
     fillMode: Image.PreserveAspectFit
     source: content ? "image://depecherDb/" + content : ""
     MouseArea {

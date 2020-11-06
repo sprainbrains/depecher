@@ -174,6 +174,8 @@ Dialog {
                             delegate: Image {
                                 width: stickersGrid.cellWidth
                                 height: width
+                                sourceSize.width: width
+                                sourceSize.height: height
                                 asynchronous: true
                                 fillMode: Image.PreserveAspectFit
                                 source: "image://depecherDb/" + sticker
@@ -205,10 +207,12 @@ Dialog {
                             id:stickersGrid
                             width: parent.width
                             interactive: !_previewEnabled
-                            cellWidth: parent.width/5
+                            cellWidth: parent.width / columns
                             cellHeight: cellWidth
-                            height:Math.ceil(count / 5) * cellHeight
+                            height:Math.ceil(count / columns) * cellHeight
                             model:stickers
+
+                            property int columns: isPortrait ? 5 : 6
                         }
                     }
                     Component.onCompleted:{

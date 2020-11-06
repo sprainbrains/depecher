@@ -332,7 +332,6 @@ void StickerModel::getFile(const int fileId, const int priority, const QModelInd
 {
     m_client->downloadFile(fileId, priority);
     m_stickerUpdateQueue[fileId] = indexItem;
-
 }
 
 int StickerModel::columnCount(const QModelIndex &parent) const

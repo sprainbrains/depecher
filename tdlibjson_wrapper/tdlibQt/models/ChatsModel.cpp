@@ -65,7 +65,7 @@ void ChatsModel::changeChatOrderOrAdd(qint64 chatId, qint64 order)
     }
 }
 
-const int ChatsModel::indexByOrder(const qint64 order)
+int ChatsModel::indexByOrder(const qint64 order) const
 {
     for (int i = 0; i < m_chats.size(); i++) {
         if (m_chats[i]->order_ < order)
@@ -423,14 +423,14 @@ void ChatsModel::addItem(const QSharedPointer<chat> &chatItem)
         auto photoItemPtr = static_cast<messagePhoto *>(chatItem->last_message_->content_.data());
         if (photoItemPtr->photo_->sizes_.size() > 0) {
             if (!photoItemPtr->photo_->sizes_[0]->photo_->local_->is_downloading_completed_) {
-                tdlibJson->downloadFile(photoItemPtr->photo_->sizes_[0]->photo_->id_, 16, "messageHistory");
+                tdlibJson->downloadFile(photoItemPtr->photo_->sizes_[0]->photo_->id_, 16, false, "messageHistory");
             }
         }
     }
     if (chatItem->last_message_->get_id() == messageAnimation::ID) {
         auto photoItemPtr = static_cast<messageAnimation *>(chatItem->last_message_->content_.data());
         if (!photoItemPtr->animation_->thumbnail_->photo_->local_->is_downloading_completed_) {
-            tdlibJson->downloadFile(photoItemPtr->animation_->thumbnail_->photo_->id_, 16, "messageHistory");
+            tdlibJson->downloadFile(photoItemPtr->animation_->thumbnail_->photo_->id_, 16, false, "messageHistory");
         }
     }
     if (chatIndex == -1) {
@@ -447,7 +447,7 @@ void ChatsModel::addItem(const QSharedPointer<chat> &chatItem)
     if (chatItem->photo_.data() != nullptr) {
         if (chatItem->photo_->small_.data() != nullptr)
             if (!chatItem->photo_->small_->local_->is_downloading_completed_)
-                tdlibJson->downloadFile(chatItem->photo_->small_->id_, 1, "chatPhoto");
+                tdlibJson->downloadFile(chatItem->photo_->small_->id_, 1, false, "chatPhoto");
     }
 }
 

@@ -253,7 +253,6 @@ Drawer {
                         width: parent.width
                         maximumLineCount: 1
                         elide: TruncationMode.Fade
-                        visible: false //Not defined at all: authorsText != ""
                     }
                 }
 

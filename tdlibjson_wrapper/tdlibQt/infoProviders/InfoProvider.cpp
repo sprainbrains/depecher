@@ -35,7 +35,7 @@ QString InfoProvider::avatar() const
                 if (m_chat->photo_->small_->local_->is_downloading_completed_)
                     return QString::fromStdString(m_chat->photo_->small_->local_->path_);
                 else
-                    m_tdlibJson->downloadFile(m_chat->photo_->small_->id_, 20, c_extra.arg(QString::number(m_chatId)));
+                    m_tdlibJson->downloadFile(m_chat->photo_->small_->id_, 20, false, c_extra.arg(QString::number(m_chatId)));
             }
         }
     }

@@ -50,6 +50,8 @@ Column{
             width: media_preview ? (photo_aspect >= 1 ? maxWidth : maxHeight * photo_aspect) : Theme.itemSizeExtraLarge
             height: media_preview ? (photo_aspect >= 1 ? maxWidth/photo_aspect : maxHeight) : Theme.itemSizeExtraLarge
             fillMode: Image.PreserveAspectFit
+            sourceSize.width: width
+            sourceSize.height: height
             source: media_preview ? ("image://depecherDb/" + media_preview) : ""
 
             MouseArea{

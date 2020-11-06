@@ -136,6 +136,8 @@ Item {
                 Image {
                     width: height
                     height: Theme.itemSizeSmall - 2* Theme.paddingSmall
+                    sourceSize.width: width
+                    sourceSize.height: height
                     anchors.centerIn: parent
                     fillMode: Image.PreserveAspectFit
                     source: {
@@ -194,9 +196,12 @@ Item {
                             delegate: Image {
                                 width: stickersGrid.cellWidth
                                 height: width
+                                sourceSize.width: width
+                                sourceSize.height: height
                                 asynchronous: true
                                 fillMode: Image.PreserveAspectFit
                                 source: "image://depecherDb/" + sticker
+
                                 MouseArea {
                                     anchors.fill: parent
                                     enabled: !_previewEnabled
@@ -216,13 +221,15 @@ Item {
                             }
                         }
                         SilicaGridView {
-                            id:stickersGrid
+                            id: stickersGrid
                             width: parent.width
                             interactive: !_previewEnabled
-                            cellWidth: parent.width/5
+                            cellWidth: parent.width / columns
                             cellHeight: cellWidth
-                            height:Math.ceil(count / 5) * cellHeight
-                            model:stickers
+                            height: Math.ceil(count / columns) * cellHeight
+                            model: stickers
+
+                            property int columns: isPortrait ? 5 : 7
                         }
                     }
                 }
@@ -233,7 +240,7 @@ Item {
         Timer {
             id:previewTimer
             interval: 800
-            onTriggered:                 root.state = "preview"
+            onTriggered: root.state = "preview"
         }
 
     }

@@ -12,8 +12,8 @@ namespace tdlibQt {
 
 TdlibJsonWrapper::TdlibJsonWrapper(QObject *parent) : QObject(parent)
 {
-    td_set_log_verbosity_level(2);
     client = td_json_client_create();
+    setLogLevel(2);
 }
 
 void TdlibJsonWrapper::sendToTelegram(void *Client, const char *str)
@@ -267,17 +267,20 @@ int TdlibJsonWrapper::totalUnreadCount() const
 
 void TdlibJsonWrapper::openChat(const QString &chat_id)
 {
-    std::string openChat = "{\"@type\":\"openChat\","
-                           "\"chat_id\":\"" + chat_id.toStdString() + "\"}";
-    sendToTelegram(client, openChat.c_str());
-
+    QJsonObject query {
+        {"@type", "openChat"},
+        {"chat_id", chat_id}
+    };
+    sendJsonObjToTelegram(query);
 }
 
 void TdlibJsonWrapper::closeChat(const QString &chat_id)
 {
-    std::string closeChat = "{\"@type\":\"closeChat\","
-                            "\"chat_id\":\"" + chat_id.toStdString() + "\"}";
-    sendToTelegram(client, closeChat.c_str());
+    QJsonObject query {
+        {"@type", "closeChat"},
+        {"chat_id", chat_id}
+    };
+    sendJsonObjToTelegram(query);
 }
 
 void TdlibJsonWrapper::setOption(const QString &name, const QVariant &value)
@@ -305,6 +308,7 @@ void TdlibJsonWrapper::setOption(const QString &name, const QVariant &value)
             break;
         case QVariant::Type::String:
             objValue = objValue.arg("optionValueString", value.toString().prepend("\"").append("\""));
+            break;
         default:
             objValue = "{\"@type\":\"optionValueEmpty\"}";
             break;
@@ -342,12 +346,12 @@ void TdlibJsonWrapper::getUser(const qint64 chatId, const QString &extra)
 
 void TdlibJsonWrapper::searchContacts(const QString &query, const int limit)
 {
-    QString searchContactsStr = "{\"@type\":\"searchContacts\","
-                                "\"query\":\"%1\","
-                                "\"limit\":%2,"
-                                "\"@extra\":\"searchContacts\"}";
-    searchContactsStr.arg(query, QString::number(limit));
-    sendToTelegram(client, searchContactsStr.toStdString().c_str());
+    QJsonObject queryObj {
+        {"@type", "searchContacts"},
+        {"query", query},
+        {"limit", limit}
+    };
+    sendJsonObjToTelegram(queryObj, "searchContacts");
 }
 
 void TdlibJsonWrapper::getMe()
@@ -404,7 +408,7 @@ void TdlibJsonWrapper::joinChat(const qint64 chatId, const QString &extra)
 {
     QJsonObject query {
         {"@type", "joinChat"},
-        {"chat_id", chatId}
+        {"chat_id", QString::number(chatId)}
     };
     sendJsonObjToTelegram(query, extra);
 }
@@ -413,7 +417,7 @@ void TdlibJsonWrapper::leaveChat(const qint64 chatId, const QString &extra)
 {
     QJsonObject query {
         {"@type", "leaveChat"},
-        {"chat_id", chatId}
+        {"chat_id", QString::number(chatId)}
     };
     sendJsonObjToTelegram(query, extra);
 }
@@ -429,29 +433,20 @@ void TdlibJsonWrapper::checkChatInviteLink(const QString &link, const QString &e
 
 void TdlibJsonWrapper::getBasicGroup(const qint64 basicGroupId, const QString &extra)
 {
-    QString query = "{\"@type\":\"getBasicGroup\","
-                    "\"basic_group_id\":%1}";
-    query = query.arg(QString::number(basicGroupId));
-    if (extra != "") {
-        query.remove(query.size() - 1, 1);
-        query.append(",\"@extra\":\"" + extra + "\"}");
-    }
-
-    sendToTelegram(client, query.toStdString().c_str());
+    QJsonObject query {
+        {"@type", "getBasicGroup"},
+        {"basic_group_id", QString::number(basicGroupId)}
+    };
+    sendJsonObjToTelegram(query, extra);
 }
 
 void TdlibJsonWrapper::getBasicGroupFullInfo(const int groupId, const QString &extra)
 {
-    QString query =
-        "{\"@type\":\"getBasicGroupFullInfo\","
-        "\"basic_group_id\":%1}";
-    query = query.arg(QString::number(groupId));
-    if (extra != "") {
-        query.remove(query.size() - 1, 1);
-        query.append(",\"@extra\":\"" + extra + "\"}");
-    }
-
-    sendToTelegram(client, query.toStdString().c_str());
+    QJsonObject query {
+        {"@type", "getBasicGroupFullInfo"},
+        {"basic_group_id", groupId}
+    };
+    sendJsonObjToTelegram(query, extra);
 }
 
 void TdlibJsonWrapper::setTotalUnreadCount(int totalUnreadCount)
@@ -653,32 +648,35 @@ void TdlibJsonWrapper::setTdlibParameters()
         }
     }
 
-    QVariantMap parametersObject;
     QString userDir = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
-    parametersObject["database_directory"] = userDir + "/.local/share/harbour-depecher";
-    parametersObject["files_directory"] = filesDirectory.value("").toString();
-    parametersObject["api_id"] = tdlibQt::appid.toInt();
-    parametersObject["api_hash"] = tdlibQt::apphash;
-    parametersObject["system_language_code"] = QLocale::languageToString(QLocale::system().language());
-    parametersObject["device_model"] = QSysInfo::prettyProductName();
-    parametersObject["system_version"] = QSysInfo::productVersion();
-    parametersObject["application_version"] = APP_VERSION;
-    parametersObject["use_file_database"] = useFileDatabase.value(true).toBool();
-    parametersObject["use_chat_info_database"] = useChatInfoDatabase.value(true).toBool();
-    parametersObject["use_message_database"] = useMessageDatabase.value(true).toBool();
-    parametersObject["enable_storage_optimizer"] = enableStorageOptimizer.value(true).toBool();
-    parametersObject["use_secret_chats"] = false;
-    parametersObject["use_test_dc"] = false;
+
+    QJsonObject paramsObj {
+        {"database_directory", userDir + "/.local/share/harbour-depecher"},
+        {"files_directory", filesDirectory.value("").toString()},
+        {"api_id", tdlibQt::appid.toInt()},
+        {"api_hash", tdlibQt::apphash},
+        {"system_language_code", QLocale::languageToString(QLocale::system().language())},
+        {"device_model", QSysInfo::prettyProductName()},
+        {"system_version", QSysInfo::productVersion()},
+        {"application_version", APP_VERSION},
+        {"use_file_database", useFileDatabase.value(true).toBool()},
+        {"use_chat_info_database", useChatInfoDatabase.value(true).toBool()},
+        {"use_message_database", useMessageDatabase.value(true).toBool()},
+        {"enable_storage_optimizer", enableStorageOptimizer.value(true).toBool()},
+        {"use_secret_chats", false},
 #ifdef TEST_DC
-    parametersObject["use_test_dc"] = true;
+        {"use_test_dc", true}
+#else
+        {"use_test_dc", false}
 #endif
+    };
 
-    QVariantMap rootObject;
-    rootObject["@type"] = "setTdlibParameters";
-    rootObject["parameters"] = parametersObject;
-    sendToTelegram(client, QJsonDocument::fromVariant(rootObject).toJson(QJsonDocument::Compact).constData());
+    QJsonObject query {
+        {"@type", "setTdlibParameters"},
+        {"parameters", paramsObj}
+    };
+    sendJsonObjToTelegram(query);
     //answer is - {"@type":"updateAuthorizationState","authorization_state":{"@type":"authorizationStateWaitEncryptionKey","is_encrypted":false}}
-
 }
 void TdlibJsonWrapper::setCodeIfNewUser(const QString &code, const QString &firstName,
                                         const QString &lastName)
@@ -695,47 +693,22 @@ void TdlibJsonWrapper::setCodeIfNewUser(const QString &code, const QString &firs
 void TdlibJsonWrapper::getChats(const qint64 offset_chat_id, const qint64 offset_order,
                                 const int limit, const QString &extra)
 {
-    QString str;
-    if (extra != "") {
-        str = "{\"@type\":\"getChats\","
-              "\"offset_order\":\"%1\","
-              "\"offset_chat_id\":\"%2\","
-              "\"limit\":%3,"
-              "\"@extra\":\"%4\""
-              "}";
-        str = str.arg(QString::number(offset_order),
-                      QString::number(offset_chat_id),
-                      QString::number(limit),  extra);
-    } else {
-        str = "{\"@type\":\"getChats\","
-              "\"offset_order\":\"%1\","
-              "\"offset_chat_id\":\"%2\","
-              "\"limit\":%3"
-              "}";
-        str = str.arg(QString::number(offset_order),
-                      QString::number(offset_chat_id),
-                      QString::number(limit));
-    }
-    sendToTelegram(client, str.toStdString().c_str());
+    QJsonObject query {
+        {"@type", "getChats"},
+        {"offset_order", QString::number(offset_order)},
+        {"offset_chat_id", QString::number(offset_chat_id)},
+        {"limit", limit}
+    };
+    sendJsonObjToTelegram(query, extra);
 }
 
 void TdlibJsonWrapper::getChat(const qint64 chatId, const QString &extra)
 {
-    QString str;
-    if (extra != "") {
-        str = "{\"@type\":\"getChat\","
-              "\"chat_id\":\"%1\","
-              "\"@extra\":\"%2\""
-              "}";
-        str = str.arg(QString::number(chatId), extra);
-    } else {
-        str = "{\"@type\":\"getChat\","
-              "\"chat_id\":\"%1\"}";
-        str = str.arg(QString::number(chatId));
-    }
-
-    sendToTelegram(client, str.toStdString().c_str());
-
+    QJsonObject query {
+        {"@type", "getChat"},
+        {"chat_id", QString::number(chatId)}
+    };
+    sendJsonObjToTelegram(query, extra);
 }
 
 void TdlibJsonWrapper::searchChatsOnServer(const QString &query, const int limit)
@@ -770,13 +743,34 @@ void TdlibJsonWrapper::markChatUnread(const qint64 chatId, const bool flag)
 
     str = str.arg(QString::number(chatId), flag ? "true" : "false");
     sendToTelegram(client, str.toStdString().c_str());
-
 }
 
-void TdlibJsonWrapper::downloadFile(int fileId, int priority, const QString &extra)
+void TdlibJsonWrapper::downloadFile(int fileId, int priority, const bool sync, const QString &extra)
 {
+    // Limiter to avoid download loop caused by some sticker's thumbnails (tdlib 1.4)
+    // https://github.com/tdlib/td/issues/778
+    int downloadCnt = downloadMap.value(fileId, 0) + 1;
+    if (downloadCnt == 2) {
+        QTimer::singleShot(4000, [this, fileId] () {
+            if (downloadMap.value(fileId, 0) == 2) {
+#ifdef QT_DEBUG
+                qDebug() << "no change, clear download counter";
+#endif
+                downloadMap.remove(fileId);
+            }
+        });
+    } else if (downloadCnt >= 3) {
+        if (downloadCnt == 3)
+            downloadMap[fileId] = downloadCnt;
+#ifdef QT_DEBUG
+        qDebug() << "blacklisted, return: " << fileId;
+#endif
+        return;
+    }
+
+    downloadMap[fileId] = downloadCnt;
+
     priority = qBound(1, priority, 32);
-    bool sync = false;
 
     QJsonObject query {
         {"@type", "downloadFile"},
@@ -793,80 +787,55 @@ void TdlibJsonWrapper::getChatHistory(qint64 chat_id, qint64 from_message_id,
                                       int offset,
                                       int limit, bool only_local, const QString &extra)
 {
-    QString getChatHistory = "{\"@type\":\"getChatHistory\","
-                             "\"chat_id\":\"" + QString::number(chat_id) + "\","
-                             "\"from_message_id\":\"" + QString::number(from_message_id) + "\","
-                             "\"offset\":" + QString::number(offset) + ","
-                             "\"limit\":" + QString::number(limit) + ",";
-    if (only_local)
-        getChatHistory.append("\"only_local\": true");
-    else
-        getChatHistory.append("\"only_local\": false");
-
-    if (extra != "")
-        getChatHistory.append(",\"@extra\": \"" + extra + "\"");
-    getChatHistory.append("}");
-    sendToTelegram(client, getChatHistory.toStdString().c_str());
+    QJsonObject query {
+        {"@type", "getChatHistory"},
+        {"chat_id", QString::number(chat_id)},
+        {"from_message_id", QString::number(from_message_id)},
+        {"offset", offset},
+        {"limit", limit},
+        {"only_local", only_local}
+    };
+    sendJsonObjToTelegram(query, extra);
 }
 
 void TdlibJsonWrapper::searchChatMessages(const qint64 chat_id, const qint64 from_message_id, const QString &query,
         const int sender_user_id, const int offset, const int limit,
         const Enums::SearchFilter &filter, const QString &extra)
 {
-    QString queryStr = "{\"@type\":\"searchChatMessages\","
-                       "\"chat_id\":\"%1\","
-                       "\"from_message_id\":\"%2\","
-                       "\"query\":\"%3\","
-                       "\"sender_user_id\":%4,"
-                       "\"offset\":%5,"
-                       "\"limit\":%6,"
-                       "\"filter\":%7"
-                       "}";
-    QString filterStr = "{\"@type\":\"%1\"}";
-    filterStr = filterStr.arg(m_searchFilters[(int)filter - 5]);
-    queryStr = queryStr.arg(QString::number(chat_id), QString::number(from_message_id), query,
-                            QString::number(sender_user_id), QString::number(offset), QString::number(limit),
-                            filterStr);
-    if (extra != "") {
-        queryStr.remove(queryStr.size() - 1, 1);
-        queryStr.append(",\"@extra\":\"" + extra + "\"}");
-    }
-    sendToTelegram(client, queryStr.toStdString().c_str());
+    QJsonObject queryObj {
+        {"@type", "searchChatMessages"},
+        {"chat_id", QString::number(chat_id)},
+        {"from_message_id", QString::number(from_message_id)},
+        {"query", query},
+        {"sender_user_id", sender_user_id},
+        {"offset", offset},
+        {"limit", limit},
+        {"filter", QJsonObject {
+                {"@type", m_searchFilters[(int)filter - 5]}
+            }}
+    };
+    sendJsonObjToTelegram(queryObj, extra);
 }
 
 void TdlibJsonWrapper::createPrivateChat(const int user_id, bool force, const QString &extra)
 {
-    QString query = "{\"@type\":\"createPrivateChat\","
-                    "\"user_id\":%1,"
-                    "\"force\":%2}";
-    query = query.arg(QString::number(user_id),
-                      force ? QString("true") : QString("false"));
-
-
-    if (extra != "") {
-        query.remove(query.size() - 1, 1);
-        query.append(",\"@extra\":\"" + extra + "\"}");
-    }
-    sendToTelegram(client, query.toStdString().c_str());
+    QJsonObject query {
+        {"@type", "createPrivateChat"},
+        {"user_id", user_id},
+        {"force", force}
+    };
+    sendJsonObjToTelegram(query, extra);
 }
 
 void TdlibJsonWrapper::deleteChatHistory(qint64 chat_id, bool remove_from_chat_list, bool revoke, const QString &extra)
 {
-    QString query = "{\"@type\":\"deleteChatHistory\","
-                    "\"chat_id\":\"%1\","
-                    "\"remove_from_chat_list\":%2,"
-                    "\"revoke\":%3"
-                    "}";
-    query = query.arg(QString::number(chat_id),
-                      remove_from_chat_list ? QString("true") : QString("false"),
-                      revoke ? QString("true") : QString("false"));
-
-
-    if (extra != "") {
-        query.remove(query.size() - 1, 1);
-        query.append(",\"@extra\":\"" + extra + "\"}");
-    }
-    sendToTelegram(client, query.toStdString().c_str());
+    QJsonObject query {
+        {"@type", "deleteChatHistory"},
+        {"chat_id", QString::number(chat_id)},
+        {"remove_from_chat_list", remove_from_chat_list},
+        {"revoke", revoke}
+    };
+    sendJsonObjToTelegram(query, extra);
 }
 
 void TdlibJsonWrapper::getSupergroupMembers(const int supergroup_id, const QString &search,
@@ -891,52 +860,38 @@ void TdlibJsonWrapper::getSupergroupMembers(const int supergroup_id, const QStri
         {"offset", offset},
         {"limit", limit}
     };
-
     sendJsonObjToTelegram(query, extra);
 }
 
 void TdlibJsonWrapper::getChatMessageCount(qint64 chat_id, Enums::SearchFilter filter, bool return_local, const QString &extra)
 {
-    QString query = "{\"@type\":\"getChatMessageCount\","
-                    "\"chat_id\":\"%1\","
-                    "\"filter\":%2,"
-                    "\"return_local\":%3"
-                    "}";
-    QString filterStr = "{\"@type\":\"%1\"}";
-    filterStr = filterStr.arg(m_searchFilters[(int)filter - 5]);
-    query = query.arg(QString::number(chat_id), filterStr,
-                      return_local ? QString("true") : QString("false"));
-
-
-    if (extra != "") {
-        query.remove(query.size() - 1, 1);
-        query.append(",\"@extra\":\"" + extra + "\"}");
-    }
-    sendToTelegram(client, query.toStdString().c_str());
+    QJsonObject query {
+        {"@type", "getChatMessageCount"},
+        {"chat_id", QString::number(chat_id)},
+        {"return_local", return_local},
+        {"filter", QJsonObject {
+                {"@type", m_searchFilters[(int)filter - 5]}
+            }}
+    };
+    sendJsonObjToTelegram(query, extra);
 }
 
 void TdlibJsonWrapper::getUserFullInfo(const int user_id, const QString &extra)
 {
-    QString query = "{\"@type\":\"getUserFullInfo\","
-                    "\"user_id\":%1}";
-    query = query.arg(QString::number(user_id));
-    if (extra != "") {
-        query.remove(query.size() - 1, 1);
-        query.append(",\"@extra\":\"" + extra + "\"}");
-    }
-    sendToTelegram(client, query.toStdString().c_str());
+    QJsonObject query {
+        {"@type", "getUserFullInfo"},
+        {"user_id", user_id}
+    };
+    sendJsonObjToTelegram(query, extra);
 }
 
 void TdlibJsonWrapper::getSupergroupFullInfo(const int supergroup_id, const QString &extra)
 {
-    QString query = "{\"@type\":\"getSupergroupFullInfo\","
-                    "\"supergroup_id\":%1}";
-    query = query.arg(QString::number(supergroup_id));
-    if (extra != "") {
-        query.remove(query.size() - 1, 1);
-        query.append(",\"@extra\":\"" + extra + "\"}");
-    }
-    sendToTelegram(client, query.toStdString().c_str());
+    QJsonObject query {
+        {"@type", "getSupergroupFullInfo"},
+        {"supergroup_id", supergroup_id}
+    };
+    sendJsonObjToTelegram(query, extra);
 }
 void TdlibJsonWrapper::searchPublicChat(const QString &username, const QString extra)
 {
@@ -956,9 +911,11 @@ void TdlibJsonWrapper::getAttachedStickerSets(const int file_id)
 }
 void TdlibJsonWrapper::getStickerSet(const qint64 set_id)
 {
-    QString getStickerSetStr = "{\"@type\":\"getStickerSet\","
-                               "\"set_id\":" + QString::number(set_id) + "}";
-    sendToTelegram(client, getStickerSetStr.toStdString().c_str());
+    QJsonObject query {
+        {"@type", "getStickerSet"},
+        {"set_id", QString::number(set_id)}
+    };
+    sendJsonObjToTelegram(query);
 }
 void TdlibJsonWrapper::getInstalledStickerSets(const bool is_masks)
 {
@@ -982,14 +939,11 @@ void TdlibJsonWrapper::getFavoriteStickers()
 }
 void TdlibJsonWrapper::getRecentStickers(const bool is_attached)
 {
-    QString getRecentStickersStr = QString("{\"@type\":\"getRecentStickers\","
-                                           "\"is_attached\":");
-    if (is_attached)
-        getRecentStickersStr.append("true");
-    else
-        getRecentStickersStr.append("false");
-    getRecentStickersStr.append(",\"@extra\": \"getRecentStickers\"}");
-    sendToTelegram(client, getRecentStickersStr.toStdString().c_str());
+    QJsonObject query {
+        {"@type", "getRecentStickers"},
+        {"is_attached", is_attached}
+    };
+    sendJsonObjToTelegram(query, "getRecentStickers");
 }
 
 void TdlibJsonWrapper::logOut()
@@ -1159,6 +1113,16 @@ void TdlibJsonWrapper::close()
         {"@type", "close"}
     };
     sendJsonObjToTelegram(query);
+}
+
+void TdlibJsonWrapper::setLogLevel(int new_verbosity_level)
+{
+    QJsonObject query {
+        {"@type", "setLogVerbosityLevel"},
+        {"new_verbosity_level", new_verbosity_level}
+    };
+    QJsonDocument doc(query);
+    sendSyncroniousMessage(doc.toJson());
 }
 
 void TdlibJsonWrapper::changeNotificationSettings(const qint64 &chatId, bool mute)

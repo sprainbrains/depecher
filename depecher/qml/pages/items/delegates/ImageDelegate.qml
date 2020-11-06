@@ -45,6 +45,8 @@ Column{
         property int maxHeight: JsUtils.getHeight()/2
         width: photo_aspect >= 1 ? maxWidth *3/4 : maxHeight * photo_aspect
         height: photo_aspect >= 1 ? maxWidth/photo_aspect : maxHeight
+        sourceSize.width: width
+        sourceSize.height: height
         fillMode: Image.PreserveAspectFit
         source: content
         MouseArea{

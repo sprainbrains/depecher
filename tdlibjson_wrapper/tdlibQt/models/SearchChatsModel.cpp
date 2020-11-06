@@ -134,7 +134,7 @@ void SearchChatsModel::addChat(const QJsonObject &chatObject)
             if (chatItem->photo_.data() != nullptr) {
                 if (chatItem->photo_->small_.data() != nullptr)
                     if (!chatItem->photo_->small_->local_->is_downloading_completed_)
-                        m_clientJson->downloadFile(chatItem->photo_->small_->id_, 1, "chatPhoto");
+                        m_clientJson->downloadFile(chatItem->photo_->small_->id_, 1, false, "chatPhoto");
             }
         }
     }

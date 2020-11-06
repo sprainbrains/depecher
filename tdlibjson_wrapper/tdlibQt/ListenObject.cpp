@@ -56,7 +56,7 @@ void ListenObject::listen()
                         emit resultReady(result);
                     }
                 }
-            } catch (std::logic_error err) {
+            } catch (const std::logic_error &err) {
 #ifdef QT_DEBUG
                 //qDebug() << "Logic error caught";
 #endif
@@ -64,6 +64,8 @@ void ListenObject::listen()
                     setIsActiveTrue();
                     timer->start();
                 }
+            } catch (const std::exception &e) {
+                qDebug() << "error caught: " << e.what();
             }
         }
         //        mutex.unlock();
