@@ -10,8 +10,6 @@
 #include <td/telegram/td_json_client.h>
 #include "ListenScheduler.hpp"
 
-#define INT53_MAX 9007199254740992
-
 class QThread;
 
 namespace tdlibQt {
@@ -181,7 +179,7 @@ public slots:
     void setCodeIfNewUser(const QString &code, const QString &firstName,
                           const QString &lastName); /*TODO check for numbers only and escape characters*/
     void getChats(const qint64 offset_chat_id = 0,
-                  const qint64 offset_order = INT53_MAX,
+                  const qint64 offset_order = INT64_MAX,
                   const int limit = 100,
                   const QString &extra = "");
     void getChat(const qint64 chatId, const QString &extra);
