@@ -11,7 +11,7 @@ function setState(state) {
               case 4:
                   return qsTr("Ready")
             default:
-                return qsTr("Uknown")
+                return qsTr("Unknown")
               }
 
 }
@@ -50,7 +50,7 @@ function setAuthState(state) {
               case 8:
                   return qsTr("Ready")
             default:
-                return qsTr("Uknown")
+                return qsTr("Unknown")
               }
 }
 function getWidth() {

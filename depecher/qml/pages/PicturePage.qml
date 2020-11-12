@@ -115,11 +115,6 @@ Page {
                     }
                 }
             }
-            ViewPlaceholder {
-                enabled: true
-                anchors.centerIn: parent
-                text: qsTr("Share function will be here soon")
-            }
         }
     }
 }
