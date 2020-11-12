@@ -242,6 +242,7 @@ public slots:
     void close();
     void setLogLevel(int new_verbosity_level);
     void changeNotificationSettings(const qint64 &chatId, bool mute);
+    void getWallpapers(const QString &extra = "");
 };
 } //namespace tdlibQt
 #endif // TDLIBJSONWRAPPER_HPP

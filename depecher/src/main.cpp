@@ -16,8 +16,7 @@
 
 int main(int argc, char *argv[])
 {
-    QGuiApplication *app = SailfishApp::application(argc, argv);
-    MGConfItem quitOnCloseUi("/apps/depecher/tdlib/quit_on_close_ui");
+    QScopedPointer<QGuiApplication> app(SailfishApp::application(argc, argv));
 
     if (DBusAdaptor::isRegistered()) {
         if (DBusAdaptor::raiseApp()) {
@@ -27,9 +26,9 @@ int main(int argc, char *argv[])
         }
     }
 
-    QScopedPointer<DBusAdaptor> dbusWatcher(new DBusAdaptor(app));
-    QScopedPointer<DBusShareAdaptor> dbusShareWatcher(new DBusShareAdaptor(app));
-    QScopedPointer<ChatShareAdaptor> dbusChatShareWatcher(new ChatShareAdaptor(app));
+    QScopedPointer<DBusAdaptor> dbusWatcher(new DBusAdaptor(app.data()));
+    QScopedPointer<DBusShareAdaptor> dbusShareWatcher(new DBusShareAdaptor(app.data()));
+    QScopedPointer<ChatShareAdaptor> dbusChatShareWatcher(new ChatShareAdaptor(app.data()));
     app->addLibraryPath(QString("%1/../share/%2/lib").arg(qApp->applicationDirPath(),
                         qApp->applicationName()));
     app->setApplicationVersion(APP_VERSION);
@@ -54,22 +53,25 @@ int main(int argc, char *argv[])
     tdlib->startListen();
     //used in authenticationhandler too.
 //    tdlib->setEncryptionKey();
-    FileGeneratedHandler generationHandler(app);
+    FileGeneratedHandler generationHandler(app.data());
+    Q_UNUSED(generationHandler)
 
     app->setQuitOnLastWindowClosed(false);
+    MGConfItem quitOnCloseUi("/apps/depecher/tdlib/quit_on_close_ui");
     if (quitOnCloseUi.value(false).toBool()) {
-        QObject::connect(dbusWatcher.data(), &DBusAdaptor::viewDestroyed, tdlib, [=] () {
+        QObject::connect(dbusWatcher.data(), &DBusAdaptor::viewDestroyed,
+                         tdlib, [&app, &tdlib] () {
             tdlib->close();
             // In case tdlib close fail
             QTimer *closeTimer = new QTimer(tdlib);
             closeTimer->start(5000);
             QObject::connect(closeTimer, &QTimer::timeout,
-                             app , &QGuiApplication::quit);
+                             app.data() , &QGuiApplication::quit);
         });
 
         DBusAdaptor::raiseApp();
     } else {
-        QObject::connect(app, &QGuiApplication::aboutToQuit,
+        QObject::connect(app.data(), &QGuiApplication::aboutToQuit,
                          NotificationManager, &tdlibQt::NotificationManager::removeAll);
     }
 

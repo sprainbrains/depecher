@@ -115,7 +115,7 @@ ListItem {
                         id:lastMessageAuthor
                         anchors.verticalCenter: parent.verticalCenter
                         color:pressed ? Theme.highlightColor : Theme.secondaryHighlightColor
-                        text: last_message_author+":"
+                        text: last_message_author ? (last_message_author + ":") : ""
                         font.pixelSize: Theme.fontSizeExtraSmall
                         visible: action ? false : type == TdlibState.BasicGroup || type==TdlibState.Supergroup ? true : false
                         width: visible ? implicitWidth : 0

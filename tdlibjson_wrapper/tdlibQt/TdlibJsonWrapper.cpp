@@ -1141,4 +1141,13 @@ void TdlibJsonWrapper::changeNotificationSettings(const qint64 &chatId, bool mut
     sendMessage(jsonString);
 }
 
+// obsolete since tdlib 1.5
+void TdlibJsonWrapper::getWallpapers(const QString &extra)
+{
+    QJsonObject query {
+        {"@type", "getWallpapers"},
+    };
+    sendJsonObjToTelegram(query);
+}
+
 }// namespace tdlibQt

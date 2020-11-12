@@ -7,7 +7,6 @@ import "org/blacksailer/depecher/sharechat" 1.0
 import "js/mimetypes.js" as Mime
 ShareDialog {
     id: root
-    allowedOrientations: Orientation.Portrait
 
     property int viewWidth: root.isPortrait ? Screen.width : Screen.width / 2
     property var chat_ids: []
@@ -48,8 +47,12 @@ ShareDialog {
                 onClicked: model.reset()
             }
         }
-        header:  PageHeader {
-            title: chat_ids.length == 0 ? qsTr("Choose chat") :  qsTr("%1 selected").arg(chat_ids.length)
+        header: PageHeader {
+            title: qsTr("Choose chat")
+            Component.onCompleted: refreshTitle
+            function refreshTitle() {
+                title = chat_ids.length == 0 ? qsTr("Choose chat") :  qsTr("%1 selected").arg(chat_ids.length)
+            }
         }
 
         delegate: ChatItemShare {
@@ -64,22 +67,21 @@ ShareDialog {
 
             onClicked: {
                 var contains = false
-                for( var i = 0; i < chat_ids.length; i++)
+                for(var i = 0; i < chat_ids.length; i++)
                     if ( chat_ids[i] === id)
                         contains = true
-                if(!contains)
-                {
+                if (!contains) {
                     chat_ids.push(id)
                     highlighted = true
-                }
-                else {
-                    for( var i = 0; i < chat_ids.length; i++){
+                } else {
+                    for(i = 0; i < chat_ids.length; i++){
                         if ( chat_ids[i] === id) {
                             highlighted = false
                             chat_ids.splice(i, 1);
                         }
                     }
                 }
+                listModel.headerItem.refreshTitle()
             }
         }
     }

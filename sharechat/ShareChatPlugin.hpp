@@ -9,6 +9,7 @@ class ShareChatPlugin  : public QQmlExtensionPlugin
     Q_PLUGIN_METADATA(IID "org.qt-project.Qt.QQmlExtensionInterface")
 
 public:
+    void initializeEngine(QQmlEngine *, const char *);
     void registerTypes(const char *uri);
 
 };
