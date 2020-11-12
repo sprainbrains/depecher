@@ -6,7 +6,7 @@
     <message id="sailfish_browser-la-no_accounts">
         <source>No sharing accounts available. You can add accounts in settings</source>
         <extracomment>Empty state for share link page</extracomment>
-        <translation>No hay cuentas para compartir. Puedes añadir cuentas en ajustes</translation>
+        <translation>No hay cuentas para compartir. Puedes añadir una cuentas en ajustes</translation>
     </message>
     <message id="Share">
         <source>Share link</source>
@@ -66,7 +66,7 @@
     </message>
     <message>
         <source>- Manage stickers from chat</source>
-        <translation>- Gestionar pegatinas desde la charla</translation>
+        <translation>- Gestionar pegatinas en charlas</translation>
     </message>
     <message>
         <source>- Uploading/Downloading photos/docs</source>
@@ -153,11 +153,11 @@
     </message>
     <message>
         <source>Night Mode</source>
-        <translation>Modo noche</translation>
+        <translation>Noche</translation>
     </message>
     <message>
         <source>Enable schedule</source>
-        <translation>Activar horario</translation>
+        <translation>Horario</translation>
     </message>
     <message>
         <source>From</source>
@@ -173,23 +173,23 @@
     </message>
     <message>
         <source>Miscellaneous</source>
-        <translation>Varios</translation>
+        <translation>Botones</translation>
     </message>
     <message>
         <source>Show full screen images in channels</source>
-        <translation>Mensajes completos en canales</translation>
+        <translation>Mensajes completos en grupos</translation>
     </message>
     <message>
         <source>Show voice message button</source>
-        <translation>Botón de mensaje de voz</translation>
+        <translation>Icono de  micrófono en mensaje</translation>
     </message>
     <message>
         <source>Show current time below message input</source>
-        <translation>Hora  en mensajes</translation>
+        <translation>La hora en mensajes</translation>
     </message>
     <message>
         <source>Alternative send sticker icon</source>
-        <translation>Icono  de pegatina alternativo</translation>
+        <translation>Icono de pegatina alternativo</translation>
     </message>
 </context>
 <context>
@@ -272,7 +272,7 @@
     </message>
     <message>
         <source>Phone Number</source>
-        <translation>Número</translation>
+        <translation>Número telefónico</translation>
     </message>
     <message>
         <source>Settings</source>
@@ -306,7 +306,7 @@
     <name>ChannelInfoPage</name>
     <message>
         <source>Channel info</source>
-        <translation>Detalles del grupo</translation>
+        <translation>Grupo</translation>
     </message>
 </context>
 <context>
@@ -358,7 +358,7 @@
     </message>
     <message>
         <source>Depecher current status</source>
-        <translation>Estado actual de Depecher</translation>
+        <translation>Estado:</translation>
     </message>
     <message>
         <source>Start daemon</source>
@@ -402,11 +402,11 @@
     </message>
     <message>
         <source>Use chat info database</source>
-        <translation>Usar base de datos de charla</translation>
+        <translation>Usar base de datos de charlas</translation>
     </message>
     <message>
         <source>If set to true, the library will maintain a cache of users, basic groups, supergroups, channels and secret chats.</source>
-        <translation>Si está habilitdo,la librería mantendrá una caché de usuarios, grupos básicos, supergrupos, canales y charlas secretas.</translation>
+        <translation>Si está habilitado,la librería mantendrá una caché de usuarios, grupos básicos, supergrupos, canales y charlas secretas.</translation>
     </message>
     <message>
         <source>Use message database</source>
@@ -437,11 +437,11 @@
     </message>
     <message>
         <source>Unmute</source>
-        <translation>Sonar</translation>
+        <translation>Notificar</translation>
     </message>
     <message>
         <source>Mute</source>
-        <translation>Silenciar</translation>
+        <translation>No notificar</translation>
     </message>
     <message>
         <source>Mark as read</source>
@@ -457,7 +457,7 @@
     </message>
     <message>
         <source>Leave chat</source>
-        <translation>Salir de charla</translation>
+        <translation>Salir del grupo</translation>
     </message>
     <message>
         <source>Left chat</source>
@@ -475,7 +475,7 @@
     <name>GroupInfoPage</name>
     <message>
         <source>Group info</source>
-        <translation>Detalles del grupo</translation>
+        <translation>Grupo</translation>
     </message>
     <message>
         <source>%1 members</source>
@@ -824,7 +824,7 @@
     </message>
     <message>
         <source>Ensure that depecher is running</source>
-        <translation>Asegúrate de que Depecher se está ejecutando</translation>
+        <translation>Revisar que Depecher se está ejecutando</translation>
     </message>
     <message>
         <source>Do not close until media is transfered</source>
@@ -947,7 +947,7 @@
     <name>UserPage</name>
     <message>
         <source>User info</source>
-        <translation>Detalles del usuario</translation>
+        <translation>Usuario</translation>
     </message>
     <message>
         <source>Send message</source>
@@ -971,7 +971,7 @@
     </message>
     <message>
         <source>Channel info</source>
-        <translation>Detalles del grupo</translation>
+        <translation>Grupo</translation>
     </message>
     <message>
         <source>Leave channel</source>
@@ -991,7 +991,7 @@
     </message>
     <message>
         <source>Username</source>
-        <translation>Usuario</translation>
+        <translation>Nombre de suario</translation>
     </message>
     <message>
         <source>Copy</source>
@@ -1015,7 +1015,7 @@
     </message>
     <message>
         <source>Phone number</source>
-        <translation>Número</translation>
+        <translation>Número telefónico</translation>
     </message>
     <message>
         <source>Description</source>
@@ -1295,7 +1295,7 @@
     </message>
     <message>
         <source>Unknown</source>
-        <translation type="unfinished"></translation>
+        <translation>Desconocido</translation>
     </message>
 </context>
 </TS>
