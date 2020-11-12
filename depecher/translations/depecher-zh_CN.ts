@@ -640,10 +640,6 @@
         <source>Image saved to gallery!</source>
         <translation>图片已保存到图库！</translation>
     </message>
-    <message>
-        <source>Share function will be here soon</source>
-        <translation>可用的分享方法将在此显示</translation>
-    </message>
 </context>
 <context>
     <name>PreviewStickerSetDialog</name>
@@ -1262,10 +1258,6 @@
         <translation>可用</translation>
     </message>
     <message>
-        <source>Uknown</source>
-        <translation>未知</translation>
-    </message>
-    <message>
         <source>Wait lib parameters</source>
         <translation>等待库文件参数</translation>
     </message>
@@ -1299,6 +1291,10 @@
     </message>
     <message>
         <source>Today</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unknown</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

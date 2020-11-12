@@ -640,10 +640,6 @@
         <source>Image saved to gallery!</source>
         <translation>Immagine salvata nella galleria!</translation>
     </message>
-    <message>
-        <source>Share function will be here soon</source>
-        <translation>La funzione condividi arriverà presto</translation>
-    </message>
 </context>
 <context>
     <name>PreviewStickerSetDialog</name>
@@ -1262,10 +1258,6 @@
         <translation>Pronto</translation>
     </message>
     <message>
-        <source>Uknown</source>
-        <translation>Sconosciuto</translation>
-    </message>
-    <message>
         <source>Wait lib parameters</source>
         <translation>Attendo parametri lib</translation>
     </message>
@@ -1299,6 +1291,10 @@
     </message>
     <message>
         <source>Today</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unknown</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

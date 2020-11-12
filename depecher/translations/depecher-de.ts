@@ -640,10 +640,6 @@
         <source>Image saved to gallery!</source>
         <translation>Bild wurde in der Galerie gespeichert!</translation>
     </message>
-    <message>
-        <source>Share function will be here soon</source>
-        <translation>Share-Funktion wird demnächst hier sein.</translation>
-    </message>
 </context>
 <context>
     <name>PreviewStickerSetDialog</name>
@@ -1262,10 +1258,6 @@ Beachte! Danach wird die 2FA Autorisierung deaktiviert werden.</translation>
         <translation>Bereit</translation>
     </message>
     <message>
-        <source>Uknown</source>
-        <translation>Unbekannt</translation>
-    </message>
-    <message>
         <source>Wait lib parameters</source>
         <translation>Warte lib Parameter</translation>
     </message>
@@ -1299,6 +1291,10 @@ Beachte! Danach wird die 2FA Autorisierung deaktiviert werden.</translation>
     </message>
     <message>
         <source>Today</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unknown</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

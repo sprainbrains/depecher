@@ -641,10 +641,6 @@
         <source>Image saved to gallery!</source>
         <translation>Kuva tallennettu galleriaan!</translation>
     </message>
-    <message>
-        <source>Share function will be here soon</source>
-        <translation>Jakotoiminto on saatavilla pian</translation>
-    </message>
 </context>
 <context>
     <name>PreviewStickerSetDialog</name>
@@ -1265,11 +1261,6 @@
         <translation>Valmis</translation>
     </message>
     <message>
-        <source>Uknown</source>
-        <translatorcomment>There&apos;s a typo in the original string, should probably be Unkown, instead of Uknown</translatorcomment>
-        <translation>Tuntematon</translation>
-    </message>
-    <message>
         <source>Wait lib parameters</source>
         <translation>Odota kirjaston parametreja</translation>
     </message>
@@ -1303,6 +1294,10 @@
     </message>
     <message>
         <source>Today</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unknown</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

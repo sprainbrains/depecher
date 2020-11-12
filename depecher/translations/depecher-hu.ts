@@ -641,10 +641,6 @@
         <source>Image saved to gallery!</source>
         <translation>Kép mentve a galériába!</translation>
     </message>
-    <message>
-        <source>Share function will be here soon</source>
-        <translation>Itt lezs nemsokára a megosztás funkció</translation>
-    </message>
 </context>
 <context>
     <name>PreviewStickerSetDialog</name>
@@ -1262,10 +1258,6 @@
         <translation>Kész</translation>
     </message>
     <message>
-        <source>Uknown</source>
-        <translation>Ismeretlen</translation>
-    </message>
-    <message>
         <source>Wait lib parameters</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1299,6 +1291,10 @@
     </message>
     <message>
         <source>Today</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unknown</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -640,10 +640,6 @@
         <source>Image saved to gallery!</source>
         <translation>Bild sparad i Galleri</translation>
     </message>
-    <message>
-        <source>Share function will be here soon</source>
-        <translation>Delningsfunktion kommer snart här</translation>
-    </message>
 </context>
 <context>
     <name>PreviewStickerSetDialog</name>
@@ -1262,10 +1258,6 @@ Observera att efter detta, kommer 2-faktorsauktoriseringen att inaktiveras</tran
         <translation>Klar</translation>
     </message>
     <message>
-        <source>Uknown</source>
-        <translation>Okänd</translation>
-    </message>
-    <message>
         <source>Wait lib parameters</source>
         <translation>Vänta lib-parametrar</translation>
     </message>
@@ -1299,6 +1291,10 @@ Observera att efter detta, kommer 2-faktorsauktoriseringen att inaktiveras</tran
     </message>
     <message>
         <source>Today</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unknown</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
