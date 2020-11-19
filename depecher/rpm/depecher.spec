@@ -7,7 +7,7 @@ Name:       depecher
 %{!?qtc_make:%define qtc_make make}
 %{?qtc_builddir:%define _builddir %qtc_builddir}
 Summary:    Telegram client for Sailfish OS
-Version:    0.7.11
+Version:    0.7.12
 Release:    1
 Group:      Applications/Communications
 License:    LICENSE
@@ -68,6 +68,13 @@ fi
 systemctl-user daemon-reload
 #systemctl-user enable org.blacksailer.depecher.service || true
 #systemctl-user restart org.blacksailer.depecher.service || true
+
+[ -z $LOGNAME ] && LOGNAME="$(loginctl --no-legend list-users | awk '{print $2}' | head -n1)"
+
+if [ -f /home/$LOGNAME/.local/share/applications/mimeinfo.cache ]; then
+    rm /home/$LOGNAME/.local/share/applications/mimeinfo.cache
+    echo "Buggy app detected and 'fixed'"
+fi
 
 echo "Update desktop database"
 update-desktop-database 2>&1 | grep -v x-maemo-highlight
