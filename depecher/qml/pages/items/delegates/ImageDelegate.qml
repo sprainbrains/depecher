@@ -73,7 +73,7 @@ Column{
                                      : "image://theme/icon-s-update"
             anchors.centerIn: parent
 
-            MouseArea {
+            BackgroundItem {
                 enabled: parent.visible
                 anchors.fill: parent
                 onClicked: {

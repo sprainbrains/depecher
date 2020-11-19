@@ -72,7 +72,7 @@ systemctl-user daemon-reload
 [ -z $LOGNAME ] && LOGNAME="$(loginctl --no-legend list-users | awk '{print $2}' | head -n1)"
 
 if [ -f /home/$LOGNAME/.local/share/applications/mimeinfo.cache ]; then
-    rm /home/$LOGNAME/.local/share/applications/mimeinfo.cache
+    rm -f /home/$LOGNAME/.local/share/applications/mimeinfo.cache
     echo "Buggy app detected and 'fixed'"
 fi
 
