@@ -445,6 +445,7 @@ Page {
             property alias chatId: channelInfo.chatId
             property alias supergroupId: channelInfo.supergroupId
             property bool hideOpenMenu: false
+            property int sourceModelCount: filterMembersModel.sourceModel ? filterMembersModel.sourceModel.count : 0
 
             ChannelInfo {
                 id:channelInfo
@@ -683,7 +684,7 @@ Page {
                     inputMethodHints: Qt.ImhNoAutoUppercase
                     focusOutBehavior: FocusBehavior.ClearItemFocus
                     autoScrollEnabled: false
-                    visible: membersList.count
+                    visible: flickable.sourceModelCount
 
                     Component.onCompleted: membersList.searchField = searchField
 
@@ -700,7 +701,7 @@ Page {
                 SilicaListView {
                     id:membersList
                     width: parent.width
-                    height: membersList.count ? (page.height - searchField.height) : 0
+                    height: flickable.sourceModelCount ? (page.height - searchField.height) : 0
                     clip:true
                     interactive: flickable.atYEnd || !membersList.atYBeginning
                     property SearchField searchField

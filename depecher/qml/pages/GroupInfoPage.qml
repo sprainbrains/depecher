@@ -8,6 +8,7 @@ import "items/filter_delegates"
 Page {
     id: page
     property alias chat_id: groupInfo.chatId
+    property int sourceModelCount: filterMembersModel.sourceModel ? filterMembersModel.sourceModel.count : 0
     signal filterChatMembersModelChanged(var membersModel)
 
     BasicGroupInfo {
@@ -24,12 +25,6 @@ Page {
         PageHeader {
             id:header
             title:qsTr("Group info")
-        }
-        PullDownMenu {
-            visible: groupInfo.inviteLink
-            MenuItem {
-                text: groupInfo.inviteLink
-            }
         }
 
         Connections {
@@ -106,8 +101,10 @@ Page {
                             width: parent.width - Theme.iconSizeMedium - Theme.paddingLarge
                             text: groupInfo.inviteLink
                             anchors.verticalCenter: parent.verticalCenter
+                            truncationMode: TruncationMode.Fade
                         }
                     }
+                    onClicked: Qt.openUrlExternally(groupInfo.inviteLink)
                 }
                 IconTextSwitch {
                     text: qsTr("Notifications")
@@ -168,7 +165,7 @@ Page {
                 inputMethodHints: Qt.ImhNoAutoUppercase
                 focusOutBehavior: FocusBehavior.ClearItemFocus
                 autoScrollEnabled: false
-                visible: membersList.count
+                visible: sourceModelCount
 
                 Component.onCompleted: membersList.searchField = searchField
 
@@ -185,7 +182,7 @@ Page {
             SilicaListView {
                 id:membersList
                 width: parent.width
-                height: membersList.count ? (page.height - searchField.height) : 0
+                height: sourceModelCount ? (page.height - searchField.height) : 0
                 interactive: flickable.atYEnd || !membersList.atYBeginning
                 clip:true
                 property SearchField searchField

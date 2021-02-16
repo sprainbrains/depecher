@@ -9,11 +9,12 @@ class ChatMembersModel : public QAbstractListModel
 {
     Q_OBJECT
     Q_PROPERTY(bool supergroupMode READ supergroupMode WRITE setSupergroupMode NOTIFY supergroupModeChanged)
-    bool m_supergroupMode = false;
-
+    Q_PROPERTY(int count READ count NOTIFY countChanged)
 public:
     explicit ChatMembersModel(QObject *parent = nullptr);
     ChatMembersModel(QObject *parent = nullptr, bool mode = false);
+
+    bool m_supergroupMode = false;
     TdlibJsonWrapper *m_tdlibJson;
     QMap<int, int> avatarPhotoMap;
     std::vector<QSharedPointer<chatMember>> m_members;
@@ -37,10 +38,12 @@ public:
     void setMembers(const std::vector<QSharedPointer<chatMember> > &members);
     Q_ENUM(MemberStatus)
     Q_INVOKABLE QVariant getProperty(int idx, const QByteArray &prop);
+    int count() const;
 signals:
-
     void supergroupModeChanged(bool supergroupMode);
     void downloadAvatar(const int fileId, const int rowIndex, const int priority) const;
+    void countChanged();
+
 private slots:
     void processFile(const QJsonObject &fileObject);
     void getFile(const int fileId, const int rowIndex, const int priority);

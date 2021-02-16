@@ -35,11 +35,12 @@ ChatMembersModel::ChatMembersModel(QObject *parent, bool mode) : QAbstractListMo
 void ChatMembersModel::setMembers(const std::vector<QSharedPointer<chatMember> > &members)
 {
     beginInsertRows(QModelIndex(), 0, members.size() - 1);
-    for (int i = 0; i < members.size(); ++i)
+    for (uint i = 0; i < members.size(); ++i)
         m_members.push_back(members[i]);
     qDebug() << m_members.size();
 
     endInsertRows();
+    emit countChanged();
 }
 
 int ChatMembersModel::rowCount(const QModelIndex &parent) const
@@ -137,7 +138,7 @@ void ChatMembersModel::getFile(const int fileId, const int rowIndex, const int p
 void ChatMembersModel::userStatusReceived(const QJsonObject &userStatusObject)
 {
     int user_id = userStatusObject["user_id"].toInt();
-    for (int i = 0; i < m_members.size(); ++i) {
+    for (uint i = 0; i < m_members.size(); ++i) {
         if (m_members[i]->user_id_ == user_id) {
             QVector<int> roles;
             roles.append(ONLINE_STATUS);
@@ -179,6 +180,11 @@ bool ChatMembersModel::supergroupMode() const
 QVariant ChatMembersModel::getProperty(int idx, const QByteArray &prop)
 {
     return data(index(idx), roleNames().key(prop));
+}
+
+int ChatMembersModel::count() const
+{
+    return m_members.size();;
 }
 
 } // namespace tdlibQt
