@@ -114,7 +114,7 @@ protected:
     QList<QSharedPointer<message>> m_messages;
     QSharedPointer<ChatMemberStatus> m_UserStatus;
     QMap<int, int> messagePhotoQueue;
-    QMap<qint64, QVector<int>> avatarPhotoQueue;
+    QMap<qint64, QVector<QPersistentModelIndex>> avatarPhotoQueue;
     NotificationManager *m_NotificationsManager;
     void appendMessage(const QJsonObject &messageObject);
     QString m_peerId;
@@ -124,7 +124,7 @@ protected:
 protected slots:
     void chatActionCleanUp();
     void getFile(const int fileId, const int priority, const int indexItem);
-    void getAvatar(const qint64 fileId, const int priority, const int indexItem);
+    void getAvatar(const qint64 fileId, const int priority, const QPersistentModelIndex &persistentIndex);
     void processFile(const QJsonObject &fileObject);
     void updateChatReadInbox(const QJsonObject &inboxObject);
     void updateChatReadOutbox(const QJsonObject &outboxObject);
@@ -223,7 +223,7 @@ signals:
     void userNameChanged(QString userName);
     void peerIdChanged(QString peerId);
     void downloadFileStart(int file_id_, int priority_, int indexItem) const;
-    void downloadAvatarStart(qint64 file_id_, int priority_, int indexItem) const;
+    void downloadAvatarStart(qint64 file_id_, int priority_, const QPersistentModelIndex &persistenIndex) const;
     void fetchOldMessages() const;
     void errorReceived(int error_code, const QString &error_message);
     void firstIdChanged();

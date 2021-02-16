@@ -7,7 +7,7 @@ Name:       depecher
 %{!?qtc_make:%define qtc_make make}
 %{?qtc_builddir:%define _builddir %qtc_builddir}
 Summary:    Telegram client for Sailfish OS
-Version:    0.7.12
+Version:    0.7.13
 Release:    1
 Group:      Applications/Communications
 License:    LICENSE
@@ -77,7 +77,7 @@ if [ -f /home/$LOGNAME/.local/share/applications/mimeinfo.cache ]; then
 fi
 
 echo "Update desktop database"
-update-desktop-database 2>&1 | grep -v x-maemo-highlight
+update-desktop-database 2>&1 | grep -v x-maemo-highlight || true
 
 
 %preun
@@ -90,7 +90,7 @@ fi
 
 %files
 %defattr(-,root,root,-)
-%{_bindir}
+%{_bindir}/%{name}
 %{_datadir}/%{name}
 %{_datadir}/applications/%{name}.desktop
 %{_datadir}/applications/%{name}-openurl.desktop

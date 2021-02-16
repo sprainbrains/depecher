@@ -106,67 +106,69 @@ QVariant MessagingModel::data(const QModelIndex &index, int role) const
         return QVariant();
     //minus one because of invisible item. fetchOlder issue
     int rowIndex = index.row() - 1;
+    auto msg = m_messages[rowIndex];
 
     switch (role) {
     case CONTENT:
         return dataContent(rowIndex);
     case ID: //int64
-        return QString::number(m_messages[rowIndex]->id_);
+        return QString::number(msg->id_);
     case SENDER_USER_ID: //int64
-        return QString::number(m_messages[rowIndex]->sender_user_id_);
+        return QString::number(msg->sender_user_id_);
     case SENDER_PHOTO: {
-        auto profilePhotoPtr = UsersModel::instance()->getUserPhoto(m_messages[rowIndex]->sender_user_id_);
+        auto profilePhotoPtr = UsersModel::instance()->getUserPhoto(msg->sender_user_id_);
         if (profilePhotoPtr.data()) {
             if (profilePhotoPtr->small_.data()) {
                 if (profilePhotoPtr->small_->local_->is_downloading_completed_)
                     return QString::fromStdString(profilePhotoPtr->small_->local_->path_);
                 else
-                    emit downloadAvatarStart(profilePhotoPtr->small_->id_, 12, rowIndex);
+                    emit downloadAvatarStart(profilePhotoPtr->small_->id_, 12,
+                                             QPersistentModelIndex(index));
             }
         }
         return QVariant();
     }
     case AUTHOR:
-        return UsersModel::instance()->getUserFullName(m_messages[rowIndex]->sender_user_id_);
+        return UsersModel::instance()->getUserFullName(msg->sender_user_id_);
     case CHAT_ID: //int64
-        return QString::number(m_messages[rowIndex]->chat_id_);
+        return QString::number(msg->chat_id_);
     case IS_OUTGOING:
-        return m_messages[rowIndex]->is_outgoing_;
+        return msg->is_outgoing_;
     case CAN_BE_EDITED:
-        return m_messages[rowIndex]->can_be_edited_;
+        return msg->can_be_edited_;
     case CAN_BE_FORWARDED:
-        return m_messages[rowIndex]->can_be_forwarded_;
+        return msg->can_be_forwarded_;
     case CAN_BE_DELETED_ONLY_FOR_YOURSELF:
-        return m_messages[rowIndex]->can_be_deleted_only_for_self_;
+        return msg->can_be_deleted_only_for_self_;
     case CAN_BE_DELETED_FOR_ALL_USERS:
-        return m_messages[rowIndex]->can_be_deleted_for_all_users_;
+        return msg->can_be_deleted_for_all_users_;
     case IS_CHANNEL_POST:
-        return m_messages[rowIndex]->is_channel_post_;
+        return msg->is_channel_post_;
     case CONTAINS_UNREAD_MENTION:
-        return m_messages[rowIndex]->contains_unread_mention_;
+        return msg->contains_unread_mention_;
     case DATE:
-        return m_messages[rowIndex]->date_;
+        return msg->date_;
     case EDIT_DATE:
-        return m_messages[rowIndex]->edit_date_;
+        return msg->edit_date_;
     case REPLY_TO_MESSAGE_ID: { //int64
-        return QString::number(m_messages[rowIndex]->reply_to_message_id_);
+        return QString::number(msg->reply_to_message_id_);
 
-        if (m_messages[rowIndex]->reply_to_message_id_ == 0)
+        if (msg->reply_to_message_id_ == 0)
             return rowIndex;
-        return findIndexById(m_messages[rowIndex]->reply_to_message_id_);
+        return findIndexById(msg->reply_to_message_id_);
     }
     case REPLY_AUTHOR: {
-        if (m_messages[rowIndex]->reply_to_message_id_ == 0)
+        if (msg->reply_to_message_id_ == 0)
             return QVariant();
         //А как оповестить потомка что появился реплай в мапе?
         // 1. Сигналом модели
-        if (replyMessagesMap.contains(m_messages[rowIndex]->reply_to_message_id_)) {
-            return UsersModel::instance()->getUserFullName(replyMessagesMap[m_messages[rowIndex]->reply_to_message_id_]->sender_user_id_);
+        if (replyMessagesMap.contains(msg->reply_to_message_id_)) {
+            return UsersModel::instance()->getUserFullName(replyMessagesMap[msg->reply_to_message_id_]->sender_user_id_);
         }
         return QVariant();
     }
     case REPLY_MESSAGE: {
-        qint64 reply_id = m_messages[rowIndex]->reply_to_message_id_;
+        qint64 reply_id = msg->reply_to_message_id_;
         if (reply_id == 0)
             return QVariant();
         //А как оповестить потомка что появился реплай в мапе?
@@ -184,33 +186,33 @@ QVariant MessagingModel::data(const QModelIndex &index, int role) const
         return QVariant();
     }
     case TTL:
-        return m_messages[rowIndex]->ttl_;
+        return msg->ttl_;
     case TTL_EXPIRES_IN:
-        return m_messages[rowIndex]->ttl_expires_in_;
+        return msg->ttl_expires_in_;
     case AUTHOR_SIGNATURE:
-        return QString::fromStdString(m_messages[rowIndex]->author_signature_);
+        return QString::fromStdString(msg->author_signature_);
     case VIEWS:
-        return m_messages[rowIndex]->views_;
+        return msg->views_;
     case MEDIA_ALBUM_ID:
-        return QString::number(m_messages[rowIndex]->media_album_id_);
+        return QString::number(msg->media_album_id_);
     case FORWARD_INFO: {
-//        if (m_messages[rowIndex]->forward_info_.data()) {
-        if (m_messages[rowIndex]->forward_info_->origin_.data()) {
-            if (m_messages[rowIndex]->forward_info_->origin_->get_id() == messageForwardOriginUser::ID) {
+//        if (msg->forward_info_.data()) {
+        if (msg->forward_info_->origin_.data()) {
+            if (msg->forward_info_->origin_->get_id() == messageForwardOriginUser::ID) {
                 messageForwardOriginUser *messageForwardInfoPtr = static_cast<messageForwardOriginUser *>
-                        (m_messages[rowIndex]->forward_info_->origin_.data());
+                        (msg->forward_info_->origin_.data());
 
                 return UsersModel::instance()->getUserFullName(messageForwardInfoPtr->sender_user_id_);
             }
-            if (m_messages[rowIndex]->forward_info_->origin_->get_id() == messageForwardOriginChannel::ID) {
+            if (msg->forward_info_->origin_->get_id() == messageForwardOriginChannel::ID) {
                 messageForwardOriginChannel *messageForwardInfoPtr = static_cast<messageForwardOriginChannel *>
-                        (m_messages[rowIndex]->forward_info_->origin_.data());
+                        (msg->forward_info_->origin_.data());
 
                 return UsersModel::instance()->getChatTitle(messageForwardInfoPtr->chat_id_);
             }
-            if (m_messages[rowIndex]->forward_info_->origin_->get_id() == messageForwardOriginHiddenUser::ID) {
+            if (msg->forward_info_->origin_->get_id() == messageForwardOriginHiddenUser::ID) {
                 messageForwardOriginHiddenUser *messageForwardInfoPtr = static_cast<messageForwardOriginHiddenUser *>
-                        (m_messages[rowIndex]->forward_info_->origin_.data());
+                        (msg->forward_info_->origin_.data());
 
                 return QString::fromStdString(messageForwardInfoPtr->sender_name_);
             }
@@ -220,39 +222,39 @@ QVariant MessagingModel::data(const QModelIndex &index, int role) const
         return QVariant();
     }
     case RICH_FILE_CAPTION: {
-        if (m_messages[rowIndex]->content_->get_id() == messagePhoto::ID) {
+        if (msg->content_->get_id() == messagePhoto::ID) {
             auto contentPhotoPtr = static_cast<messagePhoto *>
-                                   (m_messages[rowIndex]->content_.data());
+                                   (msg->content_.data());
             auto entities = contentPhotoPtr->caption_->entities_;
             return makeRichText(QString::fromStdString(contentPhotoPtr->caption_->text_), entities);
         }
-        if (m_messages[rowIndex]->content_->get_id() == messageDocument::ID) {
+        if (msg->content_->get_id() == messageDocument::ID) {
             auto contentDocumentPtr = static_cast<messageDocument *>
-                                      (m_messages[rowIndex]->content_.data());
+                                      (msg->content_.data());
             auto entities = contentDocumentPtr->caption_->entities_;
             return makeRichText(QString::fromStdString(contentDocumentPtr->caption_->text_), entities);
         }
-        if (m_messages[rowIndex]->content_->get_id() == messageAnimation::ID) {
+        if (msg->content_->get_id() == messageAnimation::ID) {
             auto contentAnimationPtr = static_cast<messageAnimation *>
-                                       (m_messages[rowIndex]->content_.data());
+                                       (msg->content_.data());
             auto entities = contentAnimationPtr->caption_->entities_;
             return makeRichText(QString::fromStdString(contentAnimationPtr->caption_->text_), entities);
         }
-        if (m_messages[rowIndex]->content_->get_id() == messageVoiceNote::ID) {
+        if (msg->content_->get_id() == messageVoiceNote::ID) {
             auto contentVoicePtr = static_cast<messageVoiceNote *>
-                                   (m_messages[rowIndex]->content_.data());
+                                   (msg->content_.data());
             auto entities = contentVoicePtr->caption_->entities_;
             return makeRichText(QString::fromStdString(contentVoicePtr->caption_->text_), entities);
         }
-        if (m_messages[rowIndex]->content_->get_id() == messageAudio::ID) {
+        if (msg->content_->get_id() == messageAudio::ID) {
             auto contentAudioPtr = static_cast<messageAudio *>
-                                   (m_messages[rowIndex]->content_.data());
+                                   (msg->content_.data());
             auto entities = contentAudioPtr->caption_->entities_;
             return makeRichText(QString::fromStdString(contentAudioPtr->caption_->text_), entities);
         }
-        if (m_messages[rowIndex]->content_->get_id() == messageVideo::ID) {
+        if (msg->content_->get_id() == messageVideo::ID) {
             auto contentVideoPtr = static_cast<messageVideo *>
-                                   (m_messages[rowIndex]->content_.data());
+                                   (msg->content_.data());
             auto entities = contentVideoPtr->caption_->entities_;
             return makeRichText(QString::fromStdString(contentVideoPtr->caption_->text_), entities);
         }
@@ -261,43 +263,43 @@ QVariant MessagingModel::data(const QModelIndex &index, int role) const
     }
 
     case FILE_CAPTION: {
-        if (m_messages[rowIndex]->content_->get_id() == messagePhoto::ID) {
+        if (msg->content_->get_id() == messagePhoto::ID) {
             auto contentPhotoPtr = static_cast<messagePhoto *>
-                                   (m_messages[rowIndex]->content_.data());
+                                   (msg->content_.data());
             return QString::fromStdString(contentPhotoPtr->caption_->text_);
         }
-        if (m_messages[rowIndex]->content_->get_id() == messageDocument::ID) {
+        if (msg->content_->get_id() == messageDocument::ID) {
             auto contentDocumentPtr = static_cast<messageDocument *>
-                                      (m_messages[rowIndex]->content_.data());
+                                      (msg->content_.data());
             return QString::fromStdString(contentDocumentPtr->caption_->text_);
         }
-        if (m_messages[rowIndex]->content_->get_id() == messageAnimation::ID) {
+        if (msg->content_->get_id() == messageAnimation::ID) {
             auto contentAnimationPtr = static_cast<messageAnimation *>
-                                       (m_messages[rowIndex]->content_.data());
+                                       (msg->content_.data());
             return QString::fromStdString(contentAnimationPtr->caption_->text_);
         }
-        if (m_messages[rowIndex]->content_->get_id() == messageVoiceNote::ID) {
+        if (msg->content_->get_id() == messageVoiceNote::ID) {
             auto contentVoicePtr = static_cast<messageVoiceNote *>
-                                   (m_messages[rowIndex]->content_.data());
+                                   (msg->content_.data());
             return QString::fromStdString(contentVoicePtr->caption_->text_);
         }
-        if (m_messages[rowIndex]->content_->get_id() == messageAudio::ID) {
+        if (msg->content_->get_id() == messageAudio::ID) {
             auto contentAudioPtr = static_cast<messageAudio *>
-                                   (m_messages[rowIndex]->content_.data());
+                                   (msg->content_.data());
             return QString::fromStdString(contentAudioPtr->caption_->text_);
         }
-        if (m_messages[rowIndex]->content_->get_id() == messageVideo::ID) {
+        if (msg->content_->get_id() == messageVideo::ID) {
             auto contentVideoPtr = static_cast<messageVideo *>
-                                   (m_messages[rowIndex]->content_.data());
+                                   (msg->content_.data());
             return QString::fromStdString(contentVideoPtr->caption_->text_);
         }
 
         return QVariant();
     }
     case PHOTO_ASPECT: {
-        if (m_messages[rowIndex]->content_->get_id() == messagePhoto::ID) {
+        if (msg->content_->get_id() == messagePhoto::ID) {
             auto contentPhotoPtr = static_cast<messagePhoto *>
-                                   (m_messages[rowIndex]->content_.data());
+                                   (msg->content_.data());
             if (contentPhotoPtr->photo_->sizes_.back()->type_ != "i")
                 return (float)contentPhotoPtr->photo_->sizes_.back()->width_ / (float)
                        contentPhotoPtr->photo_->sizes_.back()->height_;
@@ -309,27 +311,27 @@ QVariant MessagingModel::data(const QModelIndex &index, int role) const
                        contentPhotoPtr->photo_->sizes_[sizeCount - 2]->height_;
             }
         }
-        if (m_messages[rowIndex]->content_->get_id() == messageVideo::ID) {
+        if (msg->content_->get_id() == messageVideo::ID) {
             auto contentVideoPtr = static_cast<messageVideo *>
-                                   (m_messages[rowIndex]->content_.data());
+                                   (msg->content_.data());
             auto thumbnail = contentVideoPtr->video_->thumbnail_;
             if (thumbnail)
                 return (float)thumbnail->width_ / (float)thumbnail->height_;
             else
                 return 0.1;
         }
-        if (m_messages[rowIndex]->content_->get_id() == messageAnimation::ID) {
+        if (msg->content_->get_id() == messageAnimation::ID) {
             auto contentAnimationPtr = static_cast<messageAnimation *>
-                                       (m_messages[rowIndex]->content_.data());
+                                       (msg->content_.data());
             auto animation = contentAnimationPtr->animation_;
             if (animation)
                 return (float)animation->width_ / (float)animation->height_;
             else
                 return 0.1;
         }
-        if (m_messages[rowIndex]->content_->get_id() == messageVideoNote::ID) {
+        if (msg->content_->get_id() == messageVideoNote::ID) {
             auto contentVideoPtr = static_cast<messageVideoNote *>
-                                   (m_messages[rowIndex]->content_.data());
+                                   (msg->content_.data());
             auto thumbnail = contentVideoPtr->video_note_->thumbnail_;
             if (thumbnail)
                 return (float)thumbnail->width_ / (float)thumbnail->height_;
@@ -339,65 +341,65 @@ QVariant MessagingModel::data(const QModelIndex &index, int role) const
         return QVariant();
     }
     case DOCUMENT_NAME: {
-        if (m_messages[rowIndex]->content_->get_id() == messageDocument::ID) {
+        if (msg->content_->get_id() == messageDocument::ID) {
             auto contentDocumentPtr = static_cast<messageDocument *>
-                                      (m_messages[rowIndex]->content_.data());
+                                      (msg->content_.data());
             return QString::fromStdString(contentDocumentPtr->document_->file_name_);
         }
-        if (m_messages[rowIndex]->content_->get_id() == messageVideo::ID) {
+        if (msg->content_->get_id() == messageVideo::ID) {
             auto contentVideoPtr = static_cast<messageVideo *>
-                                   (m_messages[rowIndex]->content_.data());
+                                   (msg->content_.data());
             return QString::fromStdString(contentVideoPtr->video_->file_name_);
         }
         return QVariant();
         break;
     }
     case DURATION: {
-        if (m_messages[rowIndex]->content_->get_id() == messageVoiceNote::ID) {
+        if (msg->content_->get_id() == messageVoiceNote::ID) {
             auto contentVoicePtr = static_cast<messageVoiceNote *>
-                                   (m_messages[rowIndex]->content_.data());
+                                   (msg->content_.data());
             return contentVoicePtr->voice_note_->duration_;
         }
-        if (m_messages[rowIndex]->content_->get_id() == messageVideo::ID) {
+        if (msg->content_->get_id() == messageVideo::ID) {
             auto contentVideoPtr = static_cast<messageVideo *>
-                                   (m_messages[rowIndex]->content_.data());
+                                   (msg->content_.data());
             return contentVideoPtr->video_->duration_;
         }
-        if (m_messages[rowIndex]->content_->get_id() == messageVideoNote::ID) {
+        if (msg->content_->get_id() == messageVideoNote::ID) {
             auto contentVideoNotePtr = static_cast<messageVideoNote *>
-                                       (m_messages[rowIndex]->content_.data());
+                                       (msg->content_.data());
             return contentVideoNotePtr->video_note_->duration_;
         }
-        if (m_messages[rowIndex]->content_->get_id() == messageAudio::ID) {
+        if (msg->content_->get_id() == messageAudio::ID) {
             auto contentAudioPtr = static_cast<messageAudio *>
-                                   (m_messages[rowIndex]->content_.data());
+                                   (msg->content_.data());
             return contentAudioPtr->audio_->duration_;
         }
         return QVariant();
         break;
     }
     case WAVEFORM: {
-        if (m_messages[rowIndex]->content_->get_id() == messageVoiceNote::ID) {
+        if (msg->content_->get_id() == messageVoiceNote::ID) {
             auto contentVoicePtr = static_cast<messageVoiceNote *>
-                                   (m_messages[rowIndex]->content_.data());
+                                   (msg->content_.data());
             return QString::fromStdString(contentVoicePtr->voice_note_->waveform_);
         }
         return QVariant();
         break;
     }
     case AUDIO_PERFORMER: {
-        if (m_messages[rowIndex]->content_->get_id() == messageAudio::ID) {
+        if (msg->content_->get_id() == messageAudio::ID) {
             auto contentAudioPtr = static_cast<messageAudio *>
-                                   (m_messages[rowIndex]->content_.data());
+                                   (msg->content_.data());
             return QString::fromStdString(contentAudioPtr->audio_->performer_);
         }
         return QVariant();
         break;
     }
     case AUDIO_TITLE: {
-        if (m_messages[rowIndex]->content_->get_id() == messageAudio::ID) {
+        if (msg->content_->get_id() == messageAudio::ID) {
             auto contentAudioPtr = static_cast<messageAudio *>
-                                   (m_messages[rowIndex]->content_.data());
+                                   (msg->content_.data());
             return QString::fromStdString(contentAudioPtr->audio_->title_);
         }
         return QVariant();
@@ -416,16 +418,16 @@ QVariant MessagingModel::data(const QModelIndex &index, int role) const
         break;
 
     case STICKER_SET_ID:
-        if (m_messages[rowIndex]->content_->get_id() == messageSticker::ID) {
+        if (msg->content_->get_id() == messageSticker::ID) {
             auto contentStickerPtr = static_cast<messageSticker *>
-                                     (m_messages[rowIndex]->content_.data());
+                                     (msg->content_.data());
             return QString::number(contentStickerPtr->sticker_->set_id_);
         }
         return QVariant();
         break;
     case MESSAGE_TYPE: {
-        auto messageTypeId = m_messages[rowIndex]->content_->get_id();
-        if (m_messages[rowIndex]->chat_id_ == 0)
+        auto messageTypeId = msg->content_->get_id();
+        if (msg->chat_id_ == 0)
             return SYSTEM_NEW_MESSAGE;
         if (messageTypeId == messageText::ID)
             return TEXT;
@@ -461,27 +463,27 @@ QVariant MessagingModel::data(const QModelIndex &index, int role) const
         break;
     }
     case SENDING_STATE:
-        if (m_messages[rowIndex]->sending_state_.data()) {
-            if (m_messages[rowIndex]->sending_state_->get_id() == messageSendingStatePending::ID)
+        if (msg->sending_state_.data()) {
+            if (msg->sending_state_->get_id() == messageSendingStatePending::ID)
                 return QVariant::fromValue(tdlibQt::Enums::MessageState::Sending_Pending);
-            if (m_messages[rowIndex]->sending_state_->get_id() == messageSendingStateFailed::ID)
+            if (msg->sending_state_->get_id() == messageSendingStateFailed::ID)
                 return QVariant::fromValue(tdlibQt::Enums::MessageState::Sending_Failed);
         }
-        if (m_messages[rowIndex]->is_outgoing_) {
-            if (m_messages[rowIndex]->id_ <= lastOutboxId())
+        if (msg->is_outgoing_) {
+            if (msg->id_ <= lastOutboxId())
                 return QVariant::fromValue(tdlibQt::Enums::MessageState::Sending_Read);
             else
                 return QVariant::fromValue(tdlibQt::Enums::MessageState::Sending_Not_Read);
         } else {
-            if (m_messages[rowIndex]->id_ <= lastMessage().toLongLong())
+            if (msg->id_ <= lastMessage().toLongLong())
                 return QVariant::fromValue(tdlibQt::Enums::MessageState::Sending_Read);
             else
                 return QVariant::fromValue(tdlibQt::Enums::MessageState::Sending_Not_Read);
         }
         break;
     case MEDIA_PREVIEW:
-        if (m_messages[rowIndex]->content_->get_id() == messageAnimation::ID) {
-            auto contentAnimationPtr = static_cast<messageAnimation *>(m_messages[rowIndex]->content_.data());
+        if (msg->content_->get_id() == messageAnimation::ID) {
+            auto contentAnimationPtr = static_cast<messageAnimation *>(msg->content_.data());
             if (!contentAnimationPtr->animation_->thumbnail_)
                 return QVariant();
             if (contentAnimationPtr->animation_->thumbnail_->photo_->local_->is_downloading_completed_)
@@ -491,8 +493,8 @@ QVariant MessagingModel::data(const QModelIndex &index, int role) const
                 emit downloadFileStart(fileId, 12, rowIndex);
             }
         }
-        if (m_messages[rowIndex]->content_->get_id() == messageVideo::ID) {
-            auto contentVideoPtr = static_cast<messageVideo *>(m_messages[rowIndex]->content_.data());
+        if (msg->content_->get_id() == messageVideo::ID) {
+            auto contentVideoPtr = static_cast<messageVideo *>(msg->content_.data());
             if (!contentVideoPtr->video_->thumbnail_)
                 return QVariant();
             if (contentVideoPtr->video_->thumbnail_->photo_->local_->is_downloading_completed_)
@@ -502,8 +504,8 @@ QVariant MessagingModel::data(const QModelIndex &index, int role) const
                 emit downloadFileStart(fileId, 12, rowIndex);
             }
         }
-        if (m_messages[rowIndex]->content_->get_id() == messageVideoNote::ID) {
-            auto contentVideoPtr = static_cast<messageVideoNote *>(m_messages[rowIndex]->content_.data());
+        if (msg->content_->get_id() == messageVideoNote::ID) {
+            auto contentVideoPtr = static_cast<messageVideoNote *>(msg->content_.data());
             if (!contentVideoPtr->video_note_->thumbnail_)
                 return QVariant();
             if (contentVideoPtr->video_note_->thumbnail_->photo_->local_->is_downloading_completed_)
@@ -517,9 +519,9 @@ QVariant MessagingModel::data(const QModelIndex &index, int role) const
         break;
 
     case REPLY_MARKUP:
-        if (m_messages[rowIndex]->reply_markup_.data()) {
-            if (m_messages[rowIndex]->reply_markup_->get_id() == replyMarkupInlineKeyboard::ID) {
-                auto replyMarkupPtr = static_cast<replyMarkupInlineKeyboard *>(m_messages[rowIndex]->reply_markup_.data());
+        if (msg->reply_markup_.data()) {
+            if (msg->reply_markup_->get_id() == replyMarkupInlineKeyboard::ID) {
+                auto replyMarkupPtr = static_cast<replyMarkupInlineKeyboard *>(msg->reply_markup_.data());
                 QVariantList rowsButtons;
                 for (auto row : replyMarkupPtr->rows_) {
                     QVariantList cellInRowButtons;
@@ -539,16 +541,16 @@ QVariant MessagingModel::data(const QModelIndex &index, int role) const
         break;
 
     case SECTION: {
-        auto messageDateTime = QDateTime::fromTime_t(m_messages[rowIndex]->date_);
+        auto messageDateTime = QDateTime::fromTime_t(msg->date_);
         auto messageDate = messageDateTime.date();
         auto DateTimestamp = QDateTime::fromString(messageDate.toString(Qt::ISODate), Qt::ISODate);
         return DateTimestamp.toTime_t();
     }
     case RICH_TEXT:
-        if (m_messages[rowIndex]->content_.data() != nullptr) {
-            if (m_messages[rowIndex]->content_->get_id() == messageText::ID) {
+        if (msg->content_.data() != nullptr) {
+            if (msg->content_->get_id() == messageText::ID) {
                 auto contentPtr = static_cast<messageText *>
-                                  (m_messages[rowIndex]->content_.data());
+                                  (msg->content_.data());
                 if (contentPtr->text_.data() != nullptr) {
                     auto t = contentPtr->text_->entities_;
                     return makeRichText(QString::fromStdString(contentPtr->text_->text_), t);
@@ -764,14 +766,15 @@ void MessagingModel::getFile(const int fileId, const int priority, const int ind
     messagePhotoQueue[fileId] = indexItem;
 }
 
-void MessagingModel::getAvatar(const qint64 fileId, const int priority, const int indexItem)
+void MessagingModel::getAvatar(const qint64 fileId, const int priority, const QPersistentModelIndex &persistentIndex)
 {
     if (!avatarPhotoQueue.contains(fileId)) {
-        m_tdlibJson->downloadFile(fileId, priority);
-        avatarPhotoQueue[fileId] = QVector<int>();
+        m_tdlibJson->downloadFile(fileId, priority, true);
+        avatarPhotoQueue[fileId] = QVector<QPersistentModelIndex>();
     }
-    if (!avatarPhotoQueue[fileId].contains(indexItem))
-        avatarPhotoQueue[fileId].append(indexItem);
+    if (!avatarPhotoQueue[fileId].contains(persistentIndex)) {
+        avatarPhotoQueue[fileId].append(persistentIndex);
+    }
 }
 
 
@@ -1241,7 +1244,7 @@ QString MessagingModel::makeRichText(const QString &data, const std::vector<QSha
 
     QList<QPair<int, int>> positions;
 
-    for (int i = 0; i < markup.size(); ++i)
+    for (uint i = 0; i < markup.size(); ++i)
         positions.append(QPair<int, int>(markup[i]->offset_, markup[i]->length_));
 
     QStringList textParts;
@@ -1250,7 +1253,7 @@ QString MessagingModel::makeRichText(const QString &data, const std::vector<QSha
         auto pair = positions[i];
         textParts.append(data.mid(pair.first, pair.second).toHtmlEscaped());
     }
-    for (int i = 0; i < markup.size(); ++i) {
+    for (uint i = 0; i < markup.size(); ++i) {
         switch (markup[i]->type_->get_id()) {
         case textEntityTypeItalic::ID:
             textParts[i] = textParts[i].prepend("<i>");
@@ -1490,18 +1493,14 @@ void MessagingModel::processFile(const QJsonObject &fileObject)
             messagePhotoQueue.remove(file->id_);
 
     }
-    if (avatarPhotoQueue.keys().contains(file->id_)) {
-        if (file->local_->is_downloading_completed_) {
-            UsersModel::instance()->setSmallAvatar(m_messages[avatarPhotoQueue[file->id_].at(0)]->sender_user_id_,
-                                                   file);
-            QVector<int> avatarRole;
-            avatarRole.append(SENDER_PHOTO);
-            for (int itr : avatarPhotoQueue[file->id_])
-                emit dataChanged(index(itr + 1),
-                                 index(itr + 1), avatarRole);
-            avatarPhotoQueue.remove(file->id_);
+    if (file->local_->is_downloading_completed_ && avatarPhotoQueue.keys().contains(file->id_)) {
+        for (QPersistentModelIndex pIdx : avatarPhotoQueue[file->id_]) {
+            qint64 sender_user_id = pIdx.data(SENDER_USER_ID).toLongLong();
+            UsersModel::instance()->setSmallAvatar(sender_user_id, file);
+            emit dataChanged(index(pIdx.row()),
+                             index(pIdx.row()), {SENDER_PHOTO});
         }
-
+        avatarPhotoQueue.remove(file->id_);
     }
 }
 
