@@ -29,9 +29,14 @@ Page {
                 openAuthorizeDialog()
         }
     }
-    Component.onCompleted: {
-        if (c_telegramWrapper.authorizationState == TdlibState.AuthorizationStateWaitPhoneNumber)
-            openAuthorizeDialog()
+
+    property bool pageLoaded: false
+    onStatusChanged: {
+        if (!pageLoaded && (page.status == PageStatus.Active)) {
+            pageLoaded = true
+            if (c_telegramWrapper.authorizationState == TdlibState.AuthorizationStateWaitPhoneNumber)
+                openAuthorizeDialog()
+        }
     }
 
     Connections {

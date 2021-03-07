@@ -1,10 +1,9 @@
 import QtQuick 2.0
-import Sailfish.Silica 1.0 
+import Sailfish.Silica 1.0
 import tdlibQtEnums 1.0
 import TelegramModels 1.0
 import QtMultimedia 5.6
 import Nemo.Configuration 1.0
-
 
 ApplicationWindow
 {
@@ -14,31 +13,15 @@ ApplicationWindow
     allowedOrientations: defaultAllowedOrientations
     _defaultPageOrientations: allowedOrientations
     initialPage: Qt.resolvedUrl("pages/DialogsPage.qml")
-//    c_telegramWrapper.authorizationState !== TdlibState.AuthorizationStateReady ?
-//                     Qt.resolvedUrl("pages/AuthorizeDialog.qml") :
-//                      Qt.resolvedUrl("pages/DialogsPage.qml")
-
-
-    ////        if(c_telegramWrapper.authorizationState !== TdlibState.AuthorizationStateReady)
-    ////            pageStack.push(Qt.resolvedUrl("pages/AuthorizeDialog.qml"))
-    ////        else
-    ////            pageStack.push(Qt.resolvedUrl("pages/DialogsPage.qml"))
-    //    }
-
-    Component.onCompleted: {
-        var component = Qt.createComponent("Background.qml");
-        var wallpaper = component.createObject(rootWindow._wallpaperItem,{});
-
-        if (wallpaper == null) {
-            console.log("Error creating object");
-        }
-    }
+    // TODO: do not hardcode #99000000 Theme.rgba("black", 0.6)
+    background.color: nightMode.value ? "#101011" : "#99000000"
 
     Audio {
         id: playMusic
         audioRole: Audio.MusicRole
         onError: console.log(error,errorString)
     }
+
     onApplicationActiveChanged: {
         if(Qt.application.active)
         {
@@ -90,28 +73,11 @@ ApplicationWindow
             var curr = new Date().getHours() * 60 + new Date().getMinutes()
             var from = new Date(nightModeFrom.value).getHours() * 60 + new Date(nightModeFrom.value).getMinutes()
             var till = new Date(nightModeTill.value).getHours() * 60 + new Date(nightModeTill.value).getMinutes()
-            if(from <= till) {
-                if(curr >= from && curr < till)
-                {
-                    nightMode.value = true
-                    nightMode.sync()
-                }
-                else {
-                    nightMode.value = false
-                    nightMode.sync()
-                }
-            } else if (from > till) {
-                if(curr < till || curr > from)
-                {
-                    nightMode.value = true
-                    nightMode.sync()
-                }            else {
-                    nightMode.value = false
-                    nightMode.sync()
-                }
-
-            }
-
+            if (from <= till)
+                nightMode.value = (curr >= from && curr < till)
+            else if (from > till)
+                nightMode.value = (curr < till || curr > from)
+            nightMode.sync()
         }
     }
 }

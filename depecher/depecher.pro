@@ -162,7 +162,6 @@ DISTFILES += \
     systemd/org.blacksailer.depecher.service \
     qml/pages/items/delegates/VoiceNoteDelegate.qml \
     qml/pages/items/delegates/AudioDelegate.qml \
-    qml/Background.qml \
     qml/pages/items/delegates/VideoDelegate.qml \
     qml/pages/items/delegates/VideoNoteDelegate.qml \
     qml/pages/components/ChatItemShare.qml \
