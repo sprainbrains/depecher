@@ -29,6 +29,10 @@ void ParseObject::parseResponse(const QByteArray &json)
     static const bool logToFile = qgetenv("DEPECHER_LOG_TO_FILE").toInt();
     if (logToFile) {
         QString userDir = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
+        if (!QFileInfo::exists(userDir + "/depecherDatabase")) {
+            QDir dir;
+            dir.mkpath(userDir + "/depecherDatabase");
+        }
         QFile logFile(userDir + "/depecherDatabase/depecher.log");
         if (logFile.open(QIODevice::WriteOnly | QIODevice::Append)) {
             logFile.write(QString("["
