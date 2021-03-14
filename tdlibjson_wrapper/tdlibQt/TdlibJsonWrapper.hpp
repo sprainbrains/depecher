@@ -86,6 +86,9 @@ public:
 private:
     QHash<int, int> downloadMap;
 
+private:
+    bool migrateFilesDirectory(const QString &oldPath, const QString &newPath);
+
 signals:
     void updateNewChat(const QJsonObject &updateNewChatObject);
     void updateUserReceived(const QJsonObject &updateNewUserObject);

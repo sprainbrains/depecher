@@ -623,6 +623,37 @@ void TdlibJsonWrapper::checkPassword(const QString &password)
     sendToTelegram(client, setAuthenticationPassword.c_str());
 }
 
+bool TdlibJsonWrapper::migrateFilesDirectory(const QString &oldPath, const QString &newPath)
+{
+    qDebug() << "Trying to migrate from: " << oldPath << " to: " << newPath;
+    QDir oldDir(oldPath), newDir(newPath);
+    if (!oldDir.exists())
+        return false;
+    if (!newDir.exists())
+        newDir.mkpath(newPath);
+    oldDir.setNameFilters({"animations", "documents", "music", "photos", "temp", "video_notes", "videos", "voice"});
+    oldDir.setFilter(QDir::Dirs);
+    QStringList subdirs = oldDir.entryList();
+    bool partialMigration = false;
+    for (const QString &subdir : subdirs) {
+        qDebug() << "Trying to move: " << subdir;
+        if (!QFileInfo::exists(newPath + "/" + subdir)) {
+            QDir dir;
+            if (!dir.rename(oldPath + "/" + subdir, newPath + "/" + subdir)) {
+                qDebug() << "can't migrate: " << subdir;
+                return false;
+            }
+        } else {
+            qDebug() << (newPath + "/" + subdir) << " already exists. To avoid any overwrites, migration for that directory will not be done";
+            partialMigration = true;
+        }
+    }
+
+    qDebug() << "Migration finished" << (partialMigration ? " with errors" : "");
+
+    return true;
+}
+
 void TdlibJsonWrapper::setTdlibParameters()
 {
     //SEG FAULT means that json has error input variable names
@@ -636,23 +667,41 @@ void TdlibJsonWrapper::setTdlibParameters()
     setOption("notification_group_count_max", notificationGroupCountMax.value(3));
     setOption("notification_group_size_max", notificationGroupSizeMax.value(10));
 
-    QFileInfo checkDir(filesDirectory.value("").toString());
-    if (!checkDir.exists() || !(checkDir.isDir() && checkDir.isWritable()))
-        filesDirectory.set("");
-    else {
+    QString userDir = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
+    QString defaultDownloadsPath = QStandardPaths::writableLocation(QStandardPaths::DownloadLocation) + "/depecher/";
+
+    // sailjail protects user from opening random files so move depecher files directory to ~/Downloads/depecher
+    if (filesDirectory.value().toString() == "") {
+        MGConfItem filesDirectoryMigratedConf("/apps/depecher/tdlib/files_directory_migrated");
+        if (!filesDirectoryMigratedConf.value(false).toBool())
+            filesDirectoryMigratedConf.set(migrateFilesDirectory((userDir + "/.local/share/harbour-depecher"), defaultDownloadsPath));
+    }
+
+    QString filesDirectoryPath = filesDirectory.value(defaultDownloadsPath).toString();
+    if (filesDirectoryPath.isEmpty())
+        filesDirectoryPath = defaultDownloadsPath;
+
+    QFileInfo checkDir(filesDirectoryPath);
+    if (!checkDir.exists()) {
+        QDir dir;
+        dir.mkpath(filesDirectoryPath);
+    }
+    if (!(checkDir.isDir() && checkDir.isWritable())) {
+        qDebug() << "Can not use set files_directory path: " << filesDirectoryPath;
+        filesDirectoryPath = "";
+    } else {
         //Disable directory from being tracked by tracker
-        QFile file(filesDirectory.value("").toString() + "/.nomedia");
+        QFile file(filesDirectoryPath + "/.nomedia");
         if (!file.exists()) {
             file.open(QIODevice::WriteOnly);
             file.close();
         }
     }
-
-    QString userDir = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
+    filesDirectory.set(filesDirectoryPath);
 
     QJsonObject paramsObj {
         {"database_directory", userDir + "/.local/share/harbour-depecher"},
-        {"files_directory", filesDirectory.value("").toString()},
+        {"files_directory", filesDirectoryPath},
         {"api_id", tdlibQt::appid.toInt()},
         {"api_hash", tdlibQt::apphash},
         {"system_language_code", QLocale::languageToString(QLocale::system().language())},

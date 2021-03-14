@@ -35,5 +35,5 @@ https://openrepos.net/content/blacksailer/depecher
  
 ## Licenses
 
-
+ - code: to be evaluated by author
  - sticker-smiled is made for jgibbon under [![GPLv3](https://www.gnu.org/graphics/gplv3-88x31.png)](https://www.gnu.org/licenses/gpl-3.0.html)
