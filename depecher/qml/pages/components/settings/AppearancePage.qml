@@ -17,26 +17,15 @@ Page {
     property alias settingsUI: msgPageSettings.settingsUI
     property alias settingsUIMessage: msgPageSettings.settingsUIMessage
 
-    ConfigurationValue {
-        id:nightMode
-        key:settingsUiPath + "/nightMode"
-        defaultValue: false
+    ConfigurationGroup {
+        id: settingsNightMode
+        path: settingsUiPath
+        property bool enabled: false
+        property bool scheduleMode: false
+        property string from: "1900-01-01T22:00:00"
+        property string till: "1900-01-01T08:00:00"
     }
-    ConfigurationValue {
-        id:nightModeSchedule
-        key:settingsUiPath + "/nightModeSchedule"
-        defaultValue: false
-    }
-    ConfigurationValue {
-        id:nightModeFrom
-        key:settingsUiPath + "/nightModeFrom"
-        defaultValue: "1900-01-01T22:00:00"
-    }
-    ConfigurationValue {
-        id:nightModeTill
-        key:settingsUiPath + "/nightModeTill"
-        defaultValue: "1900-01-01T08:00:00"
-    }
+
     ConfigurationValue {
         id:showVoiceMessageButton
         key:settingsUiPath + "/showVoiceMessageButton"
@@ -268,7 +257,6 @@ Page {
                 text: qsTr("Minimize nameplate")
                 onClicked: {
                     settingsUI.hideNameplate = !checked
-                    settingsUI.sync()
                 }
             }
             TextSwitch {
@@ -279,7 +267,6 @@ Page {
                 text: qsTr("Always align messages to left")
                 onClicked: {
                     settingsUIMessage.oneAligning = !checked
-                    settingsUIMessage.sync()
                 }
             }
             SectionHeader {
@@ -295,7 +282,6 @@ Page {
                 text: qsTr("Show full screen images in channels")
                 onClicked: {
                     settingsUIMessage.fullSizeInChannels = !checked
-                    settingsUIMessage.sync()
                 }
             }
 
@@ -307,7 +293,6 @@ Page {
                 text: qsTr("Show voice message button")
                 onClicked: {
                     showVoiceMessageButton.value = !checked
-                    showVoiceMessageButton.sync()
                 }
             }
 
@@ -319,7 +304,6 @@ Page {
                 text: qsTr("Show current time below message input")
                 onClicked: {
                     showCurrentTimeLabel.value = !checked
-                    showCurrentTimeLabel.sync()
                 }
             }
 
@@ -331,7 +315,6 @@ Page {
                 text: qsTr("Alternative send sticker icon")
                 onClicked: {
                     settingsUI.alternativeSendStickerIcon = !checked
-                    settingsUI.sync()
                 }
             }
 
@@ -348,24 +331,22 @@ Page {
 
                         TextSwitch {
                             width: parent.width
-                            checked: nightMode.value
+                            checked: settingsNightMode.enabled
                             automaticCheck: false
-                            enabled: !nightScheduleSwitch.checked
+                            enabled: !settingsNightMode.scheduleMode
                             text: qsTr("Enable night mode")
                             onClicked: {
-                                nightMode.value = !checked
-                                nightMode.sync()
+                                settingsNightMode.enabled = !checked
                             }
                         }
                         TextSwitch {
                             id:nightScheduleSwitch
                             width: parent.width
-                            checked: nightModeSchedule.value
+                            checked: settingsNightMode.scheduleMode
                             automaticCheck: false
                             text: qsTr("Enable schedule")
                             onClicked: {
-                                nightModeSchedule.value = !checked
-                                nightModeSchedule.sync()
+                                settingsNightMode.scheduleMode = !checked
                             }
                         }
 
@@ -373,35 +354,41 @@ Page {
                             width: section.width
                             ValueButton {
                                 function openTimeDialog() {
+                                    var dateFrom = new Date(settingsNightMode.from)
                                     var dialog = pageStack.push("Sailfish.Silica.TimePickerDialog", {
+                                                                    hour: dateFrom.getHours(),
+                                                                    minute: dateFrom.getMinutes(),
                                                                     hourMode: DateTime.TwentyFourHours
                                                                 })
 
                                     dialog.accepted.connect(function() {
-                                        nightModeFrom.value = dialog.time
-                                        nightModeFrom.sync()
+                                        settingsNightMode.from = dialog.time.toISOString()
                                     })
                                 }
 
                                 label: qsTr("From")
-                                value: Format.formatDate(nightModeFrom.value, Formatter.TimeValue)
+                                value: Format.formatDate(new Date(settingsNightMode.from),
+                                                         Formatter.TimeValue)
                                 width: parent.width / 2
                                 onClicked: openTimeDialog()
                             }
                             ValueButton {
                                 function openTimeDialog() {
+                                    var dateTill = new Date(settingsNightMode.till)
                                     var dialog = pageStack.push("Sailfish.Silica.TimePickerDialog", {
+                                                                    hour: dateTill.getHours(),
+                                                                    minute: dateTill.getMinutes(),
                                                                     hourMode: DateTime.TwentyFourHours
                                                                 })
 
                                     dialog.accepted.connect(function() {
-                                        nightModeTill.value = dialog.time
-                                        nightModeTill.sync()
+                                        settingsNightMode.till = dialog.time.toISOString()
                                     })
                                 }
 
                                 label:qsTr("Till")
-                                value: Format.formatDate(nightModeTill.value, Formatter.TimeValue)
+                                value: Format.formatDate(new Date(settingsNightMode.till),
+                                                         Formatter.TimeValue)
                                 width: parent.width / 2
                                 onClicked: openTimeDialog()
                             }
@@ -421,16 +408,26 @@ Page {
                     settingsUIMessage.oneAligning = false
                     settingsUIMessage.fullSizeInChannels = false
                     settingsUI.hideNameplate = false
-
-                    nightModeTill.value = nightModeTill.defaultValue
-                    nightModeFrom.value = nightModeFrom.defaultValue
-                    nightMode.value = nightMode.defaultValue
-                    nightModeSchedule.value = nightModeSchedule.defaultValue
+                    settingsNightMode.enabled = false
+                    settingsNightMode.scheduleMode = false
+                    settingsNightMode.from = "1900-01-01T22:00:00"
+                    settingsNightMode.till = "1900-01-01T08:00:00"
                     radiusSlider.value = settingsUIMessage.radius
                     opacitySlider.value = settingsUIMessage.opacity
                 }
             }
+
+            Item {
+                height: Theme.paddingMedium
+                width: 1
+            }
         }
+    }
+
+    Component.onCompleted: {
+        settingsUIMessage.sync()
+        settingsUI.sync()
+        settingsNightMode.sync()
     }
 }
 

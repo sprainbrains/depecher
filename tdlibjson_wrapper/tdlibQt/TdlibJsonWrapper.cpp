@@ -1036,81 +1036,57 @@ void TdlibJsonWrapper::forwardMessage(const qint64 chat_id, const qint64 from_ch
     sendToTelegram(client, forwardMessagesStr.toStdString().c_str());
 }
 
-void TdlibJsonWrapper::getMessage(const qint64 chat_id, const qint64 message_id, const QString extra)
+void TdlibJsonWrapper::getMessage(const qint64 chat_id, const qint64 message_id, const QString &extra)
 {
-    QString viewMessageStr = "{\"@type\":\"getMessage\","
-                             "\"chat_id\":\"%1\","
-                             "\"message_id\":\"%2\"}";
-    viewMessageStr = viewMessageStr.arg(chat_id, message_id);
-    if (extra == "") {
-        viewMessageStr = "{\"@type\":\"getMessage\","
-                         "\"chat_id\":\"%1\","
-                         "\"message_id\":\"%2\"}";
-        viewMessageStr = viewMessageStr.arg(chat_id, message_id);
-    } else {
-        viewMessageStr = "{\"@type\":\"getMessage\","
-                         "\"chat_id\":\"%1\","
-                         "\"message_id\":\"%2\","
-                         "\"extra\":\"%3\"}";
-        viewMessageStr = viewMessageStr.arg(QString::number(chat_id), QString::number(message_id), extra);
-    }
-    sendToTelegram(client, viewMessageStr.toStdString().c_str());
+    QJsonObject query {
+        {"@type", "getMessage"},
+        {"chat_id", QString::number(chat_id)},
+        {"message_id", QString::number(message_id)}
+    };
+    sendJsonObjToTelegram(query, extra);
 }
 
 void TdlibJsonWrapper::getMessages(const qint64 chat_id, QVector<qint64> message_ids, const QString &extra)
 {
-    QString getMessagesStr = "{\"@type\":\"getMessages\","
-                             "\"chat_id\":\"%1\","
-                             "\"message_ids\":%2,"
-                             "\"@extra\":\"%3\"}";
-    QString messageIdsStr = "[%1]";
-    QString messagesIds = "";
-
+    QJsonArray messagesIds;
     for (int i = 0; i < message_ids.size(); i++)
-        if (i == 0)
-            messagesIds += "\"" + QString::number(message_ids[i]) + "\"";
-        else
-            messagesIds += ",\"" + QString::number(message_ids[i]) + "\"";
+        messagesIds.append(QString::number(message_ids[i]));
 
-    getMessagesStr = getMessagesStr.arg(QString::number(chat_id), messageIdsStr.arg(messagesIds), extra);
-
-    sendToTelegram(client, getMessagesStr.toStdString().c_str());
+    QJsonObject query {
+        {"@type", "getMessages"},
+        {"chat_id", QString::number(chat_id)},
+        {"message_ids", messagesIds}
+    };
+    sendJsonObjToTelegram(query, extra);
 }
 
 void TdlibJsonWrapper::viewMessages(const QString &chat_id, const QVariantList &messageIds,
                                     const bool force_read)
 {
-    QString ids = "";
-    for (auto id : messageIds)
-        ids.append(QString::number(id.toLongLong()) + ",");
+    QJsonObject query {
+        {"@type", "viewMessages"},
+        {"chat_id", chat_id},
+        {"forceRead", force_read},
+        {"message_ids", QJsonArray::fromVariantList(messageIds)}
+    };
 
-    ids = ids.remove(ids.length() - 1, 1);
-
-    QString force_readStr = force_read ? "true" : "false";
-    QString viewMessageStr = "{\"@type\":\"viewMessages\","
-                             "\"chat_id\":\"" + chat_id + "\","
-                             "\"forceRead\":" + force_readStr + ","
-                             "\"message_ids\":[" + ids + "]}";
-    sendToTelegram(client, viewMessageStr.toStdString().c_str());
-
-
+    sendJsonObjToTelegram(query);
 }
 
 void TdlibJsonWrapper::deleteMessages(const qint64 chat_id, const QVector<qint64> message_ids,
                                       const bool revoke)
 {
-    QString ids = "";
+    QJsonArray ids;
     for (auto id : message_ids)
-        ids.append(QString::number(id) + ",");
+        ids.append(QString::number(id));
 
-    ids = ids.remove(ids.length() - 1, 1);
-
-    QString revokeStr = revoke ? "true" : "false";
-    QString deleteMessagesStr = "{\"@type\":\"deleteMessages\","
-                                "\"chat_id\":\"" + QString::number(chat_id) + "\","
-                                "\"revoke\":" + revokeStr + ","
-                                "\"message_ids\":[" + ids + "]}";
-    sendToTelegram(client, deleteMessagesStr.toStdString().c_str());
+    QJsonObject query {
+        {"@type", "deleteMessages"},
+        {"chat_id", QString::number(chat_id)},
+        {"revoke", revoke},
+        {"message_ids", ids}
+    };
+    sendJsonObjToTelegram(query);
 }
 
 void TdlibJsonWrapper::setChatMemberStatus(const qint64 chat_id, const int user_id,

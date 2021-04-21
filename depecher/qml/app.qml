@@ -14,7 +14,7 @@ ApplicationWindow
     _defaultPageOrientations: allowedOrientations
     initialPage: Qt.resolvedUrl("pages/DialogsPage.qml")
     // TODO: do not hardcode #99000000 Theme.rgba("black", 0.6)
-    background.color: nightMode.value ? "#101011" : "#99000000"
+    background.color: settingsNightMode.enabled ? "#101011" : "#99000000"
 
     Audio {
         id: playMusic
@@ -23,8 +23,7 @@ ApplicationWindow
     }
 
     onApplicationActiveChanged: {
-        if(Qt.application.active)
-        {
+        if (Qt.application.active) {
             var pages =[];
             var listPages = c_PageStarter.getPages();
             var page_dialog=Qt.resolvedUrl("pages/MessagingPage.qml")
@@ -42,42 +41,33 @@ ApplicationWindow
         }
     }
 
-    property string settingsUiPath:  "/apps/depecher/ui"
-    ConfigurationValue {
-        id:nightMode
-        key:settingsUiPath + "/nightMode"
-        defaultValue: false
+    ConfigurationGroup {
+        id: settingsNightMode
+        path: "/apps/depecher/ui"
+        property bool enabled: false
+        property bool scheduleMode: false
+        property string from: "1900-01-01T22:00:00"
+        property string till: "1900-01-01T08:00:00"
     }
-    ConfigurationValue {
-        id:nightModeSchedule
-        key:settingsUiPath + "/nightModeSchedule"
-        defaultValue: false
-    }
-    ConfigurationValue {
-        id:nightModeFrom
-        key:settingsUiPath + "/nightModeFrom"
-        defaultValue: ""
-    }
-    ConfigurationValue {
-        id:nightModeTill
-        key:settingsUiPath + "/nightModeTill"
-        defaultValue: ""
-    }
+
     Timer {
-        id:nightModeScheduleTimer
-        interval: 1000 * 2
+        id: nightModeScheduleTimer
+        interval: 1000 * 30
         repeat: true
-        running: nightModeSchedule.value
+        running: settingsNightMode.scheduleMode
+        triggeredOnStart: true
         onTriggered: {
+            var currDate = new Date()
+            var fromDate = new Date(settingsNightMode.from)
+            var tillDate = new Date(settingsNightMode.till)
             // in minutes
-            var curr = new Date().getHours() * 60 + new Date().getMinutes()
-            var from = new Date(nightModeFrom.value).getHours() * 60 + new Date(nightModeFrom.value).getMinutes()
-            var till = new Date(nightModeTill.value).getHours() * 60 + new Date(nightModeTill.value).getMinutes()
+            var curr = currDate.getHours() * 60 + currDate.getMinutes()
+            var from = fromDate.getHours() * 60 + fromDate.getMinutes()
+            var till = tillDate.getHours() * 60 + tillDate.getMinutes()
             if (from <= till)
-                nightMode.value = (curr >= from && curr < till)
+                settingsNightMode.enabled = (curr >= from && curr <= till)
             else if (from > till)
-                nightMode.value = (curr < till || curr > from)
-            nightMode.sync()
+                settingsNightMode.enabled = (curr <= till || curr >= from)
         }
     }
 }

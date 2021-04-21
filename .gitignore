@@ -18,3 +18,4 @@ icons/
 RPMS/
 webp-plugin/lib/
 webp-plugin/mkspecs/
+TelegramQt.pro.user.*

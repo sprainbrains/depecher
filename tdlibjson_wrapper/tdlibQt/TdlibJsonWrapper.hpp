@@ -210,7 +210,7 @@ public slots:
                         const bool disable_notification,
                         const bool from_background = false,
                         const bool as_album = false);
-    void getMessage(const qint64 chat_id, const qint64 message_id, const QString extra = "");
+    void getMessage(const qint64 chat_id, const qint64 message_id, const QString &extra = "");
     void getMessages(const qint64 chat_id, QVector<qint64> message_ids, const QString &extra);
     void viewMessages(const QString &chat_id, const QVariantList &messageIds, const bool force_read);
     void deleteMessages(const qint64 chat_id, const QVector<qint64> message_ids,
