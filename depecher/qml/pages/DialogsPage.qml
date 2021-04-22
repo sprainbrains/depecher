@@ -61,9 +61,8 @@ Page {
             title: titleHeader
         }
 
-
         PullDownMenu {
-
+            busy: c_telegramWrapper.connectionState !== TdlibState.ConnectionStateReady
             MenuItem {
                 text:qsTr("Reset dialogs")
                 onClicked: chatsModel.reset()
