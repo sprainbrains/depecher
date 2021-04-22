@@ -1066,7 +1066,7 @@ void TdlibJsonWrapper::viewMessages(const QString &chat_id, const QVariantList &
     QJsonObject query {
         {"@type", "viewMessages"},
         {"chat_id", chat_id},
-        {"forceRead", force_read},
+        {"force_read", force_read},
         {"message_ids", QJsonArray::fromVariantList(messageIds)}
     };
 

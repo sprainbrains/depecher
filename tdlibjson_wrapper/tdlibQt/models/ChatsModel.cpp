@@ -176,11 +176,8 @@ void ChatsModel::updateChatIsMarkedAsUnread(const QJsonObject &updateChatIsMarke
                 break;
             }
         }
-        if (rowIndex > -1) {
-            QVector<int> roles;
-            roles.append(IS_MARKED_UNREAD);
-            emit dataChanged(index(rowIndex), index(rowIndex), roles);
-        }
+        if (rowIndex > -1)
+            emit dataChanged(index(rowIndex), index(rowIndex), {IS_MARKED_UNREAD});
     }
 }
 
@@ -201,7 +198,13 @@ void ChatsModel::changeNotificationSettings(const QString &chatId, bool mute)
 
 void ChatsModel::markAsUnread(const QString &chatId, bool unread)
 {
-    tdlibJson->markChatUnread(chatId.toLongLong(), unread);
+    auto chat = m_chats[getIndex(chatId.toLongLong())];
+    if (chat) {
+        if (chat->unread_count_)
+            tdlibJson->viewMessages(chatId, {QVariant(chat->last_message_->id_)}, true);
+        else
+            tdlibJson->markChatUnread(chat->id_, unread);
+    }
 }
 
 int ChatsModel::rowCount(const QModelIndex &parent) const

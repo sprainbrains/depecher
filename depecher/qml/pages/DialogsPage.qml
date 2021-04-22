@@ -86,8 +86,9 @@ Page {
                     onClicked: chatsModel.changeNotificationSettings(id,!(mute_for > 0))
                 }
                 MenuItem {
-                    text: is_marked_unread ? qsTr("Mark as read") : qsTr("Mark as unread")
-                    onClicked: chatsModel.markAsUnread(id,!is_marked_unread)
+                    property bool unread: (is_marked_unread || unread_count)
+                    text: unread ? qsTr("Mark as read") : qsTr("Mark as unread")
+                    onClicked: chatsModel.markAsUnread(id, !unread)
                 }
                 MenuItem {
                     text: qsTr("Leave chat")
