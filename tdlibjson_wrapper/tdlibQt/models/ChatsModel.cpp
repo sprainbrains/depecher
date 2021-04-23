@@ -200,7 +200,7 @@ void ChatsModel::markAsUnread(const QString &chatId, bool unread)
 {
     auto chat = m_chats[getIndex(chatId.toLongLong())];
     if (chat) {
-        if (chat->unread_count_)
+        if (chat->unread_count_ && chat->last_message_)
             tdlibJson->viewMessages(chatId, {QVariant(chat->last_message_->id_)}, true);
         else
             tdlibJson->markChatUnread(chat->id_, unread);
