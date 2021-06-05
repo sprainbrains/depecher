@@ -14,7 +14,7 @@ License:    LICENSE
 URL:        https://github.com/blacksailer/depecher
 Source0:    %{name}-%{version}.tar.bz2
 Requires:   sailfishsilica-qt5 >= 0.10.9
-Requires:   tdlibjson >= 1.3.1
+Requires:   tdlibjson >= 1.4.0
 Requires:   libvorbis
 Requires:   libdbusaccess
 BuildRequires:  pkgconfig(sailfishapp) >= 1.0.2
