@@ -56,10 +56,10 @@ private:
     // QAbstractItemModel interface
     QVariantList parseDBusArgumentArray(QVariantList srcArray);
 public:
-    int rowCount(const QModelIndex &parent) const override;
+    int rowCount(const QModelIndex &) const override;
     QVariant data(const QModelIndex &index, int role) const override;
     QHash<int, QByteArray> roleNames() const override;
-    void fetchMore(const QModelIndex &parent) override;
+    void fetchMore(const QModelIndex &) override;
     bool canFetchMore(const QModelIndex &parent) const override;
 };
 

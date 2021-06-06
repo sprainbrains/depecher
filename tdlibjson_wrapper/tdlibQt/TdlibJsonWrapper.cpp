@@ -627,8 +627,10 @@ bool TdlibJsonWrapper::migrateFilesDirectory(const QString &oldPath, const QStri
 {
     qDebug() << "Trying to migrate from: " << oldPath << " to: " << newPath;
     QDir oldDir(oldPath), newDir(newPath);
-    if (!oldDir.exists())
+    if (!oldDir.exists()) {
+        qDebug() << "Nothing to migrate";
         return false;
+    }
     if (!newDir.exists())
         newDir.mkpath(newPath);
     oldDir.setNameFilters({"animations", "documents", "music", "photos", "temp", "video_notes", "videos", "voice"});
@@ -942,13 +944,22 @@ void TdlibJsonWrapper::getSupergroupFullInfo(const int supergroup_id, const QStr
     };
     sendJsonObjToTelegram(query, extra);
 }
-void TdlibJsonWrapper::searchPublicChat(const QString &username, const QString extra)
+void TdlibJsonWrapper::searchPublicChat(const QString &username, const QString &extra)
 {
     QJsonObject query {
         {"@type", "searchPublicChat"},
         {"username", username}
     };
     sendJsonObjToTelegram(query, extra);
+}
+
+void TdlibJsonWrapper::searchPublicChats(const QString &query, const QString &extra)
+{
+    QJsonObject queryObj {
+        {"@type", "searchPublicChats"},
+        {"query", query}
+    };
+    sendJsonObjToTelegram(queryObj, extra);
 }
 
 void TdlibJsonWrapper::getAttachedStickerSets(const int file_id)
@@ -1172,7 +1183,7 @@ void TdlibJsonWrapper::getWallpapers(const QString &extra)
     QJsonObject query {
         {"@type", "getWallpapers"},
     };
-    sendJsonObjToTelegram(query);
+    sendJsonObjToTelegram(query, extra);
 }
 
 }// namespace tdlibQt

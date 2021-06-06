@@ -220,7 +220,8 @@ public slots:
     void setIsCredentialsEmpty(bool isCredentialsEmpty);
     void setAuthorizationState(tdlibQt::Enums::AuthorizationState &authorizationState);
     void setConnectionState(tdlibQt::Enums::ConnectionState &connState);
-    void searchPublicChat(const QString &username, const QString extra = "");
+    void searchPublicChat(const QString &username, const QString &extra = "");
+    void searchPublicChats(const QString &query, const QString &extra = "");
     void getMe();
     void requestAuthenticationPasswordRecovery();
     void recoverAuthenticationPassword(const QString &recoveryCode);

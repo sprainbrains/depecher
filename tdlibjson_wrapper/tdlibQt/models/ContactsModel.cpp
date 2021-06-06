@@ -40,7 +40,7 @@ void ContactsModel::onChatReceived(const QJsonObject &obj)
         emit chatIdReceived(QString::number(chatItem->id_));
     }
 }
-int ContactsModel::rowCount(const QModelIndex &parent) const
+int ContactsModel::rowCount(const QModelIndex &) const
 {
     return m_contacts.size();
 }
@@ -67,7 +67,6 @@ QVariant ContactsModel::data(const QModelIndex &index, int role) const
         return  QString::fromStdString(m_contacts[rowIndex]->phone_number_);
     case STATUS:
         return UsersModel::getUserStatusAsString(m_contacts[rowIndex]->status_);
-
     case PHOTO:
         if (m_contacts[rowIndex]->profile_photo_.data() != nullptr) {
             if (m_contacts[rowIndex]->profile_photo_->small_.data() != nullptr)
@@ -79,6 +78,7 @@ QVariant ContactsModel::data(const QModelIndex &index, int role) const
                     return QVariant();
                 }
         }
+        break;
     case IS_VERIFIED:
         return m_contacts[rowIndex]->is_verified_;
 
@@ -86,6 +86,7 @@ QVariant ContactsModel::data(const QModelIndex &index, int role) const
     default:
         break;
     }
+    return QVariant();
 }
 
 QHash<int, QByteArray> ContactsModel::roleNames() const

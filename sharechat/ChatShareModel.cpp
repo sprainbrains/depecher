@@ -101,7 +101,7 @@ QVariantList ChatShareModel::parseDBusArgumentArray(QVariantList srcArray)
     return result;
 }
 
-int ChatShareModel::rowCount(const QModelIndex &parent) const
+int ChatShareModel::rowCount(const QModelIndex &) const
 {
     return m_chats.size();
 }
@@ -155,6 +155,7 @@ QVariant ChatShareModel::data(const QModelIndex &index, int role) const
             return resultType;
         }
         }
+        break;
     case TITLE:
         return QString::fromStdString(m_chats[rowIndex]->title_);
     case UNREAD_COUNT:
@@ -186,18 +187,18 @@ QVariant ChatShareModel::data(const QModelIndex &index, int role) const
                 return QVariant();
             }
         }
+        break;
 //    case LAST_MESSAGE_AUTHOR:
 //        return tdlibJson->parseObject->getFirstName(
 //                   m_chats[rowIndex]->last_message_->sender_user_id_);
     case DATE:
-        if (m_chats[rowIndex]->last_message_.data() != nullptr) {
+        if (m_chats[rowIndex]->last_message_.data() != nullptr)
             return m_chats[rowIndex]->last_message_->date_;
-        }
+        break;
     case MUTE_FOR:
-        if (m_chats[rowIndex]->notification_settings_.data() != nullptr) {
+        if (m_chats[rowIndex]->notification_settings_.data() != nullptr)
             return m_chats[rowIndex]->notification_settings_->mute_for_;
-        }
-
+        break;
     case PHOTO:
         if (m_chats[rowIndex]->photo_.data() != nullptr) {
             if (m_chats[rowIndex]->photo_->small_.data() != nullptr)
@@ -262,7 +263,7 @@ QHash<int, QByteArray> ChatShareModel::roleNames() const
     return roles;
 }
 
-void ChatShareModel::fetchMore(const QModelIndex &parent)
+void ChatShareModel::fetchMore(const QModelIndex &)
 {
     if (!m_fetchPending) {
         m_fetchPending = true;

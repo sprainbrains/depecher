@@ -97,7 +97,7 @@ QVariantMap UsersModel::getChatType(const qint64 chatId)
         return resultType;
     }
     }
-
+    return QVariantMap();
 }
 
 QString UsersModel::getUserFirstName(const int userId)

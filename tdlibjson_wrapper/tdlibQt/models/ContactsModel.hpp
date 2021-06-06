@@ -40,7 +40,7 @@ public:
     // QAbstractItemModel interface
     void appendContact(const QSharedPointer<user> &usr);
 public:
-    int rowCount(const QModelIndex &parent) const override;
+    int rowCount(const QModelIndex &) const override;
     QVariant data(const QModelIndex &index, int role) const override;
     QHash<int, QByteArray> roleNames() const override;
 signals:

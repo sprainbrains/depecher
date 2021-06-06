@@ -19,18 +19,19 @@ Page {
         anchors.fill: parent
         contentHeight: column.height
         RemorsePopup {
-        id:remorseLogout
+            id:remorseLogout
         }
         PullDownMenu {
             MenuItem {
-            text:qsTr("Log out")
-            visible:isLogoutVisible
+                text:qsTr("Log out")
+                visible:isLogoutVisible
 
-            onClicked: {
-                remorseLogout.execute(qsTr("Logging out"),function() { c_telegramWrapper.logOut();
-                    pageStack.replaceAbove(null,Qt.resolvedUrl("AuthorizeDialog.qml")) })
-
-            }
+                onClicked: {
+                    remorseLogout.execute(qsTr("Logging out"), function() {
+                        c_telegramWrapper.logOut();
+                        pageStack.replaceAbove(null,Qt.resolvedUrl("AuthorizeDialog.qml"))
+                    })
+                }
             }
         }
 

@@ -22,15 +22,15 @@ QVariant SearchChatsModel::dataGlobal(const QModelIndex &index, int role) const
     case ID: //int64
         return QString::number(m_globalResult[rowIndex]->id_);
     case DATE:
-        if (m_globalResult[rowIndex]->last_message_.data() != nullptr) {
+        if (m_globalResult[rowIndex]->last_message_.data() != nullptr)
             return m_globalResult[rowIndex]->last_message_->date_;
-        }
+        break;
     case PHOTO:
         if (m_globalResult[rowIndex]->photo_.data() != nullptr) {
             if (m_globalResult[rowIndex]->photo_->small_.data() != nullptr)
                 return QString::fromStdString(m_globalResult[rowIndex]->photo_->small_->local_->path_);
         }
-        return QVariant();
+        break;
     case TITLE:
         return QString::fromStdString(m_globalResult[rowIndex]->title_);
     case TYPE:
@@ -72,15 +72,15 @@ QVariant SearchChatsModel::dataLocal(const QModelIndex &index, int role) const
     case ID: //int64
         return QString::number(m_localResult[rowIndex]->id_);
     case DATE:
-        if (m_localResult[rowIndex]->last_message_.data() != nullptr) {
+        if (m_localResult[rowIndex]->last_message_.data() != nullptr)
             return m_localResult[rowIndex]->last_message_->date_;
-        }
+        break;
     case PHOTO:
         if (m_localResult[rowIndex]->photo_.data() != nullptr) {
             if (m_localResult[rowIndex]->photo_->small_.data() != nullptr)
                 return QString::fromStdString(m_localResult[rowIndex]->photo_->small_->local_->path_);
         }
-        return QVariant();
+        break;
     case TITLE:
         return QString::fromStdString(m_localResult[rowIndex]->title_);
     case TYPE:
@@ -238,7 +238,7 @@ int SearchChatsModel::rowCount(const QModelIndex &parent) const
     return 0;
 }
 
-int SearchChatsModel::columnCount(const QModelIndex &parent) const
+int SearchChatsModel::columnCount(const QModelIndex &) const
 {
     return 1;
 }
@@ -254,7 +254,6 @@ QVariant SearchChatsModel::data(const QModelIndex &index, int role) const
     if (!childItem)
         return QVariant();
 
-    int rowIndex = index.row();
     if (childItem == rootLocal.data()) {
         return "Local chats";
     } else if (childItem == rootGlobal.data()) {
