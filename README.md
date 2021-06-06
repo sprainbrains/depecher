@@ -11,6 +11,7 @@ Features:
 - 2FA authorization enabled
 - and more...
 
+Incompatible with any sneaky app which creates MIME handler overrides at runtime in ~/.local/share/applications/
 
 ## Openrepos  
 

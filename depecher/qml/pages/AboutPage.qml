@@ -54,6 +54,7 @@ Page {
                       qsTr("- Uploading/Downloading photos/docs") + "<br>" +
                       qsTr("- Receive notifications") + "<br>" +
                       qsTr("- 2FA authorization enabled") + "<br><br>" +
+                      qsTr("Incompatible with any sneaky app which creates MIME handler overrides at runtime in ~/.local/share/applications/") + "<br><br>" +
                       qsTr("Thanks to:") + "<br>" +
                       "- @kaffeine" + "<br>" +
                       "- @chuvilin" + "<br>" +
