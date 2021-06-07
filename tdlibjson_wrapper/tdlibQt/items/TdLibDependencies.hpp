@@ -225,6 +225,7 @@ inline bool operator!=(const Slice &a, const Slice &b)
     return !(a == b);
 }
 
+// based on tdutils/td/utils/tl_storers.h?
 class TlStorerToString
 {
     std::string result;
@@ -448,7 +449,7 @@ public:
  * \file
  * Contains the declarations of a base class for all TL-objects and some helper methods
  */
-
+// based on td/tl/TlObject.h?
 /**
  * This class is a base class for all TDLib TL-objects.
  */

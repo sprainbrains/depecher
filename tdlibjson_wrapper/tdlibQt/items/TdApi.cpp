@@ -1,13 +1,17 @@
-#include "td_api.h"
+#include "TdApi.hpp"
+#define ERROR false
+#define LOG_IS_STRIPPED(value) (value)
 
-#include "td/utils/common.h"
-#include "td/utils/format.h"
-#include "td/utils/logging.h"
-#include "td/utils/tl_parsers.h"
-#include "td/utils/tl_storers.h"
+namespace tdlibQt {
+using int32 = qint32;
+using int64 = qint64;
 
 namespace td {
-namespace td_api {
+std::string to_string(const uint32_t &value)
+{
+    return std::to_string(value);
+}
+} // namespace td
 
 std::string to_string(const BaseObject &value) {
   TlStorerToString storer;
@@ -21617,5 +21621,4 @@ void writeGeneratedFilePart::store(TlStorerToString &s, const char *field_name) 
     s.store_class_end();
   }
 }
-}  // namespace td_api
-}  // namespace td
+}  // namespace tdlibQt

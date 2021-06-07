@@ -1,22 +1,29 @@
+#ifndef TDAPI_HPP
+#define TDAPI_HPP
 #pragma once
 
-#include "td/tl/TlObject.h"
-
+#include <stdint.h>
 #include <string>
-
 #include <cstdint>
 #include <utility>
 #include <vector>
 
-namespace td {
+#include <QSharedPointer>
+#include "TdLibDependencies.hpp"
+
+namespace tdlibQt {
+using int32 = qint32;
+using int64 = qint64;
+
+using UInt128 = UInt<128>;
+using UInt256 = UInt<256>;
+
 class TlStorerToString;
 
-namespace td_api {
-
-using BaseObject = ::td::TlObject;
+using BaseObject = TlObject;
 
 template <class Type>
-using object_ptr = ::td::tl_object_ptr<Type>;
+using object_ptr = QSharedPointer<Type>;
 
 template <class Type, class... Args>
 object_ptr<Type> make_object(Args &&... args) {
@@ -19079,5 +19086,6 @@ class writeGeneratedFilePart final : public Function {
   void store(TlStorerToString &s, const char *field_name) const final;
 };
 
-}  // namespace td_api
-}  // namespace td
+}  // namespace tdlibQt
+
+#endif
