@@ -2,21 +2,16 @@
 #define TDAPI_HPP
 #pragma once
 
-#include <stdint.h>
-#include <string>
+#include <QSharedPointer>
 #include <cstdint>
 #include <utility>
 #include <vector>
-
-#include <QSharedPointer>
 #include "TdLibDependencies.hpp"
+
 
 namespace tdlibQt {
 using int32 = qint32;
 using int64 = qint64;
-
-using UInt128 = UInt<128>;
-using UInt256 = UInt<256>;
 
 class TlStorerToString;
 

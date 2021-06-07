@@ -293,7 +293,12 @@ public:
     void store_field(const char *name, qint32 value)
     {
         store_field(name, static_cast<int64>(value));
-        insert_to_map(name, value);
+        //insert_to_map(name, value);?
+    }
+
+    void store_field(const char *name, long int value)
+    {
+        store_field(name, static_cast<qint64>(value));
     }
 
     void store_field(const char *name, qint64 value)
