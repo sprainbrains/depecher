@@ -82,14 +82,14 @@ android {
     INCLUDEPATH += $$NDK_ROOT/sources/android/cpufeatures
 }
 
-equals(QT_ARCH, arm) {
+equals(QT_ARCH, arm)|equals(QT_ARCH, arm64) {
     SOURCES_FOR_NEON += \
         $$PWD/libwebp/src/dsp/dec_neon.c \
         $$PWD/libwebp/src/dsp/enc_neon.c \
         $$PWD/libwebp/src/dsp/upsampling_neon.c \
         $$PWD/libwebp/src/dsp/lossless_neon.c
 
-    contains(QT_CPU_FEATURES, neon) {
+    contains(QT_CPU_FEATURES.$$QT_ARCH, neon) {
         # Default compiler settings include this feature, so just add to SOURCES
         SOURCES += $$SOURCES_FOR_NEON
     } else {
