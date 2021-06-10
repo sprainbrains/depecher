@@ -155,7 +155,7 @@ bool ChannelInfoProvider::canSendMediaMessages() const
 {
     if (m_supergroup.data())
         if (m_supergroup->status_->get_id() == chatMemberStatusRestricted::ID)
-            return static_cast<chatMemberStatusRestricted *>(m_supergroup->status_.data())->can_send_media_messages_;
+            return static_cast<chatMemberStatusRestricted *>(m_supergroup->status_.data())->permissions_->can_send_media_messages_;
     return false;
 }
 
@@ -163,7 +163,7 @@ bool ChannelInfoProvider::canSendMessages() const
 {
     if (m_supergroup.data())
         if (m_supergroup->status_->get_id() == chatMemberStatusRestricted::ID)
-            return static_cast<chatMemberStatusRestricted *>(m_supergroup->status_.data())->can_send_messages_;
+            return static_cast<chatMemberStatusRestricted *>(m_supergroup->status_.data())->permissions_->can_send_messages_;
     return false;
 }
 
@@ -171,7 +171,7 @@ bool ChannelInfoProvider::canSendOtherMessages() const
 {
     if (m_supergroup.data())
         if (m_supergroup->status_->get_id() == chatMemberStatusRestricted::ID)
-            return static_cast<chatMemberStatusRestricted *>(m_supergroup->status_.data())->can_send_other_messages_;
+            return static_cast<chatMemberStatusRestricted *>(m_supergroup->status_.data())->permissions_->can_send_other_messages_;
     return false;
 }
 
@@ -179,7 +179,7 @@ bool ChannelInfoProvider::canAddWebPagePreviews() const
 {
     if (m_supergroup.data())
         if (m_supergroup->status_->get_id() == chatMemberStatusRestricted::ID)
-            return static_cast<chatMemberStatusRestricted *>(m_supergroup->status_.data())->can_add_web_page_previews_;
+            return static_cast<chatMemberStatusRestricted *>(m_supergroup->status_.data())->permissions_->can_add_web_page_previews_;
     return false;
 }
 

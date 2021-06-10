@@ -151,7 +151,7 @@ QVariant StickerModel::data(const QModelIndex &index, int role) const
         }
     }
     case STICKERS_COUNT:
-        return m_stikerSets[setNumber]->stickers_.size();
+        return QVariant::fromValue(m_stikerSets[setNumber]->stickers_.size());
     case STICKER:
         if (index.parent().row() == -1)
             return QVariant();
@@ -334,7 +334,7 @@ void StickerModel::getFile(const int fileId, const int priority, const QModelInd
     m_stickerUpdateQueue[fileId] = indexItem;
 }
 
-int StickerModel::columnCount(const QModelIndex &parent) const
+int StickerModel::columnCount(const QModelIndex &) const
 {
     return 1;
 }

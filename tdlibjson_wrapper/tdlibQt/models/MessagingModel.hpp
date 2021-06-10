@@ -181,7 +181,7 @@ public slots:
     void fetchOlder();
     void setChatType(const QVariantMap &chatType);
     void setLastInbox(const QString &lastInbox);
-    void setLastMessage(QString lastMessage);
+    void setLastMessage(const QString &lastMessage);
     void setAtYEnd(bool atYEnd);
 
     void setLastOutboxId(double lastOutboxId);
@@ -216,7 +216,7 @@ public slots:
         emit reachedHistoryEndChanged(m_reachedHistoryEnd);
     }
     void loadAndRefreshRepliedByIndex(const int messageIndex);
-    void loadAndRefreshByMessageId(const QVariant messageId);
+    void loadAndRefreshByMessageId(const QVariant &messageId);
     int findIndexById(const QString &messageId) const;
 
 signals:

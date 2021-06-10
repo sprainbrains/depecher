@@ -11,6 +11,7 @@ public:
         AuthorizationStateWaitEncryptionKey,
         AuthorizationStateWaitPhoneNumber,
         AuthorizationStateWaitCode,
+        AuthorizationStateWaitRegistration,
         AuthorizationStateWaitPassword,
         AuthorizationStateLoggingOut,
         AuthorizationStateClosing,

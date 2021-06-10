@@ -6,6 +6,7 @@
 #include "tdlibQt/TdlibJsonWrapper.hpp"
 #include "tdlibQt/models/StickerModel.hpp"
 #include "tdlibQt/models/ChatsModel.hpp"
+#include "tdlibQt/models/FilterChatsModel.hpp"
 #include "tdlibQt/models/MessagingModel.hpp"
 #include "tdlibQt/models/StickerModel.hpp"
 #include "tdlibQt/models/ContactsModel.hpp"
@@ -114,6 +115,7 @@ void DBusAdaptor::showApp(const QStringList &cmd)
         qmlRegisterType<tdlibQt::ProxyDAO>("TelegramItems", 1, 0, "ProxyDAO");
         qmlRegisterType<tdlibQt::MessagingModel>("TelegramModels", 1, 0, "MessagingModel");
         qmlRegisterType<tdlibQt::ChatsModel>("TelegramModels", 1, 0, "ChatsModel");
+        qmlRegisterType<tdlibQt::FilterChatsModel>("TelegramModels", 1, 0, "FilterChatsModel");
         qmlRegisterType<tdlibQt::StickerModel>("TelegramModels", 1, 0, "StickerModel");
         qmlRegisterType<tdlibQt::ContactsModel>("TelegramModels", 1, 0, "ContactsModel");
         qmlRegisterType<tdlibQt::FilterContactsModel>("TelegramModels", 1, 0, "FilterContactsModel");

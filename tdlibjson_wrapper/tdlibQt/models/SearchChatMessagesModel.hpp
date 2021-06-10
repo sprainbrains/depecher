@@ -130,7 +130,7 @@ public slots:
     void setTotalCount(int totalCount);
 
 public:
-    int rowCount(const QModelIndex &parent) const override;
+    int rowCount(const QModelIndex &) const override;
     QVariant data(const QModelIndex &index, int role) const override;
     QVariant dataContent(const int rowIndex) const;
     QVariant dataFileMeta(const int rowIndex, int role) const;

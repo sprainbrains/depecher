@@ -25,7 +25,9 @@ Page {
                 openAuthorizeDialog()
         }
         onAuthorizationStateChanged: {
-            if (c_telegramWrapper.authorizationState == TdlibState.AuthorizationStateWaitPhoneNumber)
+            // Phone can be already set in some cases
+            if (c_telegramWrapper.authorizationState === TdlibState.AuthorizationStateWaitPhoneNumber ||
+                c_telegramWrapper.authorizationState === TdlibState.AuthorizationStateWaitCode)
                 openAuthorizeDialog()
         }
     }
@@ -34,7 +36,8 @@ Page {
     onStatusChanged: {
         if (!pageLoaded && (page.status == PageStatus.Active)) {
             pageLoaded = true
-            if (c_telegramWrapper.authorizationState == TdlibState.AuthorizationStateWaitPhoneNumber)
+            if (c_telegramWrapper.authorizationState === TdlibState.AuthorizationStateWaitPhoneNumber ||
+                c_telegramWrapper.authorizationState === TdlibState.AuthorizationStateWaitCode)
                 openAuthorizeDialog()
         }
     }
@@ -53,12 +56,12 @@ Page {
     SilicaListView {
         id: listView
         anchors.fill: parent
-        model: ChatsModel {
-            id: chatsModel
-        }
-
-        header:  PageHeader {
-            title: titleHeader
+        currentIndex: -1
+        model: FilterChatsModel {
+            id: filterChatsModel
+            sourceModel: ChatsModel {
+                id: chatsModel
+            }
         }
 
         PullDownMenu {
@@ -74,6 +77,39 @@ Page {
             MenuItem {
                 text:qsTr("Contacts")
                 onClicked: pageStack.push(Qt.resolvedUrl("ContactsPage.qml"))
+            }
+            MenuItem {
+                text: listView.searchField.active ? qsTr("Hide Search") : qsTr("Search")
+                onDelayedClick: listView.searchField.active = !listView.searchField.active
+            }
+        }
+
+        property SearchField searchField: null
+
+        header:  PageHeader {
+            title: titleHeader
+            SearchField {
+                id: searchField
+                width: parent.width - parent._titleItem.width - (isLandscape ? Theme.paddingMedium*2 : 0)
+                anchors {
+                    verticalCenter: parent.verticalCenter //parent._titleItem.verticalCenter
+                    left: parent.left
+                    leftMargin: isLandscape ? Theme.paddingMedium : 0
+                }
+                placeholderText: qsTr("Search")
+                inputMethodHints: Qt.ImhNoAutoUppercase
+                focusOutBehavior: FocusBehavior.ClearItemFocus
+                autoScrollEnabled: false
+                active: false
+                canHide: true
+
+                Component.onCompleted: listView.searchField = searchField
+                onTextChanged: filterChatsModel.search = text
+                onHideClicked: active = false
+                onActiveChanged: {
+                    if (active)
+                        forceActiveFocus()
+                }
             }
         }
 
@@ -129,7 +165,4 @@ Page {
             flickable: listView
         }
     }
-
 }
-
-

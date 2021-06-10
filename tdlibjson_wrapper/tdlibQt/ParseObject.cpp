@@ -95,7 +95,7 @@ void ParseObject::parseResponse(const QByteArray &json)
             QJsonObject obj = doc.object()["authorization_state"].toObject();
             QSharedPointer<authorizationStateWaitCode> stateCode = QSharedPointer<authorizationStateWaitCode>
                     (new  authorizationStateWaitCode);
-            stateCode->is_registered_ =  obj["is_registered"].toBool();
+            //stateCode->is_registered_ =  obj["is_registered"].toBool();
             stateCode->code_info_ = QSharedPointer<authenticationCodeInfo>
                                     (new  authenticationCodeInfo);
             QJsonObject objInfo = obj["code_info"].toObject();
@@ -132,6 +132,8 @@ void ParseObject::parseResponse(const QByteArray &json)
             //          stateCode->terms_of_service_ =  obj["is_registered"].toBool();
 
             emit newAuthorizationState(stateCode);
+        } else if (authState == "authorizationStateWaitRegistration") {
+            authorizationState = Enums::AuthorizationState::AuthorizationStateWaitRegistration;
         } else if (authState == "authorizationStateWaitPassword") {
             auto authState =
                 QSharedPointer<authorizationStateWaitPassword>(new authorizationStateWaitPassword);
@@ -584,7 +586,7 @@ QSharedPointer<supergroup> ParseObject::parseSupergroup(const QJsonObject &super
         return QSharedPointer<supergroup>(new supergroup);
 
     QSharedPointer<supergroup> resultSupergroup = QSharedPointer<supergroup>(new supergroup);
-    resultSupergroup->anyone_can_invite_ = supergroupObject["anyone_can_invite"].toBool();
+    //resultSupergroup->anyone_can_invite_ = supergroupObject["anyone_can_invite"].toBool();
     resultSupergroup->date_ = supergroupObject["date"].toInt();
     resultSupergroup->id_ = getInt64(supergroupObject["id"]);
     resultSupergroup->is_channel_  = supergroupObject["is_channel"].toBool();
@@ -632,11 +634,12 @@ QSharedPointer<ChatMemberStatus> ParseObject::parseChatMemberStatus(const QJsonO
     }
     if (chatMemberStatusObject["@type"].toString() == "chatMemberStatusRestricted") {
         auto resultStatus = QSharedPointer<chatMemberStatusRestricted>(new chatMemberStatusRestricted);
-        resultStatus->can_add_web_page_previews_ =
+        auto resultPermissions = resultStatus->permissions_;
+        resultPermissions->can_add_web_page_previews_ =
             chatMemberStatusObject["can_add_web_page_previews"].toBool();
-        resultStatus->can_send_media_messages_ = chatMemberStatusObject["can_send_media_messages"].toBool();
-        resultStatus->can_send_messages_ = chatMemberStatusObject["can_send_messages"].toBool();
-        resultStatus->can_send_other_messages_ = chatMemberStatusObject["can_send_other_messages"].toBool();
+        resultPermissions->can_send_media_messages_ = chatMemberStatusObject["can_send_media_messages"].toBool();
+        resultPermissions->can_send_messages_ = chatMemberStatusObject["can_send_messages"].toBool();
+        resultPermissions->can_send_other_messages_ = chatMemberStatusObject["can_send_other_messages"].toBool();
 
         return resultStatus;
     }
@@ -698,11 +701,11 @@ QSharedPointer<stickerSet> ParseObject::parseStickerSet(const QJsonObject &stick
     return resultStickerSet;
 }
 
-QSharedPointer<stickerEmojis> ParseObject::parseStickerEmojis(const QJsonObject &stickerEmojisObject)
+QSharedPointer<emojis> ParseObject::parseStickerEmojis(const QJsonObject &stickerEmojisObject)
 {
     if (stickerEmojisObject["@type"].toString() != "stickerEmojis")
-        return QSharedPointer<stickerEmojis>(new stickerEmojis);
-    auto resultEmojis = QSharedPointer<stickerEmojis>(new stickerEmojis);
+        return QSharedPointer<emojis>(new emojis);
+    auto resultEmojis = QSharedPointer<emojis>(new emojis);
     for (auto val : stickerEmojisObject["emojis"].toArray())
         resultEmojis->emojis_.push_back(val.toString().toStdString());
     return resultEmojis;
@@ -1090,6 +1093,7 @@ QSharedPointer<ProxyType> ParseObject::parseProxyType(const QJsonObject &proxyTy
         proxyTypePtr->secret_ = proxyTypeObject["secret"].toString().toStdString();
         return proxyTypePtr;
     }
+    return QSharedPointer<ProxyType>();
 }
 
 QSharedPointer<messageSticker> ParseObject::parseMessageSticker(const QJsonObject
@@ -1421,7 +1425,7 @@ QSharedPointer<basicGroup> ParseObject::parseBasicGroup(const QJsonObject &basic
     result->id_ = basicGroupObject["id"].toInt();
     result->member_count_ = basicGroupObject["member_count"].toInt();
     result->upgraded_to_supergroup_id_ = basicGroupObject["upgraded_to_supergroup_id"].toInt();
-    result->everyone_is_administrator_ = basicGroupObject["everyone_is_administrator"].toInt();
+    //result->everyone_is_administrator_ = basicGroupObject["everyone_is_administrator"].toInt();
     result->is_active_ = basicGroupObject["is_active"].toInt();
     result->status_ = parseChatMemberStatus(basicGroupObject["status"].toObject());
     return result;

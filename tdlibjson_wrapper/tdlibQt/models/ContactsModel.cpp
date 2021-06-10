@@ -67,18 +67,19 @@ QVariant ContactsModel::data(const QModelIndex &index, int role) const
         return  QString::fromStdString(m_contacts[rowIndex]->phone_number_);
     case STATUS:
         return UsersModel::getUserStatusAsString(m_contacts[rowIndex]->status_);
-    case PHOTO:
-        if (m_contacts[rowIndex]->profile_photo_.data() != nullptr) {
-            if (m_contacts[rowIndex]->profile_photo_->small_.data() != nullptr)
-                if (m_contacts[rowIndex]->profile_photo_->small_->local_->is_downloading_completed_)
-                    return QString::fromStdString(m_contacts[rowIndex]->profile_photo_->small_->local_->path_);
-                else {
-                    int fileId = m_contacts[rowIndex]->profile_photo_->small_->id_;
-                    m_clientJson->downloadFile(fileId, 12);
-                    return QVariant();
-                }
+    case PHOTO: {
+        auto profilePhoto = m_contacts[rowIndex]->profile_photo_;
+        if (profilePhoto.data() == nullptr || profilePhoto->small_.data() == nullptr )
+            return QVariant();
+
+        if (profilePhoto->small_->local_->is_downloading_completed_)
+            return QString::fromStdString(profilePhoto->small_->local_->path_);
+        else {
+            int fileId = profilePhoto->small_->id_;
+            m_clientJson->downloadFile(fileId, 12);
         }
         break;
+    }
     case IS_VERIFIED:
         return m_contacts[rowIndex]->is_verified_;
 
@@ -91,7 +92,7 @@ QVariant ContactsModel::data(const QModelIndex &index, int role) const
 
 QHash<int, QByteArray> ContactsModel::roleNames() const
 {
-    QHash<int, QByteArray> roles;
+    static QHash<int, QByteArray> roles;
     roles[USER_ID] = "user_id";
     roles[FIRST_NAME] = "first_name";
     roles[LAST_NAME] = "last_name";

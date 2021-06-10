@@ -32,11 +32,6 @@ QString tdlibQt::AuthenticationHandler::getType() const
     return getCurrentCodeType();
 }
 
-bool tdlibQt::AuthenticationHandler::getIsUserRegistered() const
-{
-    return isUserRegistered();
-}
-
 QString tdlibQt::AuthenticationHandler::getHint() const
 {
     if (m_authorizationState.data()) {
@@ -105,18 +100,6 @@ void tdlibQt::AuthenticationHandler::checkPassword(const QString &password)
     m_client->checkPassword(password);
 }
 
-bool tdlibQt::AuthenticationHandler::isUserRegistered() const
-{
-    if (m_authorizationState.data()) {
-
-        if (m_authorizationState->get_id() == authorizationStateWaitCode::ID) {
-            auto waitCode = static_cast<authorizationStateWaitCode *>(m_authorizationState.data());
-            return waitCode->is_registered_;
-        }
-    }
-    return false;
-}
-
 QString tdlibQt::AuthenticationHandler::getCurrentCodeType() const
 {
     if (m_authorizationState.data()) {
@@ -149,7 +132,6 @@ void tdlibQt::AuthenticationHandler::setAuthorizationState(const
         emit hasRecoveryEmailChanged(hasRecoveryEmail());
     }
     emit getTypeChanged(getCurrentCodeType());
-    emit isUserRegisteredChanged(isUserRegistered());
 }
 
 void tdlibQt::AuthenticationHandler::setError(const QJsonObject &errorObject)

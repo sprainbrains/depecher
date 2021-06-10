@@ -85,7 +85,7 @@ public:
             &stickerSetInfoObject);
     static QSharedPointer<stickerSet> parseStickerSet(const QJsonObject
             &stickerSetObject);
-    static QSharedPointer<stickerEmojis> parseStickerEmojis(const QJsonObject &stickerEmojisObject);
+    static QSharedPointer<emojis> parseStickerEmojis(const QJsonObject &stickerEmojisObject);
     static QSharedPointer<stickers> parseStickers(const QJsonObject
             &stickersObject);
     static QSharedPointer<messageBasicGroupChatCreate> parseMessageBasicGroupChatCreate(const QJsonObject &messageBasicGroupChatCreateObject);

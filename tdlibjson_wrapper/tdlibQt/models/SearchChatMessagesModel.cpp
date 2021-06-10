@@ -458,7 +458,7 @@ void SearchChatMessagesModel::cancelDownload(const int rowIndex)
     m_tdlibJson->cancelDownloadFile(fileId);
 }
 
-int SearchChatMessagesModel::rowCount(const QModelIndex &parent) const
+int SearchChatMessagesModel::rowCount(const QModelIndex &) const
 {
     return m_messages.size();
 }

@@ -1,7 +1,13 @@
 TEMPLATE = lib
 
+
 TARGET = $$qtLibraryTarget(depechershareplugin)
-target.path = /usr/lib/nemo-transferengine/plugins
+
+contains(QT_ARCH, arm64) {
+    target.path = /usr/lib64/nemo-transferengine/plugins
+} else {
+    target.path = /usr/lib/nemo-transferengine/plugins
+}
 
 QT += dbus
 CONFIG += plugin link_pkgconfig

@@ -604,13 +604,11 @@ void TdlibJsonWrapper::setPhoneNumber(const QString &phone)
 
 void TdlibJsonWrapper::checkCode(const QString &code)
 {
-    std::string setAuthenticationCode =
-        "{\"@type\":\"checkAuthenticationCode\","
-        "\"code\":\"" + code.toStdString() + "\","
-        "\"@extra\":\"checkCode\"}";
-
-    sendToTelegram(client, setAuthenticationCode.c_str());
-
+    QJsonObject query {
+        {"@type", "checkAuthenticationCode"},
+        {"code", code}
+    };
+    sendJsonObjToTelegram(query, "checkCode");
 }
 
 void TdlibJsonWrapper::checkPassword(const QString &password)
@@ -729,17 +727,14 @@ void TdlibJsonWrapper::setTdlibParameters()
     sendJsonObjToTelegram(query);
     //answer is - {"@type":"updateAuthorizationState","authorization_state":{"@type":"authorizationStateWaitEncryptionKey","is_encrypted":false}}
 }
-void TdlibJsonWrapper::setCodeIfNewUser(const QString &code, const QString &firstName,
-                                        const QString &lastName)
+void TdlibJsonWrapper::registerUser(const QString &first_name, const QString &last_name)
 {
-    std::string AuthCodeIfNewUser =
-        "{\"@type\":\"checkAuthenticationCode\","
-        "\"code\":\"" + code.toStdString() + "\","
-        "\"first_name\":\"" + firstName.toStdString() + "\","
-        "\"last_name\":\"" + lastName.toStdString() + "\"}";
-
-    sendToTelegram(client, AuthCodeIfNewUser.c_str());
-
+    QJsonObject query {
+        {"@type", "registerUser"},
+        {"first_name", first_name},
+        {"last_name", last_name}
+    };
+    sendJsonObjToTelegram(query);
 }
 void TdlibJsonWrapper::getChats(const qint64 offset_chat_id, const qint64 offset_order,
                                 const int limit, const QString &extra)
@@ -964,10 +959,11 @@ void TdlibJsonWrapper::searchPublicChats(const QString &query, const QString &ex
 
 void TdlibJsonWrapper::getAttachedStickerSets(const int file_id)
 {
-    QString getAttachedStickerSetsStr = "{\"@type\":\"getAttachedStickerSets\","
-                                        "\"file_id\":" + QString::number(file_id) +
-                                        ",\"@extra\": \"getAttachedStickerSets\"}";
-    sendToTelegram(client, getAttachedStickerSetsStr.toStdString().c_str());
+    QJsonObject query {
+        {"@type", "getAttachedStickerSets"},
+        {"file_id", file_id}
+    };
+    sendJsonObjToTelegram(query, "getAttachedStickerSets");
 }
 void TdlibJsonWrapper::getStickerSet(const qint64 set_id)
 {
@@ -1175,15 +1171,6 @@ void TdlibJsonWrapper::changeNotificationSettings(const qint64 &chatId, bool mut
     QString jsonString = QJsonDocument::fromVariant(jsonConverter.doc["muteFunction"]).toJson();
     jsonString = jsonString.replace("\"null\"", "null");
     sendMessage(jsonString);
-}
-
-// obsolete since tdlib 1.5
-void TdlibJsonWrapper::getWallpapers(const QString &extra)
-{
-    QJsonObject query {
-        {"@type", "getWallpapers"},
-    };
-    sendJsonObjToTelegram(query, extra);
 }
 
 }// namespace tdlibQt

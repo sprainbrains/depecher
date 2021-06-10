@@ -20,16 +20,13 @@ class AuthenticationHandler : public QObject
     Q_PROPERTY(QString getHint READ getHint NOTIFY getHintChanged)
     Q_PROPERTY(QString emailPattern READ emailPattern NOTIFY emailPatternChanged)
     Q_PROPERTY(bool hasRecoveryEmail READ hasRecoveryEmail NOTIFY hasRecoveryEmailChanged)
-    Q_PROPERTY(bool isUserRegistered READ getIsUserRegistered NOTIFY isUserRegisteredChanged)
     Q_PROPERTY(QVariantMap error READ error NOTIFY errorChanged)
     Q_PROPERTY(QVariantMap ok READ ok NOTIFY okChanged)
 
     tdlibQt::Enums::AuthorizationState m_currentAuthorizationState;
     TdlibJsonWrapper *m_client;
 
-    bool isUserRegistered() const;
     QString getCurrentCodeType() const;
-
 
     QVariantMap m_error;
 
@@ -40,8 +37,6 @@ public:
     tdlibQt::Enums::AuthorizationState authorizationState() const;
 
     QString getType() const;
-
-    bool getIsUserRegistered() const;
 
     QString getHint() const;
 
@@ -70,8 +65,6 @@ signals:
     void authorizationStateChanged(tdlibQt::Enums::AuthorizationState currentAuthorizationState);
 
     void getTypeChanged(QString getType);
-
-    void isUserRegisteredChanged(bool isUserRegistered);
 
     void getHintChanged(QString getHint);
 

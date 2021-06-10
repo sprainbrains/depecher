@@ -45,6 +45,11 @@ int FilterChatMembersModel::sourceIndex(const int idx)
     return mapToSource(index(idx, 0)).row();
 }
 
+bool FilterChatMembersModel::showDeleted() const
+{
+    return m_showDeleted;
+}
+
 void FilterChatMembersModel::setShowDeleted(bool showDeleted)
 {
     if (m_showDeleted == showDeleted)

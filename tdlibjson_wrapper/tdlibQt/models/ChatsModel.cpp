@@ -201,7 +201,7 @@ void ChatsModel::markAsUnread(const QString &chatId, bool unread)
     auto chat = m_chats[getIndex(chatId.toLongLong())];
     if (chat) {
         if (chat->unread_count_ && chat->last_message_)
-            tdlibJson->viewMessages(chatId, {QVariant(chat->last_message_->id_)}, true);
+            tdlibJson->viewMessages(chatId, {QVariant::fromValue(chat->last_message_->id_)}, true);
         else
             tdlibJson->markChatUnread(chat->id_, unread);
     }
@@ -268,6 +268,7 @@ QVariant ChatsModel::data(const QModelIndex &index, int role) const
             return resultType;
         }
         }
+        break;
     case TITLE:
         return QString::fromStdString(m_chats[rowIndex]->title_);
     case UNREAD_COUNT:
@@ -306,18 +307,18 @@ QVariant ChatsModel::data(const QModelIndex &index, int role) const
                 return ParseObject::messageTypeToString(lastMessage->content_->get_id());
             }
         }
+        break;
     case LAST_MESSAGE_AUTHOR:
         return tdlibJson->parseObject->getFirstName(
                    m_chats[rowIndex]->last_message_->sender_user_id_);
     case DATE:
-        if (m_chats[rowIndex]->last_message_.data() != nullptr) {
+        if (m_chats[rowIndex]->last_message_.data() != nullptr)
             return m_chats[rowIndex]->last_message_->date_;
-        }
+        break;
     case MUTE_FOR:
-        if (m_chats[rowIndex]->notification_settings_.data() != nullptr) {
+        if (m_chats[rowIndex]->notification_settings_.data() != nullptr)
             return m_chats[rowIndex]->notification_settings_->mute_for_;
-        }
-
+        break;
     case PHOTO:
         if (m_chats[rowIndex]->photo_.data() != nullptr) {
             if (m_chats[rowIndex]->photo_->small_.data() != nullptr)

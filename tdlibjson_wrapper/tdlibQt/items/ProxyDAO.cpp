@@ -168,7 +168,7 @@ void ProxyDAO::setError(const QJsonObject &errorObject)
     m_error = errorObject.toVariantMap();
     emit errorChanged(m_error);
 }
-int ProxyDAO::rowCount(const QModelIndex &parent) const
+int ProxyDAO::rowCount(const QModelIndex &) const
 {
     return m_proxies.size();
 }
@@ -194,28 +194,28 @@ QVariant ProxyDAO::data(const QModelIndex &index, int role) const
             return QString::fromStdString(static_cast<proxyTypeHttp *>(m_proxies[rowIndex]->type_.data())->username_);
         case proxyTypeSocks5::ID:
             return QString::fromStdString(static_cast<proxyTypeSocks5 *>(m_proxies[rowIndex]->type_.data())->username_);
-            return QVariant();
         }
+        break;
     case PASSWORD:
         switch (m_proxies[rowIndex]->type_->get_id()) {
         case proxyTypeHttp::ID:
             return QString::fromStdString(static_cast<proxyTypeHttp *>(m_proxies[rowIndex]->type_.data())->password_);
         case proxyTypeSocks5::ID:
             return QString::fromStdString(static_cast<proxyTypeSocks5 *>(m_proxies[rowIndex]->type_.data())->password_);
-            return QVariant();
         }
+        break;
     case SECRET:
         switch (m_proxies[rowIndex]->type_->get_id()) {
         case proxyTypeMtproto::ID:
             return QString::fromStdString(static_cast<proxyTypeMtproto *>(m_proxies[rowIndex]->type_.data())->secret_);
-            return QVariant();
         }
+        break;
     case HTTP_ONLY:
         switch (m_proxies[rowIndex]->type_->get_id()) {
         case proxyTypeHttp::ID:
             return static_cast<proxyTypeHttp *>(m_proxies[rowIndex]->type_.data())->http_only_;
-            return QVariant();
         }
+        break;
     case PORT:
         return m_proxies[rowIndex]->port_;
     case LAST_USED_DATE:
@@ -237,6 +237,7 @@ QVariant ProxyDAO::data(const QModelIndex &index, int role) const
             return "SOCKS5";
         }
     }
+    return QVariant();
 }
 
 QHash<int, QByteArray> ProxyDAO::roleNames() const

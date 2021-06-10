@@ -179,8 +179,7 @@ public slots:
     void setEncryptionKey(const QString &key = "");
     void setPhoneNumber(const QString &phone);
     void checkCode(const QString &code); /*TODO check for numbers only*/
-    void setCodeIfNewUser(const QString &code, const QString &firstName,
-                          const QString &lastName); /*TODO check for numbers only and escape characters*/
+    void registerUser(const QString &first_name, const QString &last_name);
     void getChats(const qint64 offset_chat_id = 0,
                   const qint64 offset_order = INT64_MAX,
                   const int limit = 100,
@@ -246,7 +245,6 @@ public slots:
     void close();
     void setLogLevel(int new_verbosity_level);
     void changeNotificationSettings(const qint64 &chatId, bool mute);
-    void getWallpapers(const QString &extra = "");
 };
 } //namespace tdlibQt
 #endif // TDLIBJSONWRAPPER_HPP

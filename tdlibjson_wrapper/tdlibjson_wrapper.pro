@@ -2,7 +2,7 @@ APPID = $$fromfile(api_secret.pri,APPID)#To build you have to create file api_se
 APP_HASH = $$fromfile(api_secret.pri,APP_HASH)#To build you have to create file api_secret.pri app_hash, or replace with your app_hash
 
 
-VERSION =  0.7.14
+VERSION =  0.8.0
 DEFINES += APP_VERSION=\"\\\"$${VERSION}\\\"\"
 DEFINES += WITH_LOG=1
 
@@ -37,6 +37,7 @@ HEADERS += \
     tdlibQt/include/TdlibNamespace.hpp \
     tdlibQt/models/ChatMembersModel.hpp \
     tdlibQt/models/ChatsModel.hpp \
+    tdlibQt/models/FilterChatsModel.hpp \
     tdlibQt/TelegramProfileProvider.hpp \
     tdlibQt/models/FilterChatMembersModel.hpp \
     tdlibQt/models/MessagingModel.hpp \
@@ -67,6 +68,7 @@ SOURCES += \
     tdlibQt/items/TdApi.cpp \
     tdlibQt/models/ChatMembersModel.cpp \
     tdlibQt/models/ChatsModel.cpp \
+    tdlibQt/models/FilterChatsModel.cpp \
     tdlibQt/TelegramProfileProvider.cpp \
     tdlibQt/models/FilterChatMembersModel.cpp \
     tdlibQt/models/MessagingModel.cpp \

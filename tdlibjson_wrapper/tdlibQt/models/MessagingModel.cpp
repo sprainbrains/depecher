@@ -736,12 +736,14 @@ QVariant MessagingModel::memberStatus() const
     if (status->get_id() == chatMemberStatusRestricted::ID) {
         QVariantMap resultStatus;
         resultStatus["status"] = ChatMemberStatuses::Restricted;
-        resultStatus["can_add_web_page_previews"] = static_cast<chatMemberStatusRestricted *>(status.data())->can_add_web_page_previews_;
-        resultStatus["can_send_media_messages"] = static_cast<chatMemberStatusRestricted *>(status.data())->can_send_media_messages_;
-        resultStatus["can_send_messages"] = static_cast<chatMemberStatusRestricted *>(status.data())->can_send_messages_;
-        resultStatus["can_send_other_messages"] = static_cast<chatMemberStatusRestricted *>(status.data())->can_send_other_messages_;
-        resultStatus["is_member"] = static_cast<chatMemberStatusRestricted *>(status.data())->is_member_;
-        resultStatus["restricted_until_date"] = static_cast<chatMemberStatusRestricted *>(status.data())->restricted_until_date_;
+        auto chatMemberStatus = static_cast<chatMemberStatusRestricted *>(status.data());
+        auto permissions = chatMemberStatus->permissions_;
+        resultStatus["can_add_web_page_previews"] = permissions->can_add_web_page_previews_;
+        resultStatus["can_send_media_messages"] = permissions->can_send_media_messages_;
+        resultStatus["can_send_messages"] = permissions->can_send_messages_;
+        resultStatus["can_send_other_messages"] = permissions->can_send_other_messages_;
+        resultStatus["is_member"] = chatMemberStatus->is_member_;
+        resultStatus["restricted_until_date"] = chatMemberStatus->restricted_until_date_;
         return resultStatus;
     }
     if (status->get_id() == chatMemberStatusLeft::ID) {
@@ -2132,7 +2134,7 @@ void MessagingModel::setLastInbox(const QString &currentMessage)
     emit lastInboxChanged(currentMessage);
 }
 
-void MessagingModel::setLastMessage(QString lastMessage)
+void MessagingModel::setLastMessage(const QString &lastMessage)
 {
     if (m_lastMessage == lastMessage)
         return;
@@ -2171,10 +2173,10 @@ void MessagingModel::setIsActive(bool isActive)
 
 void MessagingModel::loadAndRefreshRepliedByIndex(const int messageIndex)
 {
-    loadAndRefreshByMessageId(m_messages[messageIndex]->reply_to_message_id_);
+    loadAndRefreshByMessageId(QVariant::fromValue(m_messages[messageIndex]->reply_to_message_id_));
 }
 
-void MessagingModel::loadAndRefreshByMessageId(const QVariant messageId)
+void MessagingModel::loadAndRefreshByMessageId(const QVariant &messageId)
 {
     beginResetModel();
     m_messages.clear();
