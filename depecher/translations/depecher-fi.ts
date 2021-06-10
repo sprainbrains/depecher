@@ -116,6 +116,10 @@
         <source>Spanish speaking group</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Incompatible with any sneaky app which creates MIME handler overrides at runtime in ~/.local/share/applications/</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>AppearancePage</name>
@@ -461,6 +465,14 @@
     </message>
     <message>
         <source>Left chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hide Search</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -945,6 +957,10 @@
         <source>Authentication state</source>
         <translation>Autentikoinnin tila</translation>
     </message>
+    <message>
+        <source>Enter your name</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UserPage</name>
@@ -1298,6 +1314,10 @@
     </message>
     <message>
         <source>Unknown</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Wait registration</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -116,6 +116,10 @@
         <source>Spanish speaking group</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Incompatible with any sneaky app which creates MIME handler overrides at runtime in ~/.local/share/applications/</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>AppearancePage</name>
@@ -462,6 +466,14 @@
     <message>
         <source>Left chat</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hide Search</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search</source>
+        <translation type="unfinished">S??k</translation>
     </message>
 </context>
 <context>
@@ -942,6 +954,10 @@ Observera att efter detta, kommer 2-faktorsauktoriseringen att inaktiveras</tran
         <source>Authentication state</source>
         <translation>Autentiseringsstatus</translation>
     </message>
+    <message>
+        <source>Enter your name</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UserPage</name>
@@ -1295,6 +1311,10 @@ Observera att efter detta, kommer 2-faktorsauktoriseringen att inaktiveras</tran
     </message>
     <message>
         <source>Unknown</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Wait registration</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
