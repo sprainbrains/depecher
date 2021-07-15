@@ -12,7 +12,7 @@ QImage TelegramProfileProvider::requestImage(const QString &id, QSize *size,
         const QSize &requestedSize)
 {
     QImage result;
-    if (id == "undefined")
+    if (id == "undefined" || id.endsWith(".tgs"))
         return result;
 
     //https://github.com/tdlib/td/issues/264

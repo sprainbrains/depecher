@@ -4,6 +4,8 @@
 #include "tdlibQt/ParseObject.hpp"
 namespace tdlibQt {
 
+QVector<int> StickerModel::m_brokenThumbnails;
+
 StickerModel::StickerModel(QObject *parent) : QAbstractItemModel(parent),
     m_client(TdlibJsonWrapper::instance())
 {
@@ -138,38 +140,53 @@ QVariant StickerModel::data(const QModelIndex &index, int role) const
     case NAME:
         return   QString::fromStdString(m_stikerSets[setNumber]->name_);
     case SET_STICKER_THUMBNAIL: {
-        if (m_stikerSets[setNumber]->stickers_[0]->thumbnail_.data()) {
-            if (m_stikerSets[setNumber]->stickers_[0]->thumbnail_->photo_->local_->is_downloading_completed_)
-                return   QString::fromStdString(m_stikerSets[setNumber]->stickers_[0]->thumbnail_->photo_->local_->path_);
-            emit downloadFileStart(m_stikerSets[setNumber]->stickers_[0]->thumbnail_->photo_->id_, 12, this->index(0, 0, this->index(setNumber, 0)));
-            return QVariant();
-        } else {
-            if (m_stikerSets[setNumber]->stickers_[0]->sticker_->local_->is_downloading_completed_)
-                return   QString::fromStdString(m_stikerSets[setNumber]->stickers_[0]->sticker_->local_->path_);
-            emit downloadFileStart(m_stikerSets[setNumber]->stickers_[0]->sticker_->id_, 12, this->index(0, 0, this->index(setNumber, 0)));
-            return QVariant();
+        QSharedPointer<sticker> sticker = m_stikerSets[setNumber]->stickers_[0];
+        if (sticker->thumbnail_.data() &&
+            !StickerModel::m_brokenThumbnails.contains(sticker->thumbnail_->photo_->id_))
+        {
+            if (sticker->thumbnail_->photo_->local_->is_downloading_completed_)
+                return QString::fromStdString(sticker->thumbnail_->photo_->local_->path_);
+            emit downloadFileStart(sticker->thumbnail_->photo_->id_, 12, this->index(0, 0, this->index(setNumber, 0)));
+        } else if (!sticker->is_animated_) {
+            if (sticker->sticker_->local_->is_downloading_completed_)
+                return QString::fromStdString(sticker->sticker_->local_->path_);
+            emit downloadFileStart(sticker->sticker_->id_, 12, this->index(0, 0, this->index(setNumber, 0)));
         }
+        break;
     }
     case STICKERS_COUNT:
         return QVariant::fromValue(m_stikerSets[setNumber]->stickers_.size());
-    case STICKER:
+    case STICKER: {
         if (index.parent().row() == -1)
             return QVariant();
+
         //    m_installedStickerSets[rowIndex]->covers_;
-        if (m_stikerSets[setNumber]->stickers_[rowIndex]->sticker_->local_->is_downloading_completed_)
-            return   QString::fromStdString(m_stikerSets[setNumber]->stickers_[rowIndex]->sticker_->local_->path_);
-        if (m_stikerSets[setNumber]->stickers_[rowIndex]->thumbnail_.data()) {
-            if (m_stikerSets[setNumber]->stickers_[rowIndex]->thumbnail_->photo_->local_->is_downloading_completed_) {
-                emit downloadFileStart(m_stikerSets[setNumber]->stickers_[rowIndex]->sticker_->id_, 12, index);
-                return   QString::fromStdString(m_stikerSets[setNumber]->stickers_[rowIndex]->thumbnail_->photo_->local_->path_);
+        QSharedPointer<sticker> sticker = m_stikerSets[setNumber]->stickers_[rowIndex];
+        if (sticker->sticker_->local_->is_downloading_completed_) {
+            // There is no animated stickers support (tgs)
+            if (sticker->is_animated_) {
+                qDebug() << "Remove tgs: " << QString::fromStdString(sticker->sticker_->local_->path_);
+                m_client->deleteFile(sticker->sticker_->id_);
             }
-            emit downloadFileStart(m_stikerSets[setNumber]->stickers_[rowIndex]->thumbnail_->photo_->id_, 12, index);
-            return QVariant();
-        } else {
-            //Sometimes there is no thumbnails in sticker
-            emit downloadFileStart(m_stikerSets[setNumber]->stickers_[rowIndex]->sticker_->id_, 12, index);
-            return QVariant();
+            else
+                return QString::fromStdString(sticker->sticker_->local_->path_);
         }
+
+        if (sticker->thumbnail_.data() &&
+            !StickerModel::m_brokenThumbnails.contains(sticker->thumbnail_->photo_->id_))
+        {
+            if (sticker->thumbnail_->photo_->local_->is_downloading_completed_) {
+                if (!sticker->is_animated_)
+                    emit downloadFileStart(sticker->sticker_->id_, 12, index);
+                return QString::fromStdString(sticker->thumbnail_->photo_->local_->path_);
+            }
+            emit downloadFileStart(sticker->thumbnail_->photo_->id_, 12, index);
+        } else if (!sticker->is_animated_) {
+            //Sometimes there is no thumbnails in sticker
+            emit downloadFileStart(sticker->sticker_->id_, 12, index);
+        }
+        break;
+    }
     case EMOJI: {
         if (index.parent().row() == -1)
             return QVariant();
@@ -178,15 +195,12 @@ QVariant StickerModel::data(const QModelIndex &index, int role) const
         emojis += QString::fromStdString(m_stikerSets[setNumber]->stickers_[rowIndex]->emoji_);
         return emojis;
     }
-    break;
     case STICKER_FILE_ID:
         if (index.parent().row() == -1)
             return QVariant();
         return m_stikerSets[setNumber]->stickers_[rowIndex]->sticker_->id_;
-        break;
     default:
         return QVariant();
-        break;
     }
 
     //    m_installedStickerSets[rowIndex]->id_;
@@ -198,7 +212,7 @@ QVariant StickerModel::data(const QModelIndex &index, int role) const
     //    m_installedStickerSets[rowIndex]->name_;
     //    m_installedStickerSets[rowIndex]->title_;
 
-
+    return QVariant();
 }
 
 
@@ -241,46 +255,57 @@ void StickerModel::addStickerSet(const QJsonObject &stickerSetObject)
 
 void StickerModel::updateFile(const QJsonObject &fileObject)
 {
-
     if (fileObject["@type"].toString() == "updateFile")
         processFile(fileObject["file"].toObject());
 }
 
 void StickerModel::processFile(const QJsonObject &fileObject)
 {
+    auto newFile = ParseObject::parseFile(fileObject);
+    if (!m_stickerUpdateQueue.keys().contains(newFile->id_))
+        return;
 
-    auto file = ParseObject::parseFile(fileObject);
-    if (m_stickerUpdateQueue.keys().contains(file->id_)) {
-        QVector<int> photoRole;
-        QPersistentModelIndex viewIndex = m_stickerUpdateQueue[file->id_];
-        int rowIndex = viewIndex.row();
-        int setIndex = viewIndex.parent().row();
-        if (file->local_->is_downloading_completed_) {
-            photoRole.append(STICKER);
-            photoRole.append(SET_STICKER_THUMBNAIL);
-        }
-        if (m_stikerSets[setIndex]->stickers_[rowIndex]->sticker_->id_ == file->id_) {
-            m_stikerSets[setIndex]->stickers_[rowIndex]->sticker_ = file;
+    QVector<int> photoRole;
+    QPersistentModelIndex viewIndex = m_stickerUpdateQueue[newFile->id_];
+    int rowIndex = viewIndex.row();
+    int setIndex = viewIndex.parent().row();
+    if (newFile->local_->is_downloading_completed_) {
+        photoRole.append(STICKER);
+        photoRole.append(SET_STICKER_THUMBNAIL);
+    }
+    if (m_stikerSets[setIndex]->stickers_[rowIndex]->sticker_->id_ == newFile->id_) {
+        m_stikerSets[setIndex]->stickers_[rowIndex]->sticker_ = newFile;
+        //For child item
+        emit dataChanged(viewIndex,
+                         viewIndex, photoRole);
+    }
+    if (m_stikerSets[setIndex]->stickers_[rowIndex]->thumbnail_.data()) {
+        QSharedPointer<file> file =  m_stikerSets[setIndex]->stickers_[rowIndex]->thumbnail_->photo_;
+        if (file->id_ == newFile->id_) {
+            // FIXME: many thumbnails can't be downloaded so mark them as broken but proper fix is really needed
+            if (file->local_->is_downloading_active_ &&
+                !newFile->local_->is_downloading_active_ &&
+                !newFile->local_->is_downloading_completed_)
+            {
+#ifdef QT_DEBUG
+                qDebug() << "broken thumbnail: " << file->id_;
+#endif
+                StickerModel::m_brokenThumbnails.append(file->id_);
+                m_stickerUpdateQueue.remove(newFile->id_);
+            }
+            m_stikerSets[setIndex]->stickers_[rowIndex]->thumbnail_->photo_ = newFile;
+
             //For child item
             emit dataChanged(viewIndex,
                              viewIndex, photoRole);
+            //for thumbnails
+            emit dataChanged(viewIndex.parent(),
+                             viewIndex.parent(), photoRole);
         }
-        if (m_stikerSets[setIndex]->stickers_[rowIndex]->thumbnail_.data()) {
-            if (m_stikerSets[setIndex]->stickers_[rowIndex]->thumbnail_->photo_->id_ == file->id_) {
-                m_stikerSets[setIndex]->stickers_[rowIndex]->thumbnail_->photo_ = file;
-                //For child item
-                emit dataChanged(viewIndex,
-                                 viewIndex, photoRole);
-                //for thumbnails
-                emit dataChanged(viewIndex.parent(),
-                                 viewIndex.parent(), photoRole);
-            }
-        }
-
-        if (file->local_->is_downloading_completed_)
-            m_stickerUpdateQueue.remove(file->id_);
     }
 
+    if (newFile->local_->is_downloading_completed_)
+        m_stickerUpdateQueue.remove(newFile->id_);
 }
 
 void StickerModel::stickersReceived(const QJsonObject &setObject)
@@ -330,8 +355,10 @@ void StickerModel::setSet_id(QString set_id)
 
 void StickerModel::getFile(const int fileId, const int priority, const QModelIndex indexItem)
 {
-    m_client->downloadFile(fileId, priority);
-    m_stickerUpdateQueue[fileId] = indexItem;
+    if (!m_stickerUpdateQueue.contains(fileId)) {
+        m_client->downloadFile(fileId, priority);
+        m_stickerUpdateQueue[fileId] = indexItem;
+    }
 }
 
 int StickerModel::columnCount(const QModelIndex &) const

@@ -10,6 +10,8 @@ Dialog {
     property alias set_id: stickerModel.set_id
     property bool _previewEnabled: false
     property bool _setIsInstalled: false
+    property bool is_animated_sticker
+
     canAccept: !_previewEnabled
     states:[
         State {
@@ -133,7 +135,11 @@ Dialog {
 
         DialogHeader {
             id:header
-            acceptText: rootPage._setIsInstalled ? qsTr("Remove %1 stickers").arg(listView.contentItem.children[0].gridSticker.count) :qsTr("Add %1 stickers").arg(listView.contentItem.children[0].gridSticker.count)
+            acceptText: {
+                if (!listView.contentItem.children[0])
+                    return ""
+                return rootPage._setIsInstalled ? qsTr("Remove %1 stickers").arg(listView.contentItem.children[0].gridSticker.count) :qsTr("Add %1 stickers").arg(listView.contentItem.children[0].gridSticker.count)
+            }
             cancelText: qsTr("Back")
         }
         SilicaListView {
@@ -162,8 +168,8 @@ Dialog {
                         width: parent.width
                         height: sectionHeader.height + stickersGrid.height
                         SectionHeader {
-                            id:sectionHeader
-                            text:title
+                            id: sectionHeader
+                            text: title + (is_animated_sticker ? qsTr(" (Animated stickers)") : "")
                         }
                         DelegateModel {
                             id:stickers
@@ -178,7 +184,7 @@ Dialog {
                                 sourceSize.height: height
                                 asynchronous: true
                                 fillMode: Image.PreserveAspectFit
-                                source: "image://depecherDb/" + sticker
+                                source: sticker ? ("image://depecherDb/" + sticker) : ""
                                 Connections {
                                     target: stickerModel
                                     onRefreshSticker:{
@@ -228,6 +234,6 @@ Dialog {
     Timer {
         id:previewTimer
         interval: 800
-        onTriggered:                 rootPage.state = "preview"
+        onTriggered: rootPage.state = "preview"
     }
 }

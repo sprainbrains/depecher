@@ -45,18 +45,12 @@ ListItem {
         function getColor(colorEnum) {
             if(typeof colorEnum == "number") {
                 switch(colorEnum) {
-                case 0:
-                    return Theme.primaryColor
-                case 1:
-                    return Theme.secondaryColor
-                case 2:
-                    return Theme.highlightColor
-                case 3:
-                    return Theme.highlightBackgroundColor
-                case 4:
-                    return Theme.secondaryHighlightColor
-                case 5:
-                    return Theme.highlightDimmerColor
+                case 0: return Theme.primaryColor
+                case 1: return Theme.secondaryColor
+                case 2: return Theme.highlightColor
+                case 3: return Theme.highlightBackgroundColor
+                case 4: return Theme.secondaryHighlightColor
+                case 5: return Theme.highlightDimmerColor
                 }
             }
             return colorEnum
@@ -263,73 +257,29 @@ ListItem {
                             source = setItem()
                     }
                     function setItem() {
-                        if (index == 0) {
+                        if (index == 0)
                             return "delegates/TopMarginDelegate.qml"
-                        }
-                        if(currentMessageType == MessagingModel.TEXT) {
-                            return "delegates/TextDelegate.qml"
-                        }
-                        else if(currentMessageType == MessagingModel.PHOTO) {
-                            //                            var maxWidth = messageListItem.width-Theme.itemSizeExtraSmall - Theme.paddingMedium - 2*Theme.horizontalPageMargin
-                            //                            var maxHeight = page.height/2
-                            //                            width = photo_aspect >= 1 ? maxWidth : maxHeight * photo_aspect
-                            //                            height = photo_aspect >= 1 ? maxWidth/photo_aspect : maxHeight
-                            return "delegates/ImageDelegate.qml"
-                        }
-                        else if(currentMessageType == MessagingModel.VIDEO) {
-                            //                            var maxWidth = messageListItem.width-Theme.itemSizeExtraSmall - Theme.paddingMedium - 2*Theme.horizontalPageMargin
-                            //                            var maxHeight = page.height/2
-                            //                            width = photo_aspect >= 1 ? maxWidth : maxHeight * photo_aspect
-                            //                            height = photo_aspect >= 1 ? maxWidth/photo_aspect : maxHeight
-                            return "delegates/VideoDelegate.qml"
-                        }
-                        else if(currentMessageType == MessagingModel.VIDEO_NOTE) {
-                            return "delegates/VideoNoteDelegate.qml"
-                        }
-                        else if(currentMessageType == MessagingModel.STICKER) {
-                            width = 400
-                            height = width
-                            return "delegates/StickerDelegate.qml"
-                        }
-                        else if(currentMessageType == MessagingModel.SYSTEM_NEW_MESSAGE) {
-                            return "delegates/NewMessageDelegate.qml"
-                        }
-                        else if(currentMessageType == MessagingModel.DOCUMENT) {
-                            return "delegates/DocumentDelegate.qml"
-                        }
-                        else if(currentMessageType == MessagingModel.ANIMATION) {
-                            //                            var maxWidth = messageListItem.width-Theme.itemSizeExtraSmall - Theme.paddingMedium - 2*Theme.horizontalPageMargin
-                            //                            var maxHeight = page.height/2
-                            //                            width = photo_aspect > 1 ? maxWidth : maxHeight * photo_aspect
-                            //                            height = photo_aspect > 1 ? maxWidth/photo_aspect : maxHeight
-                            return "delegates/AnimationDelegate.qml"
-                        }
-                        else if(currentMessageType == MessagingModel.AUDIO) {
-                            return "delegates/AudioDelegate.qml"
-                        }
-                        else if(currentMessageType == MessagingModel.VOICE) {
-                            return "delegates/VoiceNoteDelegate.qml"
-                        }
-                        else if(currentMessageType == MessagingModel.CONTACT) {
-                            return "delegates/ContactDelegate.qml"
-                        }
-                        else if(currentMessageType == MessagingModel.JOINBYLINK) {
-                            return "delegates/JoinByLinkDelegate.qml"
-                        }
-                        else if(currentMessageType == MessagingModel.ADD_MEMBERS) {
-                            return "delegates/JoinedDelegate.qml"
-                        }
-                        else if(currentMessageType == MessagingModel.CONTACT_REGISTERED) {
-                            return "delegates/JoinedDelegate.qml"
-                        }
-                        else if(currentMessageType == MessagingModel.CHAT_CREATED) {
-                            return "delegates/ChatCreatedDelegate.qml"
+
+                        switch (currentMessageType) {
+                        case MessagingModel.TEXT: return "delegates/TextDelegate.qml"
+                        case MessagingModel.PHOTO: return "delegates/ImageDelegate.qml"
+                        case MessagingModel.VIDEO: return "delegates/VideoDelegate.qml"
+                        case MessagingModel.VIDEO_NOTE: return "delegates/VideoNoteDelegate.qml"
+                        case MessagingModel.STICKER: return "delegates/StickerDelegate.qml"
+                        case MessagingModel.SYSTEM_NEW_MESSAGE: return "delegates/NewMessageDelegate.qml"
+                        case MessagingModel.DOCUMENT: return "delegates/DocumentDelegate.qml"
+                        case MessagingModel.ANIMATION: return "delegates/AnimationDelegate.qml"
+                        case MessagingModel.AUDIO: return "delegates/AudioDelegate.qml"
+                        case MessagingModel.VOICE: return "delegates/VoiceNoteDelegate.qml"
+                        case MessagingModel.CONTACT: return "delegates/ContactDelegate.qml"
+                        case MessagingModel.JOINBYLINK: return "delegates/JoinByLinkDelegate.qml"
+                        case MessagingModel.ADD_MEMBERS: return "delegates/JoinedDelegate.qml"
+                        case MessagingModel.CONTACT_REGISTERED: return "delegates/JoinedDelegate.qml"
+                        case MessagingModel.CHAT_CREATED: return "delegates/ChatCreatedDelegate.qml"
                         }
                         return undefined
                     }
-                    Component.onCompleted: {
-                        setSource(setItem())
-                    }
+                    Component.onCompleted: setSource(setItem())
                 }
 
                 Row {

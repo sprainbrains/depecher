@@ -1118,6 +1118,7 @@ QSharedPointer<sticker> ParseObject::parseSticker(const QJsonObject &stickerObje
     sticker_->height_ = stickerObject["height"].toInt();
     sticker_->width_ = stickerObject["width"].toInt();
     sticker_->is_mask_ = stickerObject["is_mask"].toBool();
+    sticker_->is_animated_ = stickerObject["is_animated"].toBool();
     sticker_->set_id_ = getInt64(stickerObject["set_id"]);
     sticker_->mask_position_ = parseMaskPosition(stickerObject["mask_position"].toObject());
     sticker_->sticker_ = parseFile(stickerObject["sticker"].toObject());

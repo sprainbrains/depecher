@@ -99,8 +99,8 @@ class MessagingModel : public QAbstractListModel
         STICKER_SET_ID,
         SECTION, //Custom
         RICH_TEXT, //Custom
-        MESSAGE_TYPE //Custom
-
+        MESSAGE_TYPE, //Custom
+        IS_ANIMATED_STICKER,
     };
 
     QVariant dataContent(const int rowIndex) const;

@@ -141,12 +141,13 @@ Item {
                     anchors.centerIn: parent
                     fillMode: Image.PreserveAspectFit
                     source: {
-                        if(name == "Favorite")
+                        if (name == "Favorite")
                             return "image://theme/icon-m-favorite"
-                        if(name == "Recent")
+                        if (name == "Recent")
                             return "image://theme/icon-m-clock"
-
-                        return "image://depecherDb/"+set_thumbnail //+".webp"
+                        if (set_thumbnail)
+                            return "image://depecherDb/"+set_thumbnail //+".webp"
+                        return ""
                     }
                 }
                 onClicked: listView.currentIndex = index
@@ -200,7 +201,7 @@ Item {
                                 sourceSize.height: height
                                 asynchronous: true
                                 fillMode: Image.PreserveAspectFit
-                                source: "image://depecherDb/" + sticker
+                                source: sticker ? ("image://depecherDb/" + sticker) : ""
 
                                 MouseArea {
                                     anchors.fill: parent

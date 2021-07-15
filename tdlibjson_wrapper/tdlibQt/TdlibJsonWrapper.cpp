@@ -795,6 +795,7 @@ void TdlibJsonWrapper::downloadFile(int fileId, int priority, const bool sync, c
 {
     // Limiter to avoid download loop caused by some sticker's thumbnails (tdlib 1.4)
     // https://github.com/tdlib/td/issues/778
+    // Issue is still there in tdlib 1.5
     int downloadCnt = downloadMap.value(fileId, 0) + 1;
     if (downloadCnt == 2) {
         QTimer::singleShot(4000, [this, fileId] () {
@@ -1104,6 +1105,15 @@ void TdlibJsonWrapper::setChatMemberStatus(const qint64 chat_id, const int user_
                                      "\"user_id\":" + QString::number(user_id) + ","
                                      "\"status\":\"" + status + "\"}";
     sendToTelegram(client, setChatMemberStatusStr.toStdString().c_str());
+}
+
+void TdlibJsonWrapper::deleteFile(const int fileId, const QString &extra)
+{
+    QJsonObject query {
+        {"@type", "deleteFile"},
+        {"file_id", fileId}
+    };
+    sendJsonObjToTelegram(query, extra);
 }
 
 void TdlibJsonWrapper::setIsCredentialsEmpty(bool isCredentialsEmpty)

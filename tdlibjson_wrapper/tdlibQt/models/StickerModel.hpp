@@ -40,7 +40,6 @@ public:
     StickerModelState modelState() const;
 
     QString set_id() const;
-
 private:
 
     StickerModelState m_state = UknownState;
@@ -49,6 +48,7 @@ private:
     QList<QSharedPointer<stickerSetInfo>> m_installedStickerSets;
     QList<QSharedPointer<stickerSetInfo>> m_trendingStickerSets;
     QMap<int, QPersistentModelIndex> m_stickerUpdateQueue;
+    static QVector<int> m_brokenThumbnails;
 
     TdlibJsonWrapper *m_client;
 
