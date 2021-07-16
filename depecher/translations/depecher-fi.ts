@@ -653,6 +653,14 @@
         <source>Image saved to gallery!</source>
         <translation>Kuva tallennettu galleriaan!</translation>
     </message>
+    <message>
+        <source>Open externally</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Image not saved!</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PreviewStickerSetDialog</name>

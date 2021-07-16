@@ -652,6 +652,14 @@
         <source>Image saved to gallery!</source>
         <translation>图片已保存到图库！</translation>
     </message>
+    <message>
+        <source>Open externally</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Image not saved!</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PreviewStickerSetDialog</name>
