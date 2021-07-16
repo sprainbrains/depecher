@@ -6,11 +6,14 @@
 class FileWorker : public QObject
 {
     Q_OBJECT
-    QString m_PicturesPath;
+    Q_PROPERTY(QString picturesPath READ picturesPath CONSTANT)
 public:
     explicit FileWorker(QObject *parent = 0);
 
-signals:
+    QString picturesPath() const;
+
+private:
+    QString m_picturesPath;
 
 public slots:
     bool savePictureToGallery(const QString &sourcePath);

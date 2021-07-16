@@ -1046,6 +1046,7 @@ QVariant MessagingModel::dataContent(const int rowIndex) const
 
         if (contentPhotoPtr->sticker_->is_animated_ &&
             contentPhotoPtr->sticker_->sticker_->local_->is_downloading_completed_) {
+            qDebug() << "Remove tgs: " << QString::fromStdString(contentPhotoPtr->sticker_->sticker_->local_->path_);
             m_tdlibJson->deleteFile(contentPhotoPtr->sticker_->sticker_->id_);
         }
 

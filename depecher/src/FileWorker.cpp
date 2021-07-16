@@ -6,7 +6,7 @@
 #include <QDebug>
 
 FileWorker::FileWorker(QObject *parent) : QObject(parent),
-    m_PicturesPath(QStandardPaths::writableLocation(QStandardPaths::PicturesLocation) + "/Depecher")
+    m_picturesPath(QStandardPaths::writableLocation(QStandardPaths::PicturesLocation) + "/Depecher")
 {
     QDir pictureDir;
     pictureDir.mkpath(QStandardPaths::writableLocation(QStandardPaths::PicturesLocation) + "/Depecher");
@@ -16,7 +16,7 @@ bool FileWorker::savePictureToGallery(const QString &sourcePath)
 {
     QUrl a(sourcePath);
     return QFile::copy(a.toLocalFile(),
-                       m_PicturesPath + "/" +
+                       m_picturesPath + "/" +
                        a.fileName());
 }
 
@@ -38,4 +38,9 @@ QString FileWorker::openContact(const QString &firstName, const QString &lastNam
     } else
         return "";
 
+}
+
+QString FileWorker::picturesPath() const
+{
+    return m_picturesPath;
 }

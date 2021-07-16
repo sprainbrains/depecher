@@ -9,6 +9,8 @@ Page {
     id:root
     property alias imagePath: imagePreview.source
     property int remoteFileId
+    property bool imageSaved: false
+
     backNavigation: drawer.opened
     FileWorker{
         id:fileWorker
@@ -16,7 +18,7 @@ Page {
     Notification{
         id:imageSave
         appName: "Depecher"
-        previewBody: qsTr("Image saved to gallery!")
+        previewBody: imageSaved ? qsTr("Image saved to gallery!") : qsTr("Image not saved!")
     }
     Drawer {
         id:drawer
@@ -106,12 +108,22 @@ Page {
 
         background: SilicaFlickable {
             anchors.fill: parent
+
             PullDownMenu {
                 MenuItem {
                     text: qsTr("Save to gallery")
                     onClicked: {
-                        fileWorker.savePictureToGallery(imagePath)
+                        imageSaved = fileWorker.savePictureToGallery(imagePath)
                         imageSave.publish()
+                    }
+                }
+                MenuItem {
+                    text: qsTr("Open externally")
+                    onClicked: {
+                        if (imageSaved)
+                            Qt.openUrlExternally(fileWorker.picturesPath + "/" + imagePath.toString().split("/").pop())
+                        else
+                            Qt.openUrlExternally(imagePath)
                     }
                 }
             }
