@@ -674,6 +674,10 @@
         <translatorcomment>If adding one sticker, then it should be translated as &quot;Add %1 sticker&quot; -&gt; &quot;... tarra&quot; and when adding multiple it translates to &quot;... tarraa&quot;, same as with removing sticker(s).</translatorcomment>
         <translation>Lisää %1 tarra(a)</translation>
     </message>
+    <message>
+        <source> (Animated stickers)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ProxyDialog</name>

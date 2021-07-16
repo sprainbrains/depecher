@@ -671,6 +671,10 @@
         <source>Back</source>
         <translation>Cancelar</translation>
     </message>
+    <message>
+        <source> (Animated stickers)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ProxyDialog</name>

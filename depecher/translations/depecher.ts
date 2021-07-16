@@ -671,6 +671,10 @@
         <source>Add %1 stickers</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source> (Animated stickers)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ProxyDialog</name>
