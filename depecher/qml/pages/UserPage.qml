@@ -104,14 +104,16 @@ Page {
             PullDownMenu {
                 MenuItem {
                     text: qsTr("Send message")
-                    onClicked:    {
+                    onClicked: {
                         var cid = userInfo.getChatId()
-                        if(cid != "-1")
-                        {
-                            var page = pageStack.find(function (page) {
+                        if (cid !== "-1") {
+                            var chatPage = pageStack.find(function (page) {
                                 return page.__chat_page !== undefined;
-                            });
-                            pageStack.replaceAbove(page,"MessagingPage.qml",{chatId:cid})
+                            })
+                            pageStack.pop(chatPage, PageStackAction.Immediate)
+                            chatPage._opened_chat_id = cid
+                            pageStack.pushAttached("MessagingPage.qml",{chatId:cid})
+                            pageStack.navigateForward()
                         }
                     }
                 }
@@ -749,6 +751,13 @@ Page {
                                     visible: text.length
                                     height: !visible ? 0 : contentHeight
                                 }
+                            }
+                        }
+                        onClicked: {
+                            var userId = parseInt(model.user_id)
+                            if (userId !== -1) {
+                                pageStack.pushAttached(Qt.resolvedUrl("UserPage.qml"),{"user_id": userId})
+                                pageStack.navigateForward()
                             }
                         }
                     }

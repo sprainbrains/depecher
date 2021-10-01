@@ -35,7 +35,7 @@ MessagingModel::MessagingModel(QObject *parent) : QAbstractListModel(parent)
     connect(m_tdlibJson, &TdlibJsonWrapper::newMessages,
             this, &MessagingModel::addMessages);
     connect(m_tdlibJson, &TdlibJsonWrapper::messageReceived,
-            this, &MessagingModel::appendMessage);
+            this, &MessagingModel::onMessageReceived);
     connect(m_tdlibJson, &TdlibJsonWrapper::callbackQueryAnswerReceived,
             this, &MessagingModel::onCallbackAnswerReceived);
     connect(m_tdlibJson, &tdlibQt::TdlibJsonWrapper::updateFile,
@@ -72,10 +72,11 @@ MessagingModel::MessagingModel(QObject *parent) : QAbstractListModel(parent)
             m_NotificationsManager, &NotificationManager::onViewMessages);
     connect(this, &MessagingModel::firstIdChanged, [this]() {
         if (m_messages.last()->id_ == lastMessage().toLongLong()) {
-            if (!isUpdateConnected)
+            if (!isUpdateConnected) {
                 connect(m_tdlibJson, &TdlibJsonWrapper::newMessageFromUpdate,
                         this, &MessagingModel::addMessageFromUpdate);
-            isUpdateConnected = true;
+                isUpdateConnected = true;
+            }
             setAtYEnd(isUpdateConnected);
         }
     });
@@ -911,8 +912,7 @@ void MessagingModel::addMessages(const QJsonObject &messagesObject)
                 beginInsertRows(QModelIndex(), indexToAppend, indexToAppend);
                 qint64 messageId = m_messages[indexToAppend - 1]->id_;
                 const QByteArray messageSeparator =
-                    " {         \"@type\": \"message\",         \"author_signature\": \"\",         \"can_be_deleted_for_all_users\": false,         \"can_be_deleted_only_for_self\": false,         \"can_be_edited\": false,         \"can_be_forwarded\": false,         \"chat_id\": 0,         \"contains_unread_mention\": false,         \"content\": {             \"@type\": \"messageText\",             \"text\": {                 \"@type\": \"formattedText\",                 \"entities\": [                 ],                 \"text\": \"new message separator\"             }         },         \"date\": " + QString::number(objTime).toLatin1() + ",         \"edit_date\": 0,         \"id\": " + QString::number(messageId).toLatin1() + ",         \"is_channel_post\": false,         \"is_outgoing\": false,         \"media_album_id\": \"0\",         \"reply_to_message_id\": 0,         \"sender_user_id\": 0,         \"ttl\": 0,         \"ttl_expires_in\": 0,         \"via_bot_user_id\": 0,         \"views\": 0     } ";
-
+                    " {\"@type\": \"message\", \"author_signature\": \"\", \"can_be_deleted_for_all_users\": false, \"can_be_deleted_only_for_self\": false, \"can_be_edited\": false, \"can_be_forwarded\": false, \"chat_id\": 0, \"contains_unread_mention\": false, \"content\": { \"@type\": \"messageText\", \"text\": { \"@type\": \"formattedText\", \"entities\": [ ], \"text\": \"new message separator\" } }, \"date\": " + QString::number(objTime).toLatin1() + ", \"edit_date\": 0, \"id\": " + QString::number(messageId).toLatin1() + ", \"is_channel_post\": false, \"is_outgoing\": false, \"media_album_id\": \"0\", \"reply_to_message_id\": 0, \"sender_user_id\": 0, \"ttl\": 0, \"ttl_expires_in\": 0, \"via_bot_user_id\": 0, \"views\": 0 } ";
                 auto messageItem = ParseObject::parseMessage(QJsonDocument::fromJson(messageSeparator).object());
 
                 m_messages.insert(indexToAppend, messageItem);
@@ -932,7 +932,17 @@ void MessagingModel::addMessages(const QJsonObject &messagesObject)
     }
 }
 
-void MessagingModel::appendMessage(const QJsonObject &messageObject)
+void MessagingModel::onMessageReceived(const QJsonObject &messageObject)
+{
+    if (lastMessage().toLongLong() == 0) { // new chat?
+        //TODO: make sure I did not mess up something here
+        appendMessage(messageObject, true);
+    } else {
+        appendMessage(messageObject);
+    }
+}
+
+void MessagingModel::appendMessage(const QJsonObject &messageObject, const bool reportModelChanged)
 {
     auto messageItem = ParseObject::parseMessage(messageObject);
     if (messageObject.contains("@extra")) {
@@ -963,9 +973,14 @@ void MessagingModel::appendMessage(const QJsonObject &messageObject)
             message_ids << reply_id;
             m_tdlibJson->getMessages(peerId().toLongLong(), message_ids, m_extra.arg("getReplies"));
         }
+        if (reportModelChanged)
+            beginInsertRows(QModelIndex(), rowCount(QModelIndex()), rowCount(QModelIndex()));
         m_messages.append(messageItem);
-
-
+        if (reportModelChanged) {
+            endInsertRows();
+            // set lastMessage to get addMessageFromUpdate connection
+            setLastMessage(QString::number(m_messages.last()->id_));
+        }
     }
 
     bool is_downl_or_upl = data(index(rowCount(QModelIndex()) - 1), FILE_IS_UPLOADING).toBool()

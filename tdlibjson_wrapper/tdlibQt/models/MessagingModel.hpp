@@ -116,7 +116,8 @@ protected:
     QMap<int, int> messagePhotoQueue;
     QMap<qint64, QVector<QPersistentModelIndex>> avatarPhotoQueue;
     NotificationManager *m_NotificationsManager;
-    void appendMessage(const QJsonObject &messageObject);
+    void onMessageReceived(const QJsonObject &messageObject);
+    void appendMessage(const QJsonObject &messageObject, const bool reportModelChanged = false);
     QString m_peerId;
     TdlibJsonWrapper *m_tdlibJson = nullptr;
     QString m_extra = QLatin1String("MessagingModel %1");
@@ -273,6 +274,7 @@ public:
     QString lastMessage() const;
     bool atYEnd() const;
     enum MessageType {
+        UNDEFINED,
         TEXT = 1,
         PHOTO,
         STICKER,
@@ -288,7 +290,6 @@ public:
         ADD_MEMBERS,
         CONTACT_REGISTERED,
         CHAT_CREATED,
-        UNDEFINED
     };
 
     enum ChatMemberStatuses {

@@ -7,7 +7,6 @@ import "components"
 
 Page {
     id: page
-
     property string titleHeader: "Depecher"
     //for search in pageStack
     property bool __chat_page: true

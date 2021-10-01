@@ -529,13 +529,14 @@ void ChatsModel::updateChatLastMessage(const QJsonObject &chatLastMessageObject)
 {
     qint64 chatId = chatLastMessageObject["chat_id"].toVariant().toString().toLongLong();
     qint64 order =  chatLastMessageObject["order"].toString().toLongLong();
-    auto lastMessage = ParseObject::parseMessage(chatLastMessageObject["last_message"].toObject());
-    for (int i = 0; i < m_chats.size(); i++) {
-        if (m_chats[i]->id_ == chatId) {
-            m_chats[i]->last_message_ = lastMessage;
-            changeChatOrderOrAdd(chatId, order);
-            break;
-        }
+    int i = getIndex(chatId);
+    if (i >= 0) {
+        auto lastMessage = ParseObject::parseMessage(chatLastMessageObject["last_message"].toObject());
+        m_chats[i]->last_message_ = lastMessage;
+        changeChatOrderOrAdd(chatId, order);
+    } else {
+        if (order > 0) // add new chat only for order > 0
+            tdlibJson->getChat(chatId, c_extra);
     }
 }
 

@@ -231,6 +231,13 @@ Page {
                             }
                         }
                     }
+                    onClicked: {
+                        var userId = parseInt(model.user_id)
+                        if (userId !== -1) {
+                            pageStack.pushAttached(Qt.resolvedUrl("UserPage.qml"),{"user_id": userId})
+                            pageStack.navigateForward()
+                        }
+                    }
                 }
 
             }

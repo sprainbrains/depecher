@@ -154,7 +154,6 @@ void UsersModel::getUpdateNewChat(const QJsonObject &updateNewChatObject)
     if (chatItem->id_ != 0) {
         m_chats[chatItem->id_] = chatItem;
     }
-
 }
 
 void UsersModel::getUpdateUser(const QJsonObject &updateNewUserObject)
@@ -203,7 +202,6 @@ QSharedPointer<ChatMemberStatus> UsersModel::getGroupStatus(int group_id)
     if (!m_supergroups.contains(group_id))
         return QSharedPointer<ChatMemberStatus>(nullptr);
     return m_supergroups[group_id]->status_;
-
 }
 
 QSharedPointer<user> UsersModel::getUser(const int userId)
@@ -290,11 +288,11 @@ void UsersModel::updateChatLastMessage(const QJsonObject &chatLastMessageObject)
 {
     qint64 chatId = chatLastMessageObject["chat_id"].toVariant().toString().toLongLong();
     qint64 order =  chatLastMessageObject["order"].toString().toLongLong();
-    auto lastMessage = ParseObject::parseMessage(chatLastMessageObject["last_message"].toObject());
-    if (!m_chats.contains(chatId))
-        return;
-    m_chats[chatId]->last_message_ = lastMessage;
-    m_chats[chatId]->order_ = order;
+    if (m_chats.contains(chatId)) {
+        auto lastMessage = ParseObject::parseMessage(chatLastMessageObject["last_message"].toObject());
+        m_chats[chatId]->last_message_ = lastMessage;
+        m_chats[chatId]->order_ = order;
+    }
 }
 
 void UsersModel::updateChatReadInbox(const QJsonObject &chatReadInboxObject)
