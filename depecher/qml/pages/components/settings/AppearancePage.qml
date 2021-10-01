@@ -331,23 +331,20 @@ Page {
 
                         TextSwitch {
                             width: parent.width
-                            checked: settingsNightMode.enabled
+                            checked: settingsNightMode.enabled && Theme.colorScheme === Theme.LightOnDark
                             automaticCheck: false
-                            enabled: !settingsNightMode.scheduleMode
+                            enabled: !settingsNightMode.scheduleMode && Theme.colorScheme === Theme.LightOnDark
                             text: qsTr("Enable night mode")
-                            onClicked: {
-                                settingsNightMode.enabled = !checked
-                            }
+                            onClicked: settingsNightMode.enabled = !checked
                         }
                         TextSwitch {
-                            id:nightScheduleSwitch
+                            id: nightScheduleSwitch
                             width: parent.width
-                            checked: settingsNightMode.scheduleMode
+                            checked: settingsNightMode.scheduleMode && Theme.colorScheme === Theme.LightOnDark
+                            enabled: Theme.colorScheme === Theme.LightOnDark
                             automaticCheck: false
                             text: qsTr("Enable schedule")
-                            onClicked: {
-                                settingsNightMode.scheduleMode = !checked
-                            }
+                            onClicked: settingsNightMode.scheduleMode = !checked
                         }
 
                         Row {

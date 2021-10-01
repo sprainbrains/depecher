@@ -13,8 +13,13 @@ ApplicationWindow
     allowedOrientations: defaultAllowedOrientations
     _defaultPageOrientations: allowedOrientations
     initialPage: Qt.resolvedUrl("pages/DialogsPage.qml")
-    // TODO: do not hardcode #99000000 Theme.rgba("black", 0.6)
-    background.color: settingsNightMode.enabled ? "#101011" : "#99000000"
+    // TODO: do not hardcode colors: #99000000 Theme.rgba("black", 0.6)
+    background.color: {
+        if (settingsNightMode.enabled)
+            return "#101011"
+        else
+            return Theme.colorScheme === Theme.LightOnDark ? "#99000000" : "#5affffff"
+    }
 
     Audio {
         id: playMusic
@@ -54,7 +59,7 @@ ApplicationWindow
         id: nightModeScheduleTimer
         interval: 1000 * 30
         repeat: true
-        running: settingsNightMode.scheduleMode
+        running: settingsNightMode.scheduleMode && Theme.colorScheme === Theme.LightOnDark
         triggeredOnStart: true
         onTriggered: {
             var currDate = new Date()
