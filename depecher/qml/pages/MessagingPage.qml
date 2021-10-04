@@ -100,11 +100,10 @@ Page {
         }
     }
     Component.onCompleted: {
-
         if (Object.keys(forwardMessages).length !== 0) {
             writer.reply_id = "-1"
-        writer.replyMessageAuthor = qsTr("Forwarded messages")
-        writer.replyMessageText = forwardMessages.messages.length + " " + qsTr("messages")
+            writer.replyMessageAuthor = qsTr("Forwarded messages")
+            writer.replyMessageText = forwardMessages.messages.length + " " + qsTr("messages")
         }
         c_telegramWrapper.openChat(messagingModel.peerId)
     }

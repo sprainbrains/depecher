@@ -14,6 +14,15 @@ ListItem {
     signal replyMessageClicked(int source_message_index,string replied_message_index)
     highlighted: ListView.isCurrentItem
 
+    function refreshCurrentMessageType() {
+        currentMessageType = Qt.binding(function() {return message_type ? message_type : 0})
+    }
+
+    onClicked: {
+        if (contentLoader.source.toString().indexOf("TopMarginDelegate.qml") > 0)
+            refreshCurrentMessageType()
+    }
+
     Timer {
         id:highlightedTimer
         interval: 1000
@@ -27,13 +36,13 @@ ListItem {
         height: columnWrapper.height
         x: columnWrapper.x
         y: columnWrapper.y
-        visible: currentMessageType != MessagingModel.STICKER &&
-                 currentMessageType != MessagingModel.VIDEO_NOTE &&
-                 currentMessageType != MessagingModel.SYSTEM_NEW_MESSAGE &&
-                 currentMessageType != MessagingModel.JOINBYLINK &&
-                 currentMessageType != MessagingModel.ADD_MEMBERS &&
-                 currentMessageType != MessagingModel.CONTACT_REGISTERED &&
-                 currentMessageType != MessagingModel.CHAT_CREATED &&
+        visible: currentMessageType !== MessagingModel.STICKER &&
+                 currentMessageType !== MessagingModel.VIDEO_NOTE &&
+                 currentMessageType !== MessagingModel.SYSTEM_NEW_MESSAGE &&
+                 currentMessageType !== MessagingModel.JOINBYLINK &&
+                 currentMessageType !== MessagingModel.ADD_MEMBERS &&
+                 currentMessageType !== MessagingModel.CONTACT_REGISTERED &&
+                 currentMessageType !== MessagingModel.CHAT_CREATED &&
                  index != 0
 
         radius: settingsUIMessage.radius
@@ -89,20 +98,20 @@ ListItem {
         width: contentWrapper.width
         anchors.right: settingsUIMessage.oneAligning ? undefined :
                                           is_outgoing ? parent.right : undefined
-        anchors.rightMargin:currentMessageType != MessagingModel.SYSTEM_NEW_MESSAGE &&
-                            currentMessageType != MessagingModel.JOINBYLINK &&
-                            currentMessageType != MessagingModel.ADD_MEMBERS &&
-                            currentMessageType != MessagingModel.CONTACT_REGISTERED &&
-                            currentMessageType != MessagingModel.CHAT_CREATED ?
+        anchors.rightMargin:currentMessageType !== MessagingModel.SYSTEM_NEW_MESSAGE &&
+                            currentMessageType !== MessagingModel.JOINBYLINK &&
+                            currentMessageType !== MessagingModel.ADD_MEMBERS &&
+                            currentMessageType !== MessagingModel.CONTACT_REGISTERED &&
+                            currentMessageType !== MessagingModel.CHAT_CREATED ?
                                 is_outgoing ?Theme.horizontalPageMargin * 2 : Theme.horizontalPageMargin
                                                                               : 0
         anchors.left: settingsUIMessage.oneAligning ? parent.left :
                                          is_outgoing ? undefined : parent.left
-        anchors.leftMargin:currentMessageType != MessagingModel.SYSTEM_NEW_MESSAGE &&
-                           currentMessageType != MessagingModel.JOINBYLINK &&
-                           currentMessageType != MessagingModel.ADD_MEMBERS &&
-                           currentMessageType != MessagingModel.CONTACT_REGISTERED &&
-                           currentMessageType != MessagingModel.CHAT_CREATED ? Theme.horizontalPageMargin :
+        anchors.leftMargin:currentMessageType !== MessagingModel.SYSTEM_NEW_MESSAGE &&
+                           currentMessageType !== MessagingModel.JOINBYLINK &&
+                           currentMessageType !== MessagingModel.ADD_MEMBERS &&
+                           currentMessageType !== MessagingModel.CONTACT_REGISTERED &&
+                           currentMessageType !== MessagingModel.CHAT_CREATED ? Theme.horizontalPageMargin :
                                                                                0
         Item {
             width: parent.width
@@ -111,11 +120,11 @@ ListItem {
         Row {
             id: contentWrapper
             spacing: Theme.paddingMedium
-            x:currentMessageType != MessagingModel.SYSTEM_NEW_MESSAGE &&
-              currentMessageType != MessagingModel.JOINBYLINK &&
-              currentMessageType != MessagingModel.ADD_MEMBERS &&
-              currentMessageType != MessagingModel.CONTACT_REGISTERED &&
-              currentMessageType != MessagingModel.CHAT_CREATED ? Theme.paddingMedium : 0
+            x:currentMessageType !== MessagingModel.SYSTEM_NEW_MESSAGE &&
+              currentMessageType !== MessagingModel.JOINBYLINK &&
+              currentMessageType !== MessagingModel.ADD_MEMBERS &&
+              currentMessageType !== MessagingModel.CONTACT_REGISTERED &&
+              currentMessageType !== MessagingModel.CHAT_CREATED ? Theme.paddingMedium : 0
             width: Math.max(metaInfoRow.width,replyLoader.width,
                             userAvatarLoader.width + contentColumn.width +
                             (userAvatarLoader.width == 0 ? 0:spacing))
@@ -133,17 +142,17 @@ ListItem {
                         source: sender_photo ? "image://depecherDb/"+sender_photo : ""
                         fallbackText: author ? author.charAt(0) : ""
                         fallbackItemVisible: sender_photo ? false : true
-                        visible: settingsUIMessage.oneAligning ? currentMessageType != MessagingModel.SYSTEM_NEW_MESSAGE &&
-                                                          currentMessageType != MessagingModel.JOINBYLINK &&
-                                                          currentMessageType != MessagingModel.ADD_MEMBERS &&
-                                                          currentMessageType != MessagingModel.CONTACT_REGISTERED &&
-                                                          currentMessageType != MessagingModel.CHAT_CREATED  &&
+                        visible: settingsUIMessage.oneAligning ? currentMessageType !== MessagingModel.SYSTEM_NEW_MESSAGE &&
+                                                          currentMessageType !== MessagingModel.JOINBYLINK &&
+                                                          currentMessageType !== MessagingModel.ADD_MEMBERS &&
+                                                          currentMessageType !== MessagingModel.CONTACT_REGISTERED &&
+                                                          currentMessageType !== MessagingModel.CHAT_CREATED  &&
                                                           !messagingModel.chatType["is_channel"]
-                                                        : !is_outgoing && currentMessageType != MessagingModel.SYSTEM_NEW_MESSAGE &&
-                                                         currentMessageType != MessagingModel.JOINBYLINK &&
-                                                         currentMessageType != MessagingModel.ADD_MEMBERS &&
-                                                         currentMessageType != MessagingModel.CONTACT_REGISTERED &&
-                                                         currentMessageType != MessagingModel.CHAT_CREATED  &&
+                                                        : !is_outgoing && currentMessageType !== MessagingModel.SYSTEM_NEW_MESSAGE &&
+                                                         currentMessageType !== MessagingModel.JOINBYLINK &&
+                                                         currentMessageType !== MessagingModel.ADD_MEMBERS &&
+                                                         currentMessageType !== MessagingModel.CONTACT_REGISTERED &&
+                                                         currentMessageType !== MessagingModel.CHAT_CREATED  &&
                                                          !messagingModel.chatType["is_channel"]  &&
                                                          messagingModel.chatType["type"] != TdlibState.Private &&
                                                          messagingModel.chatType["type"] != TdlibState.Secret
@@ -167,11 +176,11 @@ ListItem {
                         width: Math.min(implicitWidth,messageListItem.width *2/3)
                         truncationMode: TruncationMode.Fade
                         visible: {
-                            if(currentMessageType == MessagingModel.SYSTEM_NEW_MESSAGE ||
-                                    currentMessageType == MessagingModel.JOINBYLINK ||
-                                    currentMessageType == MessagingModel.ADD_MEMBERS ||
-                                    currentMessageType == MessagingModel.CONTACT_REGISTERED ||
-                                    currentMessageType == MessagingModel.CHAT_CREATED ) {
+                            if(currentMessageType === MessagingModel.SYSTEM_NEW_MESSAGE ||
+                                    currentMessageType === MessagingModel.JOINBYLINK ||
+                                    currentMessageType === MessagingModel.ADD_MEMBERS ||
+                                    currentMessageType === MessagingModel.CONTACT_REGISTERED ||
+                                    currentMessageType === MessagingModel.CHAT_CREATED ) {
                                 return false
                             }
                             else if(messagingModel.chatType["type"] == TdlibState.BasicGroup || (messagingModel.chatType["type"] == TdlibState.Supergroup && !messagingModel.chatType["is_channel"])) {
@@ -252,13 +261,22 @@ ListItem {
                     id:contentLoader
                     z:0
 
+                    Timer {
+                        id: fetchItemTimer
+                        interval: 3000
+                        onTriggered: refreshCurrentMessageType()
+                    }
+
                     function reload() {
-                            source = ""
-                            source = setItem()
+                        source = ""
+                        source = setItem()
                     }
                     function setItem() {
-                        if (index == 0)
+                        if (index == 0) {
+                            // FIXME: Workaround for bug somewhere in c++ model
+                            fetchItemTimer.start()
                             return "delegates/TopMarginDelegate.qml"
+                        }
 
                         switch (currentMessageType) {
                         case MessagingModel.TEXT: return "delegates/TextDelegate.qml"
@@ -277,18 +295,23 @@ ListItem {
                         case MessagingModel.CONTACT_REGISTERED: return "delegates/JoinedDelegate.qml"
                         case MessagingModel.CHAT_CREATED: return "delegates/ChatCreatedDelegate.qml"
                         }
-                        return undefined
+                        return ""
                     }
-                    Component.onCompleted: setSource(setItem())
+                    Component.onCompleted: {
+                        // Avoid double setSource call.
+                        // onCompleted order is undefined so currentMessageType may already call setSource here
+                        if (status === Loader.Null)
+                            setSource(setItem())
+                    }
                 }
 
                 Row {
                     id: metaInfoRow
                     visible: currentMessageType !== MessagingModel.SYSTEM_NEW_MESSAGE &&
-                             currentMessageType != MessagingModel.JOINBYLINK &&
-                             currentMessageType != MessagingModel.ADD_MEMBERS &&
-                             currentMessageType != MessagingModel.CONTACT_REGISTERED &&
-                             currentMessageType != MessagingModel.CHAT_CREATED
+                             currentMessageType !== MessagingModel.JOINBYLINK &&
+                             currentMessageType !== MessagingModel.ADD_MEMBERS &&
+                             currentMessageType !== MessagingModel.CONTACT_REGISTERED &&
+                             currentMessageType !== MessagingModel.CHAT_CREATED
 
                     layoutDirection: is_outgoing ? Qt.RightToLeft : Qt.LeftToRight
                     spacing: Theme.paddingSmall
