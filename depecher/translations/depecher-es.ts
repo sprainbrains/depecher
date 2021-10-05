@@ -118,7 +118,7 @@
     </message>
     <message>
         <source>Incompatible with any sneaky app which creates MIME handler overrides at runtime in ~/.local/share/applications/</source>
-        <translation type="unfinished"></translation>
+        <translation>Incompatible con cualquier apl furtiva que crea anulaciones de controlador MIME en tiempo de ejecución en ~/.local/share/applications/</translation>
     </message>
 </context>
 <context>
@@ -231,7 +231,7 @@
     </message>
     <message>
         <source>Go to Home folder</source>
-        <translation>Ir a carpeta Principal</translation>
+        <translation>Ir a carpeta Usuario</translation>
     </message>
     <message>
         <source>Files to send</source>
@@ -303,7 +303,7 @@
     </message>
     <message>
         <source>Send message by enter</source>
-        <translation>Enviar con intro</translation>
+        <translation>Enviar con Entrar</translation>
     </message>
 </context>
 <context>
@@ -354,11 +354,11 @@
     </message>
     <message>
         <source>When this is off, you won&apos;t get Depecher app on boot</source>
-        <translation>Cuando esto está deshabilitado, Depecher no iniciará en el arranque</translation>
+        <translation>Cuando está deshabilitado, Depecher no iniciará en el arranque</translation>
     </message>
     <message>
         <source>Start/stop Depecher daemon. Stopping Depecher daemon will also stop receiving notifications</source>
-        <translation>Iniciar o detener el servicio de Depecher es opcional.</translation>
+        <translation>Iniciar o Detener el servicio de Depecher es opcional.</translation>
     </message>
     <message>
         <source>Depecher current status</source>
@@ -366,11 +366,11 @@
     </message>
     <message>
         <source>Start daemon</source>
-        <translation>Iniciar depecherd</translation>
+        <translation>Iniciar Depecherd</translation>
     </message>
     <message>
         <source>Stop daemon</source>
-        <translation>Detener depecherd</translation>
+        <translation>Detener Depecherd</translation>
     </message>
     <message>
         <source>Close app on closing UI</source>
@@ -378,7 +378,7 @@
     </message>
     <message>
         <source>When this is on, Depecher quits after closing ui. No daemon. Autostart should be disabled</source>
-        <translation>Cuando esto está deshabilitado, Depecher se cierra después de cerrar la interfaz. Sin depecherd. El inicio automático debe estar deshabilitado</translation>
+        <translation>Cuando está deshabilitado, Depecher se cierra después de cerrar la interfaz. Sin Depecherd, el autoinicio  debe estar deshabilitado</translation>
     </message>
     <message>
         <source>Library settings</source>
@@ -469,11 +469,11 @@
     </message>
     <message>
         <source>Hide Search</source>
-        <translation type="unfinished"></translation>
+        <translation>Ocultar búsqueda </translation>
     </message>
     <message>
         <source>Search</source>
-        <translation type="unfinished">Buscar</translation>
+        <translation>Buscar</translation>
     </message>
 </context>
 <context>
@@ -654,11 +654,11 @@
     </message>
     <message>
         <source>Open externally</source>
-        <translation type="unfinished"></translation>
+        <translation>Abrir externamente </translation>
     </message>
     <message>
         <source>Image not saved!</source>
-        <translation type="unfinished"></translation>
+        <translation>¡Imagen no guardada!</translation>
     </message>
 </context>
 <context>
@@ -681,7 +681,7 @@
     </message>
     <message>
         <source> (Animated stickers)</source>
-        <translation type="unfinished"></translation>
+        <translation> (Pegatinas animadas)</translation>
     </message>
 </context>
 <context>
@@ -944,7 +944,7 @@
     </message>
     <message>
         <source>Wait for the message via %1 containing the activation code and press %2</source>
-        <translation>Espera el mensaje de %1 con el código de activación y presionar %2</translation>
+        <translation>Esperar el mensaje de %1 con el código de activación y presionar %2</translation>
     </message>
     <message>
         <source>recovery code sent to %1</source>
@@ -968,7 +968,7 @@
     </message>
     <message>
         <source>Enter your name</source>
-        <translation type="unfinished"></translation>
+        <translation>Introducir el nombre </translation>
     </message>
 </context>
 <context>
@@ -1019,7 +1019,7 @@
     </message>
     <message>
         <source>Username</source>
-        <translation>Nombre de suario</translation>
+        <translation>Nombre de usuario</translation>
     </message>
     <message>
         <source>Copy</source>
@@ -1327,7 +1327,7 @@
     </message>
     <message>
         <source>Wait registration</source>
-        <translation type="unfinished"></translation>
+        <translation>Esperar registro</translation>
     </message>
 </context>
 </TS>
