@@ -32,6 +32,8 @@ UserInfoProvider::UserInfoProvider(QObject *parent) : InfoProvider(parent)
             this, &UserInfoProvider::errorReceived);
     connect(m_tdlibJson, &TdlibJsonWrapper::chatReceived,
             this, &UserInfoProvider::onChatReceived);
+
+    //updateUserFullInfo
 }
 
 int UserInfoProvider::userId() const
@@ -139,7 +141,6 @@ QString UserInfoProvider::phoneNumber() const
         return QString::fromStdString(m_userInfo->phone_number_);
     }
     return QString();
-
 }
 
 void UserInfoProvider::updateUserReceived(const QJsonObject &userObject)
@@ -190,6 +191,8 @@ void UserInfoProvider::onChatReceived(const QJsonObject &userObject)
 
 void UserInfoProvider::setUserId(int userId)
 {
+    if (userId <= 0)
+        return;
     if (m_userId == userId)
         return;
     m_userId = userId;

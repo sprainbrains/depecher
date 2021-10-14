@@ -46,7 +46,7 @@ void CopyFileConversion::stop(const QString &error)
 
 void CopyFileConversion::stopGeneration()
 {
-    qDebug() << "aborted";
+    qDebug() << __func__ << ": aborted";
 }
 
 void CopyFileConversion::finishGeneration()
@@ -70,16 +70,24 @@ void Worker::process()
     QFile src(m_originalPath);
     QFile dst(m_destinationPath);
     if(src.open(QIODevice::ReadOnly) && dst.open(QIODevice::WriteOnly)) {
-        qint64 size = 4 * 1024;
-        char data[size];// = new char[size];
-        int k = 0;
+        qint64 maxSize = 4 * 1024;
+        qint64 readSize, writeSize;
+        qint64 totalRead = 0;
+        char data[maxSize];// = new char[size];
         while(!src.atEnd() && !m_stopCopy)
         {
-            src.read(data, size);
-            qint64 bytes = dst.write(data, size);
-            emit copied(bytes);
-            k++;
-            src.seek(k * size);
+            readSize = src.read(data, maxSize);
+            if (readSize == 0)
+                break;
+            else if (readSize < 0) {
+                qDebug() << "Read failed: " << m_originalPath;
+                stop();
+                break;
+            }
+            writeSize = dst.write(data, readSize);
+            emit copied(writeSize);
+            totalRead += readSize;
+            src.seek(totalRead);
         }
 
         dst.flush();

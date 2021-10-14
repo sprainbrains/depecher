@@ -5,6 +5,22 @@ import "../items"
 ListItem {
     width:parent.width
     contentHeight: contentWrapper.height
+
+    // FIXME: TdlibState is not available here
+    QtObject {
+        id: tdlibState
+        property int m_BasicGroup: 0
+        property int m_Private: 1
+        property int m_Secret: 2
+        property int m_Supergroup: 3
+        property int m_Channel: 4
+
+        property int m_Sending_Failed: 0
+        property int m_Sending_Pending: 1
+        property int m_Sending_Not_Read: 2
+        property int m_Sending_Read: 3
+    }
+
     Item{
         id:contentWrapper
         x:Theme.horizontalPageMargin
@@ -37,10 +53,10 @@ ListItem {
                         source: type["is_channel"] ? "image://theme/icon-m-media-radio?" + (pressed
                                                                                             ? Theme.highlightColor
                                                                                             : Theme.primaryColor) :
-                                                     type["type"] == TdlibState.Supergroup || type["type"] == TdlibState.BasicGroup ? "image://theme/icon-s-group-chat?"+ (pressed
+                                                     type["type"] == tdlibState.m_m_Supergroup || type["type"] == tdlibState.m_m_BasicGroup ? "image://theme/icon-s-group-chat?"+ (pressed
                                                                                                                                                                            ? Theme.highlightColor
                                                                                                                                                                            : Theme.primaryColor) :
-                                                                                                                                      type["type"] == TdlibState.Secret ? "image://theme/icon-s-secure?"+ (pressed
+                                                                                                                                      type["type"] == tdlibState.m_Secret ? "image://theme/icon-s-secure?"+ (pressed
                                                                                                                                                                                                            ? Theme.highlightColor
                                                                                                                                                                                                            : Theme.primaryColor) :
                                                                                                                                                                           ""
@@ -117,7 +133,7 @@ ListItem {
                         color:pressed ? Theme.highlightColor : Theme.secondaryHighlightColor
                         text: last_message_author ? (last_message_author + ":") : ""
                         font.pixelSize: Theme.fontSizeExtraSmall
-                        visible: action ? false : type == TdlibState.BasicGroup || type==TdlibState.Supergroup ? true : false
+                        visible: action ? false : type == tdlibState.m_BasicGroup || type==tdlibState.m_Supergroup ? true : false
                         width: visible ? implicitWidth : 0
                     }
                     Label {
@@ -140,16 +156,17 @@ ListItem {
                             font.pixelSize: Theme.fontSizeTiny
                             width: visible ? implicitWidth : 0
                             color:pressed ? Theme.secondaryHighlightColor : Theme.secondaryColor
-                            visible: !(type["type"] == TdlibState.Supergroup && type["is_channel"])
+                            visible: !(type["type"] == tdlibState.m_Supergroup && type["is_channel"])
                             anchors.verticalCenter: counterWrapper.verticalCenter
+                            textFormat: Text.StyledText
                             text: {
-                                if(sending_state === TdlibState.Sending_Pending) {
+                                if(sending_state === tdlibState.m_Sending_Pending) {
                                     return "<b>\u23F1</b>" // clock
                                 }
-                                else if(sending_state === TdlibState.Sending_Failed) {
+                                else if(sending_state === tdlibState.m_Sending_Failed) {
                                     return "<b>\u26A0</b>" // warning sign
                                 }
-                                else if(sending_state == TdlibState.Sending_Read) {
+                                else if(sending_state == tdlibState.m_Sending_Read) {
                                     return "<b>\u2713\u2713</b>" // double check mark
                                 }
                                 else {

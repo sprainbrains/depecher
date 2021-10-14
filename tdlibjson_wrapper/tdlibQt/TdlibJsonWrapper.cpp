@@ -58,6 +58,7 @@ TdlibJsonWrapper::~TdlibJsonWrapper()
 }
 void TdlibJsonWrapper::startListen()
 {
+    m_myId = -1;
     listenThread = new QThread;
     parseThread = new QThread;
     //    listenSchedulerThread = new QThread;
@@ -189,6 +190,7 @@ void TdlibJsonWrapper::startListen()
                 exit(1);
             }
         }
+        qDebug() << "error: " << errorObject["message"].toString();
         emit errorReceived(errorObject);
         emit errorReceivedMap(errorObject.toVariantMap());
     });
@@ -239,6 +241,8 @@ void TdlibJsonWrapper::startListen()
             this, &TdlibJsonWrapper::updateBasicGroupReceived);
     connect(parseObject, &ParseObject::supergroupMembersReceived,
             this, &TdlibJsonWrapper::supergroupMembersReceived);
+    connect(parseObject, &ParseObject::myIdRecevied,
+            this, &TdlibJsonWrapper::setMyId);
     listenThread->start();
     parseThread->start();
 
@@ -378,13 +382,12 @@ void TdlibJsonWrapper::recoverAuthenticationPassword(const QString &recoveryCode
 
 void TdlibJsonWrapper::cancelDownloadFile(int fileId, bool only_if_pending)
 {
-    QString Pending = only_if_pending ? "true" : "false";
-
-    QString cancelDownloadFile =
-        "{\"@type\":\"cancelDownloadFile\","
-        "\"file_id\":" + QString::number(fileId) + ","
-        "\"only_if_pending\":" + Pending + "}";
-    sendToTelegram(client, cancelDownloadFile.toStdString().c_str());
+    QJsonObject query {
+        {"@type", "cancelDownloadFile"},
+        {"file_id", fileId},
+        {"only_if_pending", only_if_pending}
+    };
+    sendJsonObjToTelegram(query);
 }
 
 void TdlibJsonWrapper::cancelUploadFile(int fileId)
@@ -619,6 +622,17 @@ void TdlibJsonWrapper::checkPassword(const QString &password)
         "\"@extra\":\"checkPassword\"}";
 
     sendToTelegram(client, setAuthenticationPassword.c_str());
+}
+
+int TdlibJsonWrapper::myId() const
+{
+    return m_myId;
+}
+
+void TdlibJsonWrapper::setMyId(int newMyId)
+{
+    m_myId = newMyId;
+    emit myIdChanged();
 }
 
 bool TdlibJsonWrapper::migrateFilesDirectory(const QString &oldPath, const QString &newPath)
@@ -1100,11 +1114,15 @@ void TdlibJsonWrapper::deleteMessages(const qint64 chat_id, const QVector<qint64
 void TdlibJsonWrapper::setChatMemberStatus(const qint64 chat_id, const int user_id,
         const QString &status)
 {
-    QString setChatMemberStatusStr = "{\"@type\":\"deleteMessages\","
-                                     "\"chat_id\":\"" + QString::number(chat_id) + "\","
-                                     "\"user_id\":" + QString::number(user_id) + ","
-                                     "\"status\":\"" + status + "\"}";
-    sendToTelegram(client, setChatMemberStatusStr.toStdString().c_str());
+    QJsonObject query {
+        {"@type", "setChatMemberStatus"},
+        {"chat_id", QString::number(chat_id)},
+        {"user_id", user_id},
+        {"status", QJsonObject {
+                {"@type", status} // FIXME
+            }}
+    };
+    sendJsonObjToTelegram(query);
 }
 
 void TdlibJsonWrapper::deleteFile(const int fileId, const QString &extra)
@@ -1114,6 +1132,15 @@ void TdlibJsonWrapper::deleteFile(const int fileId, const QString &extra)
         {"file_id", fileId}
     };
     sendJsonObjToTelegram(query, extra);
+}
+
+void TdlibJsonWrapper::setBio(const QString &bio)
+{
+    QJsonObject query {
+        {"@type", "setBio"},
+        {"bio", bio}
+    };
+    sendJsonObjToTelegram(query);
 }
 
 void TdlibJsonWrapper::setIsCredentialsEmpty(bool isCredentialsEmpty)

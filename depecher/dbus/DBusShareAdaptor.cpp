@@ -249,7 +249,7 @@ void DBusShareAdaptor::sendMedia(const QList<qlonglong> &chat_ids, const QString
         sendPhoto(chat_ids, filepath);
     } else if (mimeType.contains("vcard")) {
         sendVCard(chat_ids, filepath);
-    } else if (mimeType.contains("text")) {
+    } else if (mimeType.contains("text") && filepath.startsWith("{")) {
         sendText(chat_ids, filepath);
     } else {
         sendDocument(chat_ids, filepath);

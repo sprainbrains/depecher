@@ -318,6 +318,17 @@ Page {
                 }
             }
 
+            TextSwitch {
+                width: parent.width -2*x
+                x:Theme.horizontalPageMargin
+                checked: settingsUIMessage.scaleUpAnimatedStickerThumbnail
+                automaticCheck: false
+                text: qsTr("Scale up animated sticker thumbnail")
+                onClicked: {
+                    settingsUIMessage.scaleUpAnimatedStickerThumbnail = !checked
+                }
+            }
+
             ExpandingSectionGroup {
                 width: parent.width
                 ExpandingSection {
@@ -404,6 +415,7 @@ Page {
                     settingsUIMessage.incomingColor = 5
                     settingsUIMessage.oneAligning = false
                     settingsUIMessage.fullSizeInChannels = false
+                    settingsUIMessage.scaleUpAnimatedStickerThumbnail = false
                     settingsUI.hideNameplate = false
                     settingsNightMode.enabled = false
                     settingsNightMode.scheduleMode = false

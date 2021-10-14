@@ -398,16 +398,28 @@ Page {
 
                     property bool messageEditable: {
                         return typeof can_be_edited !== "undefined" &&
-                                can_be_edited && (message_type == MessagingModel.TEXT
-                                                  || message_type == MessagingModel.PHOTO
-                                                  || message_type == MessagingModel.VIDEO
-                                                  || message_type == MessagingModel.DOCUMENT
-                                                  || message_type == MessagingModel.ANIMATION
-                                                  || message_type == MessagingModel.VOICE
-                                                  || message_type == MessagingModel.AUDIO)
+                                can_be_edited && (model.message_type === MessagingModel.TEXT
+                                                  || model.message_type === MessagingModel.PHOTO
+                                                  || model.message_type === MessagingModel.VIDEO
+                                                  || model.message_type === MessagingModel.DOCUMENT
+                                                  || model.message_type === MessagingModel.ANIMATION
+                                                  || model.message_type === MessagingModel.VOICE
+                                                  || model.message_type === MessagingModel.AUDIO)
                     }
                     signal triggerEdit()
                     onTriggerEdit: editEntry.clicked()
+
+                    onDoubleClicked: {
+                        // TODO add settings?
+                        if  ((messagingModel.chatType["type"] == TdlibState.Supergroup && !messagingModel.chatType["is_channel"]) ||
+                              messagingModel.chatType["type"] == TdlibState.BasicGroup ||
+                              messagingModel.chatType["type"] == TdlibState.Private)
+                        {
+                            writer.reply_id = id
+                            writer.replyMessageAuthor = author
+                            writer.replyMessageText = replyMessageContent()
+                        }
+                    }
 
                     Component {
                         id: contextMenu
@@ -420,7 +432,7 @@ Page {
                                 onClicked: {
                                     writer.reply_id = id
                                     writer.replyMessageAuthor = author
-                                    writer.replyMessageText = replyMessageContent()
+                                    writer.replyMessageText = myDelegate.replyMessageContent()
                                 }
                             }
                             MenuItem {
@@ -435,7 +447,7 @@ Page {
                                         writer.state = "editCaption"
 
                                     writer.edit_message_id = id
-                                    writer.replyMessageText = replyMessageContent()
+                                    writer.replyMessageText = myDelegate.replyMessageContent()
                                     writer.text = message_type == MessagingModel.TEXT ? content : file_caption
                                     writer.textArea.focus = true
                                     writer.textArea.cursorPosition = writer.text.length
@@ -484,25 +496,19 @@ Page {
                                     _messagingModel.deleteMessage(_index, forEveryone)
                                 })
                             }
-
-                            function replyMessageContent() {
-                                switch (message_type) {
-                                case MessagingModel.TEXT:
-                                    return content
-                                case MessagingModel.PHOTO:
-                                    return qsTr("Photo")
-                                case MessagingModel.STICKER:
-                                    return qsTr("Sticker")
-                                case MessagingModel.DOCUMENT:
-                                    return qsTr("Document")
-                                case MessagingModel.ANIMATION:
-                                    return qsTr("Animation")
-                                case MessagingModel.CONTACT:
-                                    return qsTr("Contact")
-                                }
-                                return qsTr("Message")
-                            }
                         }
+                    }
+
+                    function replyMessageContent() {
+                        switch (message_type) {
+                        case MessagingModel.TEXT: return content
+                        case MessagingModel.PHOTO: return qsTr("Photo")
+                        case MessagingModel.STICKER: return qsTr("Sticker")
+                        case MessagingModel.DOCUMENT: return qsTr("Document")
+                        case MessagingModel.ANIMATION: return qsTr("Animation")
+                        case MessagingModel.CONTACT:  return qsTr("Contact")
+                        }
+                        return qsTr("Message")
                     }
                 }
 

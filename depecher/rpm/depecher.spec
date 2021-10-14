@@ -7,7 +7,7 @@ Name:       depecher
 %{!?qtc_make:%define qtc_make make}
 %{?qtc_builddir:%define _builddir %qtc_builddir}
 Summary:    Telegram client for Sailfish OS
-Version:    0.8.1
+Version:    0.8.2
 Release:    1
 Group:      Applications/Communications
 License:    LICENSE

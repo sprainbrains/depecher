@@ -11,12 +11,10 @@ Dialog {
     property string from_chat_id: ""
     property var messages: []
     onAccepted: {
-        var page = pageStack.find(function (page) {
-            return page.__chat_page !== undefined;
-        });
-        if(page)
-        page._opened_chat_id = ""
-        pageStack.replaceAbove(page,Qt.resolvedUrl("MessagingPage.qml"),{"chatId":selected_chat_id,
+        var chatsPage = app.chatsPage
+        if (chatsPage)
+            chatsPage._opened_chat_id = ""
+        pageStack.replaceAbove(chatsPage,Qt.resolvedUrl("MessagingPage.qml"),{"chatId":selected_chat_id,
                               "forwardMessages":{
                              "selected_chat_id":selected_chat_id,
                              "from_chat_id":from_chat_id,

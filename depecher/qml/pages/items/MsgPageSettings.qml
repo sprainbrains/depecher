@@ -32,6 +32,7 @@ Item {
             property int timepoint: Formatter.Timepoint
             property bool oneAligning: false
             property bool fullSizeInChannels: false
+            property bool scaleUpAnimatedStickerThumbnail: false
         }
     }
 }

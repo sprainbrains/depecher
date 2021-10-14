@@ -14,6 +14,7 @@ class AboutMeDAO : public QObject
     Q_PROPERTY(QString fullName READ fullName WRITE setFullName NOTIFY fullNameChanged)
     Q_PROPERTY(QString phoneNumber READ phoneNumber WRITE setPhoneNumber NOTIFY phoneNumberChanged)
     Q_PROPERTY(QString photoPath READ photoPath WRITE setPhotoPath NOTIFY photoPathChanged)
+
     TdlibJsonWrapper *m_client;
     int m_profilePhotoId = 0;
     QString m_firstName;
@@ -33,7 +34,6 @@ class AboutMeDAO : public QObject
     QString m_last_message_id;
 
     bool m_disableGetMe;
-
 public:
     explicit AboutMeDAO(QObject *parent = 0);
 

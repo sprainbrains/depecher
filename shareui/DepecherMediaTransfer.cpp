@@ -83,6 +83,8 @@ void DepecherMediaTransfer::cancel()
 
 void DepecherMediaTransfer::start()
 {
+    if (!_iface)
+        return;
     QString mime = mediaItem()->value(MediaItem::MimeType).toString();
     _mediaName = mediaItem()->value(MediaItem::Url).toString().replace("file://", "");
     QVariantMap description = mediaItem()->value(MediaItem::UserData).toMap();
@@ -92,12 +94,11 @@ void DepecherMediaTransfer::start()
         chat_ids.append(jids[i].toLongLong());
     QVariant arg;
     arg.setValue(chat_ids);
-    if (_iface) {
-        if (!mime.contains("text"))
-            _iface->call(QDBus::NoBlock, "sendMedia", arg, _mediaName, mime);
-        else {
-            _mediaName = description["name"].toString();
-            _iface->call(QDBus::NoBlock, "sendMedia", arg, QString(QJsonDocument::fromVariant(mediaItem()->value(MediaItem::UserData)).toJson()), mime);
-        }
+    // text file will have same mime as regular text
+    if (_mediaName.isEmpty() && mime.contains("text")) {
+        _mediaName = description["name"].toString();
+        _iface->call(QDBus::NoBlock, "sendMedia", arg, QString(QJsonDocument::fromVariant(mediaItem()->value(MediaItem::UserData)).toJson()), mime);
+    } else {
+        _iface->call(QDBus::NoBlock, "sendMedia", arg, _mediaName, mime);
     }
 }

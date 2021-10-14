@@ -1,6 +1,7 @@
 import QtQuick 2.6
 import Sailfish.Silica 1.0
 import TelegramItems 1.0
+import TelegramDAO 1.0
 import "../js/utils.js" as Utils
 import Nemo.Notifications 1.0
 import Nemo.DBus 2.0
@@ -8,6 +9,7 @@ import "items"
 import tdlibQtEnums 1.0
 import Nemo.Configuration 1.0
 import "components"
+import "items/delegates"
 
 Page {
     id:root
@@ -110,6 +112,54 @@ Page {
                         }
                     }
                 }
+                BackgroundItem {
+                    width: parent.width + Theme.horizontalPageMargin *2
+                    height: bioWrapper.height + Theme.paddingLarge
+                    x: -Theme.horizontalPageMargin
+
+                    UserInfo {
+                        id: userInfo
+                        userId: parseInt(aboutMe.id) ? parseInt(aboutMe.id) : -1
+                    }
+
+                    Column {
+                        id: bioWrapper
+                        width: parent.width - Theme.horizontalPageMargin
+                        anchors {
+                            verticalCenter: parent.verticalCenter
+                            left: parent.left
+                            leftMargin: Theme.horizontalPageMargin
+                        }
+
+                        RichTextItem {
+                            text: userInfo.bio.length ? userInfo.bio : qsTr("Biography")
+                            font.pixelSize: Theme.fontSizeSmall
+                            wrapMode: Text.WordWrap
+                            width: parent.width
+                        }
+                        Label {
+                            font.pixelSize: Theme.fontSizeTiny
+                            color: Theme.secondaryColor
+                            text: qsTr("Bio")
+                            width: parent.width
+                            visible: userInfo.bio.length
+                        }
+
+                    }
+                    onClicked: {
+                        var changeDialog = pageStack.push(Qt.resolvedUrl("components/ChangeDialog.qml"),
+                                                          {
+                                                              "title": qsTr("Change Bio"),
+                                                              "label": qsTr("Bio"),
+                                                              "value": userInfo.bio
+                                                          })
+                        changeDialog.accepted.connect(function (){
+                            c_telegramWrapper.setBio(changeDialog.value)
+                            userInfo.bio = changeDialog.value
+                        })
+                    }
+                }
+
                 Item{
                     //bottomPadding
                     width: parent.width

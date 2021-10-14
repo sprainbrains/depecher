@@ -2,7 +2,6 @@
 #include "tdlibQt/TdlibJsonWrapper.hpp"
 #include "tdlibQt/ParseObject.hpp"
 namespace tdlibQt {
-
 AboutMeDAO::AboutMeDAO(QObject *parent) : QObject(parent),
     m_client(TdlibJsonWrapper::instance())
 {

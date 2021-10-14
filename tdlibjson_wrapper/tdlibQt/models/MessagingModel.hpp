@@ -110,6 +110,11 @@ class MessagingModel : public QAbstractListModel
     void addRepliedMessage(const QJsonObject &messageObject);
 
     bool canFetchOlder();
+
+private:
+    QSharedPointer<file> getFilePtrByMessage(QSharedPointer<message> msg) const;
+    int getFileIdByMessage(QSharedPointer<message> msg) const;
+
 protected:
     QList<QSharedPointer<message>> m_messages;
     QSharedPointer<ChatMemberStatus> m_UserStatus;

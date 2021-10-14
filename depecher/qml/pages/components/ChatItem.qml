@@ -7,6 +7,27 @@ import "../items"
 ListItem {
     width:parent.width
     contentHeight: contentWrapper.height
+    property bool activeChat: false
+
+    Loader {
+        asynchronous: true
+        sourceComponent: activeChat ? glassItemComponent : undefined
+        anchors {
+            left: parent.left
+            leftMargin: -width/2
+            verticalCenter: parent.verticalCenter
+        }
+    }
+
+    Component {
+        id: glassItemComponent
+        GlassItem {
+            color: Theme.highlightColor
+            width: Theme.itemSizeExtraSmall
+            height: width
+        }
+    }
+
     Item{
         id:contentWrapper
         x:Theme.horizontalPageMargin
@@ -36,16 +57,17 @@ ListItem {
                     spacing: Theme.paddingSmall
                     Image {
                         id: iconGroup
-                        source: type["is_channel"] ? "image://theme/icon-m-media-radio?" + (pressed
-                                                                                                    ? Theme.highlightColor
-                                                                                                    : Theme.primaryColor) :
-                                                             type["type"] == TdlibState.Supergroup || type["type"] == TdlibState.BasicGroup ? "image://theme/icon-s-group-chat?"+ (pressed
-                                                                                                                                                                   ? Theme.highlightColor
-                                                                                                                                                                   : Theme.primaryColor) :
-                                                                                                                              type["type"] == TdlibState.Secret ? "image://theme/icon-s-secure?"+ (pressed
-                                                                                                                                                                                           ? Theme.highlightColor
-                                                                                                                                                                                           : Theme.primaryColor) :
-                                                                                                                                                          ""
+                        source: {
+                            var c = pressed ? Theme.highlightColor : Theme.primaryColor
+                            if (type["is_channel"])
+                                return "image://theme/icon-m-media-radio?" + c
+                            else if (type["type"] == TdlibState.Supergroup || type["type"] == TdlibState.BasicGroup)
+                                return "image://theme/icon-s-group-chat?" + c
+                            else if (type["type"] == TdlibState.Secret)
+                                return "image://theme/icon-s-secure?" + c
+                            else
+                                return ""
+                        }
                         anchors.verticalCenter: parent.verticalCenter
                         height: parent.height
                         width: source == "" ? 0 : implicitWidth

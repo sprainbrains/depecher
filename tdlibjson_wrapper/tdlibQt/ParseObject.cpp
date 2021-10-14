@@ -65,7 +65,6 @@ void ParseObject::parseResponse(const QByteArray &json)
     //    case "updateNewInlineQuery":
     //    case "updateNewPreCheckoutQuery":
     //    case "updateNewShippingQuery":
-    //    case "updateOption":
     //    case "updateRecentStickers":
     //    case "updateSavedAnimations":
     //    case "updateSecretChat":
@@ -181,6 +180,12 @@ void ParseObject::parseResponse(const QByteArray &json)
         QString lastName = userObject["last_name"].toString();
         users_[user_id] = firstName + " " + lastName;
         emit updateUserReceived(userObject);
+    } else if (typeField == "updateOption") {
+        QJsonObject obj = doc.object();
+        if (obj["name"].toString() == "my_id") {
+            int myId = obj["value"].toObject()["value"].toInt();
+            emit myIdRecevied(myId);
+        }
     } else if (typeField == "seconds")
         emit secondsReceived(doc.object());
     else if (typeField == "text")

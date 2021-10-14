@@ -61,13 +61,13 @@ CoverBackground {
     }
     CoverActionList {
         id: coverAction
-        enabled: rootWindow.__depecher_audio.hasAudio
+        enabled: app.__depecher_audio.hasAudio
         CoverAction {
-            iconSource: rootWindow.__depecher_audio.playbackState === Audio.PlayingState ? "image://theme/icon-cover-pause"
+            iconSource: app.__depecher_audio.playbackState === Audio.PlayingState ? "image://theme/icon-cover-pause"
                                                                                         : "image://theme/icon-cover-play"
-            onTriggered:rootWindow.__depecher_audio.playbackState === Audio.PlayingState ?
-                            rootWindow.__depecher_audio.pause()
-                          : rootWindow.__depecher_audio.play()
+            onTriggered:app.__depecher_audio.playbackState === Audio.PlayingState ?
+                            app.__depecher_audio.pause()
+                          : app.__depecher_audio.play()
         }
 }
 

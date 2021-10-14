@@ -16,10 +16,7 @@ Page {
         Connections {
             target: c_telegramWrapper
             onGetChatByLink: {
-                var page = pageStack.find(function (page) {
-                    return page.__chat_page !== undefined;
-                });
-                pageStack.replaceAbove(page,"MessagingPage.qml",{chatId:chat_id})
+                pageStack.replaceAbove(app.chatsPage,"MessagingPage.qml",{chatId:chat_id})
             }
             onErrorReceivedMap: {
                 notificationProxy.previewBody = qsTr("Error %1").arg(errorObject["code"] ) +" "+ errorObject["message"]

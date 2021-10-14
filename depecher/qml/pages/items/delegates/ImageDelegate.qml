@@ -49,6 +49,7 @@ Column{
         sourceSize.height: height
         fillMode: Image.PreserveAspectFit
         source: content ? content : ""
+        autoTransform: true
         MouseArea{
             anchors.fill: parent
             enabled: file_downloading_completed

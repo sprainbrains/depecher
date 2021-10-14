@@ -72,24 +72,32 @@ Page {
     Component {
         id:userInfoComponent
         SilicaFlickable {
+            id: userInfoFlickable
+            anchors.fill: parent
+            visible: !errorPlaceholder.enabled
+            contentHeight: content.height + header.height
+
             property alias chatId: userInfo.chatId
             property alias userId: userInfo.userId
 
             UserInfo {
                 id:userInfo
             }
+
+            function pushMessagingPage(cid) {
+                var chatsPage = app.chatsPage
+                pageStack.pop(chatsPage, PageStackAction.Immediate)
+                chatsPage._opened_chat_id = cid
+                pageStack.pushAttached("MessagingPage.qml",{"chatId": cid})
+                pageStack.navigateForward()
+            }
+
             Connections {
                 target: userInfo
-                onChatIdReceived: {
-                    var page = pageStack.find(function (page) {
-                        return page.__chat_page !== undefined;
-                    });
-                    pageStack.replaceAbove(page,"MessagingPage.qml",{chatId:chatId})
+                onChatIdReceived: { // private chat
+                    userInfoFlickable.pushMessagingPage(chatId)
                 }
             }
-            anchors.fill: parent
-            visible: !errorPlaceholder.enabled
-            contentHeight: content.height + header.height
 
             ViewPlaceholder {
                 id:errorPlaceholder
@@ -105,16 +113,9 @@ Page {
                 MenuItem {
                     text: qsTr("Send message")
                     onClicked: {
-                        var cid = userInfo.getChatId()
-                        if (cid !== "-1") {
-                            var chatPage = pageStack.find(function (page) {
-                                return page.__chat_page !== undefined;
-                            })
-                            pageStack.pop(chatPage, PageStackAction.Immediate)
-                            chatPage._opened_chat_id = cid
-                            pageStack.pushAttached("MessagingPage.qml",{chatId:cid})
-                            pageStack.navigateForward()
-                        }
+                        var cid = userInfo.getChatId() // -1 creates private chat
+                        if (cid !== "-1")
+                            userInfoFlickable.pushMessagingPage(cid)
                     }
                 }
             }
@@ -504,10 +505,8 @@ Page {
                     text: qsTr("Open channel")
                     visible: !flickable.hideOpenMenu
                     onClicked:{
-                        var page = pageStack.find(function (page) {
-                            return page.__chat_page !== undefined;
-                        });
-                        pageStack.replaceAbove(page,"MessagingPage.qml",{chatId:channelInfo.chatId})
+                        var chatsPage = app.chatsPage
+                        pageStack.replaceAbove(chatsPage,"MessagingPage.qml",{chatId:channelInfo.chatId})
 
                     }
                 }

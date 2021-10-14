@@ -7,7 +7,16 @@ Image {
     id: stickerImage
     asynchronous: true
     // FIXME
-    width: model.is_animated_sticker ? 128 : (Theme.itemSizeHuge * 1.3)
+    width: {
+        if (model.is_animated_sticker) {
+            if (settingsUIMessage.scaleUpAnimatedStickerThumbnail)
+                return 128 * 2
+            else
+                return 128
+        }
+        else
+            return (Theme.itemSizeHuge * 1.3)
+    }
     height: width
     sourceSize.width: width
     sourceSize.height: height

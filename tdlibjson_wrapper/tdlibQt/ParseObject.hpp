@@ -173,6 +173,7 @@ signals:
     void basicGroupFullInfoReceived(const QJsonObject &basicGroupFullInfoObject);
     void updateBasicGroupFullInfoReceived(const QJsonObject &updateBasicGroupFullInfoObject);
     void supergroupMembersReceived(const QJsonObject &supergroupMembersObject);
+    void myIdRecevied(const int myId);
 public slots:
     void parseResponse(const QByteArray &json);
 };

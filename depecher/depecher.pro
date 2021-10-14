@@ -15,7 +15,7 @@ TARGET = depecher
 QT += core sql dbus multimedia network
 
 ##Application must be also changed in depecher.spec file and tdlibjsonwrapper.pro
-VERSION = 0.8.1
+VERSION = 0.8.2
 DEFINES += APP_VERSION=\"\\\"$${VERSION}\\\"\"
 
 CONFIG += sailfishapp
@@ -103,7 +103,7 @@ SOURCES += \
 OTHER_FILES += qml/app.qml \
     qml/cover/CoverPage.qml \
     qml/pages/*.qml \
-qml/pages/items/delegates/*.qml \
+    qml/pages/items/delegates/*.qml \
     translations/*.ts
 
 SAILFISHAPP_ICONS = 86x86 108x108 128x128 256x256
@@ -135,6 +135,7 @@ RESOURCES += \
     resource.qrc
 
 DISTFILES += \
+    qml/ShareUILegacy.qml \
     qml/js/countries.js \
     depecher.desktop \
     depecher-openurl.desktop \

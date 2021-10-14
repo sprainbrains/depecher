@@ -42,7 +42,7 @@ SilicaFlickable {
             }
             onClicked: {
                 if(share_id==0)
-                pageStack.push(Qt.resolvedUrl("../pages/DialogsPage.qml"),{attachmentId:attachmentId,attachmentPreview:attachmentPreview});
+                pageStack.push(Qt.resolvedUrl("../pages/ChatsPage.qml"),{attachmentId:attachmentId,attachmentPreview:attachmentPreview});
             }
         }
 

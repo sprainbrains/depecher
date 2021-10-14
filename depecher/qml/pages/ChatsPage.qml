@@ -8,8 +8,6 @@ import "components"
 Page {
     id: page
     property string titleHeader: "Depecher"
-    //for search in pageStack
-    property bool __chat_page: true
     property string _opened_chat_id: ""
 
     function openAuthorizeDialog() {
@@ -114,6 +112,7 @@ Page {
 
         delegate: ChatItem {
             id: chatDelegate
+            activeChat: _opened_chat_id === model.id
 
             menu:  ContextMenu {
                 MenuItem {
@@ -126,10 +125,15 @@ Page {
                     onClicked: chatsModel.markAsUnread(id, !unread)
                 }
                 MenuItem {
-                    text: qsTr("Leave chat")
+                    text: privateChat ? qsTr("Remove history and leave chat") : qsTr("Leave chat")
+                    property bool privateChat: type["type"] == TdlibState.Private
                     onClicked: {
                         chatDelegate.remorseAction(qsTr("Left chat"), function () {
-                            c_telegramWrapper.leaveChat(id)
+                            if (privateChat)
+                                c_telegramWrapper.deleteChatHistory(id, true)
+                            else
+                                c_telegramWrapper.leaveChat(id)
+
                             if (page.canNavigateForward && _opened_chat_id === id)
                                 pageStack.popAttached(page, PageStackAction.Immediate)
                         })
@@ -145,17 +149,14 @@ Page {
                 target: chatDelegate
             }
 
-            onClicked:{
-                var page = pageStack.find(function (page) {
-                    return page.__messaging_page !== undefined
-                });
-                if(_opened_chat_id !== id)
-                {
-                    _opened_chat_id = id
-                    if(is_marked_unread)
-                        chatsModel.markAsUnread(id,false)
-                    pageStack.pushAttached("MessagingPage.qml",{chatId:id})
+            onClicked: {
+                if (_opened_chat_id !== model.id || !page.canNavigateForward) {
+                    _opened_chat_id = model.id
+                    if (is_marked_unread)
+                        chatsModel.markAsUnread(model.id, false)
+                    pageStack.pushAttached("MessagingPage.qml",{chatId:model.id})
                 }
+
                 pageStack.navigateForward()
             }
         }
@@ -164,4 +165,6 @@ Page {
             flickable: listView
         }
     }
+
+    Component.onCompleted: app.chatsPage = page
 }

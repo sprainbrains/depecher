@@ -7,12 +7,11 @@ import Nemo.Configuration 1.0
 
 ApplicationWindow
 {
-    id:rootWindow
-    property alias __depecher_audio: playMusic
+    id: app
     cover: Qt.resolvedUrl("cover/CoverPage.qml")
     allowedOrientations: defaultAllowedOrientations
     _defaultPageOrientations: allowedOrientations
-    initialPage: Qt.resolvedUrl("pages/DialogsPage.qml")
+    initialPage: Qt.resolvedUrl("pages/ChatsPage.qml")
     // TODO: do not hardcode colors: #99000000 Theme.rgba("black", 0.6)
     background.color: {
         if (settingsNightMode.enabled)
@@ -20,6 +19,9 @@ ApplicationWindow
         else
             return Theme.colorScheme === Theme.LightOnDark ? "#99000000" : "#5affffff"
     }
+
+    property alias __depecher_audio: playMusic
+    property Page chatsPage: null
 
     Audio {
         id: playMusic
@@ -32,14 +34,10 @@ ApplicationWindow
             var pages =[];
             var listPages = c_PageStarter.getPages();
             var page_dialog=Qt.resolvedUrl("pages/MessagingPage.qml")
-            if(listPages.length>0)
-            {
-                var page = pageStack.find(function (page) {
-                    return page.__chat_page !== undefined;
-                });
+            if (listPages.length>0) {
                 if(pageStack.depth > 1)
                     pageStack.popAttached(page,PageStackAction.Immediate)
-                page._opened_chat_id = listPages[0].pageParam
+                chatsPage._opened_chat_id = listPages[0].pageParam
                 pageStack.pushAttached(page_dialog,{chatId:listPages[0].pageParam})
                 pageStack.navigateForward()
             }

@@ -37,7 +37,7 @@ Dialog {
                     break;
                 case TdlibState.AuthorizationStateReady:
                     canLogin=true
-                    pageStack.replaceAbove(null,Qt.resolvedUrl("../../DialogsPage.qml"))
+                    pageStack.replaceAbove(null,Qt.resolvedUrl("../../ChatsPage.qml"))
                     break
                 }
             }

@@ -1,4 +1,5 @@
 #include "DepecherPluginInfo.hpp"
+#include <QSysInfo>
 
 DepecherPluginInfo::DepecherPluginInfo() : m_ready(false)
 {
@@ -14,8 +15,12 @@ void DepecherPluginInfo::query()
 {
     TransferMethodInfo info;
 
+    QString libPath = QSysInfo::currentCpuArchitecture() == "arm64" ? "/usr/lib64" : "/usr/lib";
+    // pre 4.2.0.x
+    bool legacyShare = !QFileInfo::exists(libPath + "/qt5/qml/Sailfish/Share");
+
     QStringList capabilities;
-    capabilities <<  QLatin1String("application/*")
+    capabilities << QLatin1String("application/*")
                  << QLatin1String("image/*")
                  << QLatin1String("audio/*")
                  << QLatin1String("video/*")
@@ -26,7 +31,8 @@ void DepecherPluginInfo::query()
     info.displayName     = QLatin1String("Depecher");
     info.methodId        = QLatin1String("DepecherSharePlugin");
     info.accountIcon     = QLatin1String("image://theme/icon-m-depecher");
-    info.shareUIPath     = QLatin1String("/usr/share/depecher/qml/ShareUI.qml");
+    info.shareUIPath     = legacyShare ? QLatin1String("/usr/share/depecher/qml/ShareUILegacy.qml") :
+                                         QLatin1String("/usr/share/depecher/qml/ShareUI.qml");
     info.capabilitities  = capabilities;
     m_infoList.clear();
     m_infoList << info;

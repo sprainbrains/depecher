@@ -15,7 +15,7 @@ class UserInfoProvider : public InfoProvider
     Q_PROPERTY(QString lastName READ lastName NOTIFY lastNameChanged)
     Q_PROPERTY(QString status READ status NOTIFY statusChanged)
     Q_PROPERTY(QString username READ username NOTIFY usernameChanged)
-    Q_PROPERTY(QString bio READ bio NOTIFY bioChanged)
+    Q_PROPERTY(QString bio READ bio WRITE setBio NOTIFY bioChanged)
     Q_PROPERTY(QString phoneNumber READ phoneNumber NOTIFY phoneNumberChanged)
     Q_PROPERTY(linkState incomingLink READ incomingLink NOTIFY incomingLinkChanged)
     Q_PROPERTY(linkState outgoingLink READ outgoingLink  NOTIFY outcomingLinkChanged)
@@ -56,7 +56,7 @@ public:
 
     QString username() const;
 
-    QString bio() const
+    const QString &bio() const
     {
         return m_bio;
     }

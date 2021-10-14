@@ -31,6 +31,7 @@ class TdlibJsonWrapper : public QObject
                connectionStateChanged)
     Q_PROPERTY(int totalUnreadCount READ totalUnreadCount WRITE setTotalUnreadCount NOTIFY
                totalUnreadCountChanged)
+    Q_PROPERTY(int myId READ myId NOTIFY myIdChanged)
 
     QThread *listenThread;
     QThread *listenSchedulerThread;
@@ -83,8 +84,12 @@ public:
     int totalUnreadCount() const;
     void checkPassword(const QString &password);
 
+    int myId() const;
+    void setMyId(int newMyId);
+
 private:
     QHash<int, int> downloadMap;
+    int m_myId;
 
 private:
     bool migrateFilesDirectory(const QString &oldPath, const QString &newPath);
@@ -154,6 +159,8 @@ signals:
     void basicGroupFullInfoReceived(const QJsonObject &basicGroupFullInfoObject);
     void updateBasicGroupFullInfoReceived(const QJsonObject &updateBasicGroupFullInfoObject);
     void supergroupMembersReceived(const QJsonObject &supergroupMembersObject);
+
+    void myIdChanged();
 
 private slots:
     void setTdlibParameters();
@@ -243,6 +250,7 @@ public slots:
     void getSupergroupMembers(const int supergroup_id,
                               const QString &search, const int offset, const int limit, const QString &extra);
     void deleteFile(const int fileId, const QString &extra = "");
+    void setBio(const QString &bio);
     void close();
     void setLogLevel(int new_verbosity_level);
     void changeNotificationSettings(const qint64 &chatId, bool mute);
