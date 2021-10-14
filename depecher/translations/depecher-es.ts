@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="es_ES">
+<TS version="2.1" language="es">
 <context>
     <name></name>
     <message id="sailfish_browser-la-no_accounts">
@@ -197,7 +197,7 @@
     </message>
     <message>
         <source>Scale up animated sticker thumbnail</source>
-        <translation type="unfinished"></translation>
+        <translation>Ampliar pegatina animada</translation>
     </message>
 </context>
 <context>
@@ -372,7 +372,7 @@
     </message>
     <message>
         <source>Remove history and leave chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Quitar historial y salir de la charla</translation>
     </message>
 </context>
 <context>
@@ -841,65 +841,65 @@
     </message>
     <message>
         <source>Biography</source>
-        <translation type="unfinished"></translation>
+        <translation>Biografía</translation>
     </message>
     <message>
         <source>Bio</source>
-        <translation type="unfinished">Biografía</translation>
+        <translation>Bio</translation>
     </message>
     <message>
         <source>Change Bio</source>
-        <translation type="unfinished"></translation>
+        <translation>Cambiar biografía</translation>
     </message>
 </context>
 <context>
     <name>ShareUI</name>
     <message>
         <source>Choose chat</source>
-        <translation type="unfinished">Eligir charla</translation>
+        <translation>Eligir charla</translation>
     </message>
     <message>
         <source>%1 selected</source>
-        <translation type="unfinished">%1 seleccionado</translation>
+        <translation>%1 seleccionado</translation>
     </message>
     <message>
         <source>Reset</source>
-        <translation type="unfinished">Reiniciar</translation>
+        <translation>Reiniciar</translation>
     </message>
     <message>
         <source>Accept</source>
-        <translation type="unfinished"></translation>
+        <translation>Aceptar</translation>
     </message>
     <message>
         <source>Ensure that depecher is running</source>
-        <translation type="unfinished">Revisar que Depecher se está ejecutando</translation>
+        <translation>Revisar que Depecher se está ejecutando</translation>
     </message>
     <message>
         <source>Do not close until media is transfered</source>
-        <translation type="unfinished">No cerrar hasta que el contenido multimedia se haya transferido</translation>
+        <translation>No cerrar hasta que el contenido multimedia se haya transferido</translation>
     </message>
 </context>
 <context>
     <name>ShareUILegacy</name>
     <message>
         <source>Reset</source>
-        <translation type="unfinished">Reiniciar</translation>
+        <translation>Reiniciar</translation>
     </message>
     <message>
         <source>Choose chat</source>
-        <translation type="unfinished">Eligir charla</translation>
+        <translation>Eligir charla</translation>
     </message>
     <message>
         <source>%1 selected</source>
-        <translation type="unfinished">%1 seleccionado</translation>
+        <translation>%1 seleccionado</translation>
     </message>
     <message>
         <source>Ensure that depecher is running</source>
-        <translation type="unfinished">Revisar que Depecher se está ejecutando</translation>
+        <translation>Revisar que Depecher se está ejecutando</translation>
     </message>
     <message>
         <source>Do not close until media is transfered</source>
-        <translation type="unfinished">No cerrar hasta que el contenido multimedia se haya transferido</translation>
+        <translation>No cerrar hasta que el contenido multimedia se haya transferido</translation>
     </message>
 </context>
 <context>
