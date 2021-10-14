@@ -195,6 +195,10 @@
         <source>Alternative send sticker icon</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Scale up animated sticker thumbnail</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>AreYouSureDialog</name>
@@ -321,6 +325,57 @@
     </message>
 </context>
 <context>
+    <name>ChatsPage</name>
+    <message>
+        <source>Reset dialogs</source>
+        <translation>重置对话</translation>
+    </message>
+    <message>
+        <source>Settings</source>
+        <translation>设置</translation>
+    </message>
+    <message>
+        <source>Unmute</source>
+        <translation>取消静音</translation>
+    </message>
+    <message>
+        <source>Mute</source>
+        <translation>静音</translation>
+    </message>
+    <message>
+        <source>Mark as read</source>
+        <translation>标记为已读</translation>
+    </message>
+    <message>
+        <source>Mark as unread</source>
+        <translation>标记为未读</translation>
+    </message>
+    <message>
+        <source>Contacts</source>
+        <translation>联系人</translation>
+    </message>
+    <message>
+        <source>Leave chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Left chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hide Search</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search</source>
+        <translation type="unfinished">搜索</translation>
+    </message>
+    <message>
+        <source>Remove history and leave chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>ContactsPage</name>
     <message>
         <source>Contacts</source>
@@ -427,53 +482,6 @@
     <message>
         <source>If set to true, old files will automatically be deleted.</source>
         <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>DialogsPage</name>
-    <message>
-        <source>Reset dialogs</source>
-        <translation>重置对话</translation>
-    </message>
-    <message>
-        <source>Settings</source>
-        <translation>设置</translation>
-    </message>
-    <message>
-        <source>Unmute</source>
-        <translation>取消静音</translation>
-    </message>
-    <message>
-        <source>Mute</source>
-        <translation>静音</translation>
-    </message>
-    <message>
-        <source>Mark as read</source>
-        <translation>标记为已读</translation>
-    </message>
-    <message>
-        <source>Mark as unread</source>
-        <translation>标记为未读</translation>
-    </message>
-    <message>
-        <source>Contacts</source>
-        <translation>联系人</translation>
-    </message>
-    <message>
-        <source>Leave chat</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Left chat</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Hide Search</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Search</source>
-        <translation type="unfinished">搜索</translation>
     </message>
 </context>
 <context>
@@ -831,28 +839,67 @@
         <source>About of</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Biography</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bio</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Change Bio</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ShareUI</name>
     <message>
         <source>Choose chat</source>
-        <translation>选择聊天</translation>
+        <translation type="unfinished">选择聊天</translation>
     </message>
     <message>
         <source>%1 selected</source>
-        <translation>%1 已选中</translation>
+        <translation type="unfinished">%1 已选中</translation>
     </message>
     <message>
         <source>Reset</source>
-        <translation>重置</translation>
+        <translation type="unfinished">重置</translation>
+    </message>
+    <message>
+        <source>Accept</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Ensure that depecher is running</source>
-        <translation>确保depecher在运行</translation>
+        <translation type="unfinished">确保depecher在运行</translation>
     </message>
     <message>
         <source>Do not close until media is transfered</source>
-        <translation>在多媒体传输完之前不要关闭</translation>
+        <translation type="unfinished">在多媒体传输完之前不要关闭</translation>
+    </message>
+</context>
+<context>
+    <name>ShareUILegacy</name>
+    <message>
+        <source>Reset</source>
+        <translation type="unfinished">重置</translation>
+    </message>
+    <message>
+        <source>Choose chat</source>
+        <translation type="unfinished">选择聊天</translation>
+    </message>
+    <message>
+        <source>%1 selected</source>
+        <translation type="unfinished">%1 已选中</translation>
+    </message>
+    <message>
+        <source>Ensure that depecher is running</source>
+        <translation type="unfinished">确保depecher在运行</translation>
+    </message>
+    <message>
+        <source>Do not close until media is transfered</source>
+        <translation type="unfinished">在多媒体传输完之前不要关闭</translation>
     </message>
 </context>
 <context>

@@ -195,6 +195,10 @@
         <source>Alternative send sticker icon</source>
         <translation>Icono de pegatina alternativo</translation>
     </message>
+    <message>
+        <source>Scale up animated sticker thumbnail</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>AreYouSureDialog</name>
@@ -321,6 +325,57 @@
     </message>
 </context>
 <context>
+    <name>ChatsPage</name>
+    <message>
+        <source>Reset dialogs</source>
+        <translation>Restablecer</translation>
+    </message>
+    <message>
+        <source>Settings</source>
+        <translation>Ajustes</translation>
+    </message>
+    <message>
+        <source>Unmute</source>
+        <translation>Notificar</translation>
+    </message>
+    <message>
+        <source>Mute</source>
+        <translation>No notificar</translation>
+    </message>
+    <message>
+        <source>Mark as read</source>
+        <translation>Marcar como leído</translation>
+    </message>
+    <message>
+        <source>Mark as unread</source>
+        <translation>Marcar como no leído</translation>
+    </message>
+    <message>
+        <source>Contacts</source>
+        <translation>Contactos</translation>
+    </message>
+    <message>
+        <source>Leave chat</source>
+        <translation>Salir del grupo</translation>
+    </message>
+    <message>
+        <source>Left chat</source>
+        <translation>dejó la charla</translation>
+    </message>
+    <message>
+        <source>Hide Search</source>
+        <translation>Ocultar búsqueda </translation>
+    </message>
+    <message>
+        <source>Search</source>
+        <translation>Buscar</translation>
+    </message>
+    <message>
+        <source>Remove history and leave chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>ContactsPage</name>
     <message>
         <source>Contacts</source>
@@ -427,53 +482,6 @@
     <message>
         <source>If set to true, old files will automatically be deleted.</source>
         <translation>Si está habilitdo, los archivos antiguos se eliminarán automáticamente.</translation>
-    </message>
-</context>
-<context>
-    <name>DialogsPage</name>
-    <message>
-        <source>Reset dialogs</source>
-        <translation>Restablecer</translation>
-    </message>
-    <message>
-        <source>Settings</source>
-        <translation>Ajustes</translation>
-    </message>
-    <message>
-        <source>Unmute</source>
-        <translation>Notificar</translation>
-    </message>
-    <message>
-        <source>Mute</source>
-        <translation>No notificar</translation>
-    </message>
-    <message>
-        <source>Mark as read</source>
-        <translation>Marcar como leído</translation>
-    </message>
-    <message>
-        <source>Mark as unread</source>
-        <translation>Marcar como no leído</translation>
-    </message>
-    <message>
-        <source>Contacts</source>
-        <translation>Contactos</translation>
-    </message>
-    <message>
-        <source>Leave chat</source>
-        <translation>Salir del grupo</translation>
-    </message>
-    <message>
-        <source>Left chat</source>
-        <translation>dejó la charla</translation>
-    </message>
-    <message>
-        <source>Hide Search</source>
-        <translation>Ocultar búsqueda </translation>
-    </message>
-    <message>
-        <source>Search</source>
-        <translation>Buscar</translation>
     </message>
 </context>
 <context>
@@ -831,28 +839,67 @@
         <source>About of</source>
         <translation>Acerca de</translation>
     </message>
+    <message>
+        <source>Biography</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bio</source>
+        <translation type="unfinished">Biografía</translation>
+    </message>
+    <message>
+        <source>Change Bio</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ShareUI</name>
     <message>
         <source>Choose chat</source>
-        <translation>Eligir charla</translation>
+        <translation type="unfinished">Eligir charla</translation>
     </message>
     <message>
         <source>%1 selected</source>
-        <translation>%1 seleccionado</translation>
+        <translation type="unfinished">%1 seleccionado</translation>
     </message>
     <message>
         <source>Reset</source>
-        <translation>Reiniciar</translation>
+        <translation type="unfinished">Reiniciar</translation>
+    </message>
+    <message>
+        <source>Accept</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Ensure that depecher is running</source>
-        <translation>Revisar que Depecher se está ejecutando</translation>
+        <translation type="unfinished">Revisar que Depecher se está ejecutando</translation>
     </message>
     <message>
         <source>Do not close until media is transfered</source>
-        <translation>No cerrar hasta que el contenido multimedia se haya transferido</translation>
+        <translation type="unfinished">No cerrar hasta que el contenido multimedia se haya transferido</translation>
+    </message>
+</context>
+<context>
+    <name>ShareUILegacy</name>
+    <message>
+        <source>Reset</source>
+        <translation type="unfinished">Reiniciar</translation>
+    </message>
+    <message>
+        <source>Choose chat</source>
+        <translation type="unfinished">Eligir charla</translation>
+    </message>
+    <message>
+        <source>%1 selected</source>
+        <translation type="unfinished">%1 seleccionado</translation>
+    </message>
+    <message>
+        <source>Ensure that depecher is running</source>
+        <translation type="unfinished">Revisar que Depecher se está ejecutando</translation>
+    </message>
+    <message>
+        <source>Do not close until media is transfered</source>
+        <translation type="unfinished">No cerrar hasta que el contenido multimedia se haya transferido</translation>
     </message>
 </context>
 <context>

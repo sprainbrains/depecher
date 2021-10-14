@@ -195,6 +195,10 @@
         <source>Alternative send sticker icon</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Scale up animated sticker thumbnail</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>AreYouSureDialog</name>
@@ -321,6 +325,57 @@
     </message>
 </context>
 <context>
+    <name>ChatsPage</name>
+    <message>
+        <source>Settings</source>
+        <translation>Einstellungen</translation>
+    </message>
+    <message>
+        <source>Reset dialogs</source>
+        <translation>Dialoge zurücksetzen</translation>
+    </message>
+    <message>
+        <source>Unmute</source>
+        <translation>Laut stellen</translation>
+    </message>
+    <message>
+        <source>Mute</source>
+        <translation>Stumm stellen</translation>
+    </message>
+    <message>
+        <source>Mark as read</source>
+        <translation>Als gelesen markieren</translation>
+    </message>
+    <message>
+        <source>Mark as unread</source>
+        <translation>als ungelesen markieren</translation>
+    </message>
+    <message>
+        <source>Contacts</source>
+        <translation>Kontakte</translation>
+    </message>
+    <message>
+        <source>Leave chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Left chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hide Search</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search</source>
+        <translation type="unfinished">Suchen</translation>
+    </message>
+    <message>
+        <source>Remove history and leave chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>ContactsPage</name>
     <message>
         <source>Contacts</source>
@@ -427,53 +482,6 @@
     <message>
         <source>If set to true, old files will automatically be deleted.</source>
         <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>DialogsPage</name>
-    <message>
-        <source>Settings</source>
-        <translation>Einstellungen</translation>
-    </message>
-    <message>
-        <source>Reset dialogs</source>
-        <translation>Dialoge zurücksetzen</translation>
-    </message>
-    <message>
-        <source>Unmute</source>
-        <translation>Laut stellen</translation>
-    </message>
-    <message>
-        <source>Mute</source>
-        <translation>Stumm stellen</translation>
-    </message>
-    <message>
-        <source>Mark as read</source>
-        <translation>Als gelesen markieren</translation>
-    </message>
-    <message>
-        <source>Mark as unread</source>
-        <translation>als ungelesen markieren</translation>
-    </message>
-    <message>
-        <source>Contacts</source>
-        <translation>Kontakte</translation>
-    </message>
-    <message>
-        <source>Leave chat</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Left chat</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Hide Search</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Search</source>
-        <translation type="unfinished">Suchen</translation>
     </message>
 </context>
 <context>
@@ -831,6 +839,18 @@
         <source>About of</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Biography</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bio</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Change Bio</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ShareUI</name>
@@ -844,6 +864,33 @@
     </message>
     <message>
         <source>Reset</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Accept</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ensure that depecher is running</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do not close until media is transfered</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ShareUILegacy</name>
+    <message>
+        <source>Reset</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 selected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
