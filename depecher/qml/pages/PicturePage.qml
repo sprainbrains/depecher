@@ -52,6 +52,7 @@ Page {
                     asynchronous: true
                     sourceSize.width:  root.width;
                     smooth: false
+                    autoTransform: true
 
                     onScaleChanged: {
                         if ((width * scale) > imageFlickable.width) {

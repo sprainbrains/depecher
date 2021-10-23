@@ -125,11 +125,13 @@ Page {
                     onClicked: chatsModel.markAsUnread(id, !unread)
                 }
                 MenuItem {
-                    text: privateChat ? qsTr("Remove history and leave chat") : qsTr("Leave chat")
-                    property bool privateChat: type["type"] == TdlibState.Private
+                    text: wantDelete ? qsTr("Remove history and leave chat") : qsTr("Leave chat")
+                    property bool wantDelete: type["type"] == TdlibState.Private ||
+                                              type["type"] == TdlibState.BasicGroup ||
+                                              type["type"] == TdlibState.Secret
                     onClicked: {
                         chatDelegate.remorseAction(qsTr("Left chat"), function () {
-                            if (privateChat)
+                            if (wantDelete)
                                 c_telegramWrapper.deleteChatHistory(id, true)
                             else
                                 c_telegramWrapper.leaveChat(id)

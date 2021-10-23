@@ -1803,7 +1803,6 @@ int MessagingModel::getFileIdByMessage(QSharedPointer<message> msg) const
 void MessagingModel::downloadDocument(const int rowIndex)
 {
     int messageIndex = rowIndex - 1;
-    int contentId = m_messages[messageIndex]->content_->get_id();
     int fileId = getFileIdByMessage(m_messages[messageIndex]);
 
     if (fileId > -1)
@@ -1813,7 +1812,6 @@ void MessagingModel::downloadDocument(const int rowIndex)
 void MessagingModel::cancelDownload(const int rowIndex)
 {
     int messageIndex = rowIndex - 1;
-    int contentId = m_messages[messageIndex]->content_->get_id();
     int fileId = getFileIdByMessage(m_messages[messageIndex]);
 
     if (fileId > -1)
@@ -1823,7 +1821,6 @@ void MessagingModel::cancelDownload(const int rowIndex)
 void MessagingModel::cancelUpload(const int rowIndex)
 {
     int messageIndex = rowIndex - 1;
-    int contentId = m_messages[messageIndex]->content_->get_id();
     int fileId = getFileIdByMessage(m_messages[messageIndex]);
 
     if (fileId > -1)
