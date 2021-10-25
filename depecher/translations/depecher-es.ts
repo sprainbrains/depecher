@@ -185,7 +185,7 @@
     </message>
     <message>
         <source>Show voice message button</source>
-        <translation>Icono de  micrófono en mensaje</translation>
+        <translation>Icono de  micrófono en la barra</translation>
     </message>
     <message>
         <source>Show current time below message input</source>
@@ -307,7 +307,7 @@
     </message>
     <message>
         <source>Send message by enter</source>
-        <translation>Enviar con Entrar</translation>
+        <translation>Enviar con la tecla Entrar</translation>
     </message>
 </context>
 <context>
@@ -372,7 +372,7 @@
     </message>
     <message>
         <source>Remove history and leave chat</source>
-        <translation>Quitar historial y salir de la charla</translation>
+        <translation>Borrar charla</translation>
     </message>
 </context>
 <context>
@@ -453,7 +453,7 @@
     </message>
     <message>
         <source>Use file database</source>
-        <translation>Usar base de datos de archivos</translation>
+        <translation>Usar la base de datos de archivos</translation>
     </message>
     <message>
         <source>If set to true, information about downloaded and uploaded files will be saved between application restarts.</source>
@@ -461,7 +461,7 @@
     </message>
     <message>
         <source>Use chat info database</source>
-        <translation>Usar base de datos de charlas</translation>
+        <translation>Usar la base de datos de charlas</translation>
     </message>
     <message>
         <source>If set to true, the library will maintain a cache of users, basic groups, supergroups, channels and secret chats.</source>
@@ -469,7 +469,7 @@
     </message>
     <message>
         <source>Use message database</source>
-        <translation>Usar base de datos de mensajes</translation>
+        <translation>Usar la base de datos de mensajes</translation>
     </message>
     <message>
         <source>If set to true, the library will maintain a cache of chats and messages.</source>
@@ -845,11 +845,11 @@
     </message>
     <message>
         <source>Bio</source>
-        <translation>Bio</translation>
+        <translation>Cambiando la biografía</translation>
     </message>
     <message>
         <source>Change Bio</source>
-        <translation>Cambiar biografía</translation>
+        <translation>Biografía</translation>
     </message>
 </context>
 <context>
