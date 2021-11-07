@@ -11,7 +11,9 @@ namespace tdlibQt {
 constexpr int MESSAGE_LIMIT = 50;
 constexpr int FETCH_OFFSET = 10;
 
-MessagingModel::MessagingModel(QObject *parent) : QAbstractListModel(parent)
+MessagingModel::MessagingModel(QObject *parent) :
+    QAbstractListModel(parent),
+    m_dummyCnt(2)
 {
     /* Reply Workthrough
      * 1. Create map of replyMessagesMap, queue of messagesId +
@@ -88,9 +90,26 @@ MessagingModel::MessagingModel(QObject *parent) : QAbstractListModel(parent)
     connect(&chatActionTimer, &QTimer::timeout, this, &MessagingModel::updateStatus);
     connect(UsersModel::instance(), &UsersModel::userStatusChanged, this, &MessagingModel::updateStatus);
     userStatusTimer.start();
-    //Adding empty item. fetchOlder issue
-    beginInsertRows(QModelIndex(), 0, 0);
+
+    //Adding empty item for fetchOlder issue. Must be a better way but so far use this clever hack
+    beginInsertRows(0, m_dummyCnt - 1);
     endInsertRows();
+    m_dummyIndex = QPersistentModelIndex(index(0));
+
+    connect(this, &MessagingModel::rowsInserted,
+            this, [this] (const QModelIndex &, int first, int)
+    {
+        if (first != 0 || !m_dummyIndex.isValid())
+            return;
+        if (m_dummyIndex.row() != 0) {
+            QTimer::singleShot(0, this, [this](){
+                int dummyIdx = m_dummyIndex.row();
+                emit dataChanged(index(dummyIdx), index(dummyIdx + m_dummyCnt - 1));
+                emit dataChanged(index(0), index(m_dummyCnt - 1));
+                m_dummyIndex = QPersistentModelIndex(index(0));
+            });
+        }
+    });
 }
 
 MessagingModel::~MessagingModel()
@@ -103,10 +122,10 @@ QVariant MessagingModel::data(const QModelIndex &index, int role) const
 {
     if (!index.isValid())
         return QVariant();
-    if (index.row() == 0 || index.row() > rowCount(QModelIndex()))
+    if (index.row() < m_dummyCnt || index.row() >= rowCount())
         return QVariant();
-    //minus one because of invisible item. fetchOlder issue
-    int rowIndex = index.row() - 1;
+    //minus m_dummyCnt because of invisible items. fetchOlder issue
+    int rowIndex = index.row() - m_dummyCnt;
     auto msg = m_messages[rowIndex];
 
     switch (role) {
@@ -180,11 +199,11 @@ QVariant MessagingModel::data(const QModelIndex &index, int role) const
                 messageText *contentPtr = static_cast<messageText *>
                                           (messagePtr.data());
                 return QString::fromStdString(contentPtr->text_->text_);
-
             } else
                 return ParseObject::messageTypeToString(messagePtr.data()->get_id());
         }
-        return QVariant();
+        // deleted or not available?
+        return tr("Message deleted");
     }
     case TTL:
         return msg->ttl_;
@@ -570,10 +589,9 @@ QVariant MessagingModel::data(const QModelIndex &index, int role) const
     return QVariant();
 }
 
-int MessagingModel::rowCount(const QModelIndex &parent) const
+int MessagingModel::rowCount(const QModelIndex &) const
 {
-    Q_UNUSED(parent)
-    return m_messages.size() + 1;
+    return m_messages.size() + m_dummyCnt;
 }
 
 QHash<int, QByteArray> MessagingModel::roleNames() const
@@ -652,11 +670,12 @@ void MessagingModel::fetchMore(const QModelIndex & /*parent*/)
 
     if (!fetching()) {
         setFetching(true);
-        if (rowCount(QModelIndex()) == 1) {
+        if (rowCount() == m_dummyCnt) {
             m_tdlibJson->getChatHistory(peerId().toLongLong(), lastMessageId, -10,
                                         MESSAGE_LIMIT, false, m_extra.arg(m_peerId));
         } else {
-            m_tdlibJson->getChatHistory(peerId().toLongLong(), m_messages.last()->id_, MESSAGE_LIMIT * -1 + 1, MESSAGE_LIMIT,
+            m_tdlibJson->getChatHistory(peerId().toLongLong(), m_messages.last()->id_,
+                                        MESSAGE_LIMIT * -1 + 1, MESSAGE_LIMIT,
                                         false, m_extra.arg("append"));
         }
     }
@@ -795,7 +814,7 @@ void MessagingModel::updateChatReadInbox(const QJsonObject &inboxObject)
         setLastInbox(QString::number(lastReadId));
         QVector<int> stateRole;
         stateRole.append(SENDING_STATE);
-        emit dataChanged(index(1), index(m_messages.size()), stateRole);
+        emit dataChanged(index(m_dummyCnt), index(rowCount() - 1), stateRole);
     }
 }
 
@@ -807,7 +826,7 @@ void MessagingModel::updateChatReadOutbox(const QJsonObject &outboxObject)
         setLastOutboxId(lastReadId);
         QVector<int> stateRole;
         stateRole.append(SENDING_STATE);
-        emit dataChanged(index(1), index(m_messages.size()), stateRole);
+        emit dataChanged(index(m_dummyCnt), index(rowCount() - 1), stateRole);
     }
 }
 
@@ -817,18 +836,23 @@ void MessagingModel::addMessages(const QJsonObject &messagesObject)
     QString extra = messagesObject["@extra"].toString("");
 
     QVariantList messagesIds;
-
     QJsonArray messagesArray = messagesObject["messages"].toArray();
+
+    if (extra == m_extra.arg("prepend") && totalCount == 0) {
+        setReachedHistoryEnd(true);
+        setFetching(false);
+        return;
+    }
+
     if (ParseObject::getInt64(messagesArray[0].toObject()["chat_id"]) == peerId().toDouble()) {
         QVector<qint64> messageReplyIds;
-        if (extra == m_extra.arg("prepend") && totalCount == 0)
-            setReachedHistoryEnd(true);
 
         //Oldest
         if (extra == m_extra.arg("prepend")) {
-            beginInsertRows(QModelIndex(), 0, totalCount - 1);
+            // Insert at 0 to prevent scrolling to top on fetch (fetchOlder issue).
+            // Then notify view to update previous last item in rowsInserted signal.
+            beginInsertRows(0, totalCount - 1);
             for (int i = 0; i < messagesArray.size(); i++) {
-
                 qint64 reply_id = ParseObject::getInt64(messagesArray[i].toObject()["reply_to_message_id"]);
                 if (reply_id != 0)
                     messageReplyIds.append(reply_id);
@@ -837,18 +861,9 @@ void MessagingModel::addMessages(const QJsonObject &messagesObject)
                 messagesIds.append(messagesArray[i].toObject()["id"].toVariant());
             }
             endInsertRows();
-            //Notifying view to update previous last item. fetchOlder issue
-            m_indexToUpdate = totalCount;
-
-            QTimer::singleShot(500, this, [this]() {
-                emit dataChanged(index(m_indexToUpdate), index(m_indexToUpdate), QVector<int>());
-            });
-
         } else if (extra == m_extra.arg("append")) {
             //Newest
             int totalGoodMessages = 0;
-
-
             for (int r_i = messagesArray.size() - 1; r_i >= 0; r_i--) {
                 auto obj = messagesArray[r_i];
                 if (ParseObject::getInt64(obj.toObject()["id"]) > m_messages.last()->id_) {
@@ -856,9 +871,12 @@ void MessagingModel::addMessages(const QJsonObject &messagesObject)
                     messagesIds.append(obj.toObject()["id"].toVariant());
                 }
             }
-            if (totalGoodMessages == 0)
+            if (totalGoodMessages == 0) {
+                setFetching(false);
                 return;
-            beginInsertRows(QModelIndex(), rowCount(QModelIndex()), rowCount(QModelIndex()) + totalGoodMessages - 1);
+            }
+
+            beginInsertRows(rowCount(), rowCount() + totalGoodMessages - 1);
             for (int r_i = messagesArray.size() - 1; r_i >= 0; r_i--) {
                 auto obj = messagesArray[r_i];
                 qint64 reply_id = ParseObject::getInt64(obj.toObject()["reply_to_message_id"]);
@@ -878,7 +896,7 @@ void MessagingModel::addMessages(const QJsonObject &messagesObject)
             int objTime = -1;
 
             //On forward returns updateNewMessage and messages. Workaround
-            beginInsertRows(QModelIndex(), rowCount(QModelIndex()), rowCount(QModelIndex()) + totalCount - 1);
+            beginInsertRows(rowCount(), rowCount() + totalCount - 1);
             for (int i = messagesArray.size() - 1; i >= 0; i--) {
                 auto obj = messagesArray[i];
                 qint64 reply_id = ParseObject::getInt64(obj.toObject()["reply_to_message_id"]);
@@ -909,16 +927,18 @@ void MessagingModel::addMessages(const QJsonObject &messagesObject)
                 indexToAppend++;
                 setLastMessageIndex(indexToAppend);
 
-                beginInsertRows(QModelIndex(), indexToAppend, indexToAppend);
+                beginInsertRows(indexToAppend, indexToAppend);
                 qint64 messageId = m_messages[indexToAppend - 1]->id_;
                 const QByteArray messageSeparator =
-                    " {\"@type\": \"message\", \"author_signature\": \"\", \"can_be_deleted_for_all_users\": false, \"can_be_deleted_only_for_self\": false, \"can_be_edited\": false, \"can_be_forwarded\": false, \"chat_id\": 0, \"contains_unread_mention\": false, \"content\": { \"@type\": \"messageText\", \"text\": { \"@type\": \"formattedText\", \"entities\": [ ], \"text\": \"new message separator\" } }, \"date\": " + QString::number(objTime).toLatin1() + ", \"edit_date\": 0, \"id\": " + QString::number(messageId).toLatin1() + ", \"is_channel_post\": false, \"is_outgoing\": false, \"media_album_id\": \"0\", \"reply_to_message_id\": 0, \"sender_user_id\": 0, \"ttl\": 0, \"ttl_expires_in\": 0, \"via_bot_user_id\": 0, \"views\": 0 } ";
+                    "{\"@type\": \"message\", \"author_signature\": \"\", \"can_be_deleted_for_all_users\": false, \"can_be_deleted_only_for_self\": false, \"can_be_edited\": false, \"can_be_forwarded\": false,"
+                    "\"chat_id\": 0, \"contains_unread_mention\": false, \"content\": { \"@type\": \"messageText\", \"text\": { \"@type\": \"formattedText\", \"entities\": [ ], \"text\": \"new message separator\" } },"
+                    "\"date\": " + QString::number(objTime).toLatin1() + ", \"edit_date\": 0, \"id\": " + QString::number(messageId).toLatin1() + ", \"is_channel_post\": false, \"is_outgoing\": false,"
+                    "\"media_album_id\": \"0\", \"reply_to_message_id\": 0, \"sender_user_id\": 0, \"ttl\": 0, \"ttl_expires_in\": 0, \"via_bot_user_id\": 0, \"views\": 0 } ";
                 auto messageItem = ParseObject::parseMessage(QJsonDocument::fromJson(messageSeparator).object());
 
                 m_messages.insert(indexToAppend, messageItem);
                 endInsertRows();
             }
-
         }
 
         if (messagesIds.size() > 0)
@@ -926,7 +946,6 @@ void MessagingModel::addMessages(const QJsonObject &messagesObject)
 
         if (messageReplyIds.size() > 0)
             m_tdlibJson->getMessages(peerId().toLongLong(), messageReplyIds, m_extra.arg("getReplies"));
-
 
         setFetching(false);
     }
@@ -960,7 +979,7 @@ void MessagingModel::appendMessage(const QJsonObject &messageObject, const bool 
             for (int i = 0 ; i < m_messages.size(); i++)
                 if (m_messages[i]->id_ == messageItem->id_) {
                     m_messages.replace(i, messageItem);
-                    emit dataChanged(index(i + 1), index(i  + 1));
+                    emit dataChanged(index(i + m_dummyCnt), index(i  + m_dummyCnt));
                     is_replaced = true;
                     break;
                 }
@@ -974,7 +993,7 @@ void MessagingModel::appendMessage(const QJsonObject &messageObject, const bool 
             m_tdlibJson->getMessages(peerId().toLongLong(), message_ids, m_extra.arg("getReplies"));
         }
         if (reportModelChanged)
-            beginInsertRows(QModelIndex(), rowCount(QModelIndex()), rowCount(QModelIndex()));
+            beginInsertRows(rowCount(), rowCount());
         m_messages.append(messageItem);
         if (reportModelChanged) {
             endInsertRows();
@@ -983,8 +1002,8 @@ void MessagingModel::appendMessage(const QJsonObject &messageObject, const bool 
         }
     }
 
-    bool is_downl_or_upl = data(index(rowCount(QModelIndex()) - 1), FILE_IS_UPLOADING).toBool()
-                           || data(index(rowCount(QModelIndex()) - 1), FILE_IS_DOWNLOADING).toBool();
+    bool is_downl_or_upl = data(index(rowCount() - 1), FILE_IS_UPLOADING).toBool()
+                           || data(index(rowCount() - 1), FILE_IS_DOWNLOADING).toBool();
 
     if (is_downl_or_upl) {
         int fileId = getFileIdByMessage(messageItem);
@@ -1186,7 +1205,7 @@ void MessagingModel::addRepliedMessage(const QJsonObject &messageObject)
     QVector<int> roles;
     roles.append(REPLY_AUTHOR);
     roles.append(REPLY_MESSAGE);
-    emit dataChanged(index(1), index(m_messages.size()), roles);
+    emit dataChanged(index(m_dummyCnt), index(rowCount() - 1), roles);
 }
 
 
@@ -1322,7 +1341,8 @@ void MessagingModel::addMessageFromUpdate(const QJsonObject &messageUpdateObject
 {
     if (peerId() != messageUpdateObject["message"].toObject()["chat_id"].toVariant().toString())
         return;
-    beginInsertRows(QModelIndex(), rowCount(QModelIndex()), rowCount(QModelIndex()));
+
+    beginInsertRows(rowCount(), rowCount());
     appendMessage(messageUpdateObject["message"].toObject());
     endInsertRows();
     setLastMessage(QString::number(m_messages.last()->id_));
@@ -1428,8 +1448,8 @@ void MessagingModel::processFile(const QJsonObject &fileObject)
         photoRole.append(FILE_DOWNLOADING_COMPLETED);
         photoRole.append(FILE_UPLOADING_COMPLETED);
         //        photoRole.append(MESSAGE_TYPE);
-        emit dataChanged(index(messagePhotoQueue[file->id_] + 1),
-                         index(messagePhotoQueue[file->id_] + 1), photoRole);
+        emit dataChanged(index(messagePhotoQueue[file->id_] + m_dummyCnt),
+                         index(messagePhotoQueue[file->id_] + m_dummyCnt), photoRole);
         if (file->local_->is_downloading_completed_ && file->remote_->is_uploading_completed_)
             messagePhotoQueue.remove(file->id_);
 
@@ -1802,7 +1822,7 @@ int MessagingModel::getFileIdByMessage(QSharedPointer<message> msg) const
 
 void MessagingModel::downloadDocument(const int rowIndex)
 {
-    int messageIndex = rowIndex - 1;
+    int messageIndex = rowIndex - m_dummyCnt;
     int fileId = getFileIdByMessage(m_messages[messageIndex]);
 
     if (fileId > -1)
@@ -1811,7 +1831,7 @@ void MessagingModel::downloadDocument(const int rowIndex)
 
 void MessagingModel::cancelDownload(const int rowIndex)
 {
-    int messageIndex = rowIndex - 1;
+    int messageIndex = rowIndex - m_dummyCnt;
     int fileId = getFileIdByMessage(m_messages[messageIndex]);
 
     if (fileId > -1)
@@ -1820,7 +1840,7 @@ void MessagingModel::cancelDownload(const int rowIndex)
 
 void MessagingModel::cancelUpload(const int rowIndex)
 {
-    int messageIndex = rowIndex - 1;
+    int messageIndex = rowIndex - m_dummyCnt;
     int fileId = getFileIdByMessage(m_messages[messageIndex]);
 
     if (fileId > -1)
@@ -1829,7 +1849,7 @@ void MessagingModel::cancelUpload(const int rowIndex)
 
 void MessagingModel::deleteMessage(const int rowIndex, const bool revoke)
 {
-    int messageIndex = rowIndex - 1;
+    int messageIndex = rowIndex - m_dummyCnt;
     if (messageIndex >= 0   && messageIndex < m_messages.size()) {
         qint64 chatId = m_messages[messageIndex]->chat_id_;
         QVector<qint64> messageIds;
@@ -1849,7 +1869,7 @@ void MessagingModel::deleteMessage(const int rowIndex, const bool revoke)
                 messagePhotoQueue.remove(key);
             }
         }
-        beginRemoveRows(QModelIndex(), rowIndex, rowIndex);
+        beginRemoveRows(rowIndex, rowIndex);
         m_messages.removeAt(messageIndex);
         endRemoveRows();
 
@@ -1912,7 +1932,7 @@ void MessagingModel::updateMessageSend(const QJsonObject &updateMessageSendObjec
     for (int i = 0; i < m_messages.size(); i++) {
         if (m_messages[i]->id_ == messageId) {
             m_messages.replace(i, messageItem);
-            emit dataChanged(index(i + 1), index(i + 1));
+            emit dataChanged(index(i + m_dummyCnt), index(i + m_dummyCnt));
             break;
         }
     }
@@ -1947,7 +1967,7 @@ void MessagingModel::onMessageContentEdited(const QJsonObject &updateMessageCont
             roles.append(CONTENT);
             roles.append(FILE_CAPTION);
             roles.append(RICH_TEXT);
-            emit dataChanged(index(i + 1), index(i + 1), roles);
+            emit dataChanged(index(i + m_dummyCnt), index(i + m_dummyCnt), roles);
             break;
         }
     }
@@ -1968,7 +1988,7 @@ void MessagingModel::onMessageEdited(const QJsonObject &updateMessageEditedObjec
             QVector<int> roles;
             roles.append(EDIT_DATE);
             roles.append(REPLY_MARKUP);
-            emit dataChanged(index(i + 1), index(i + 1), roles);
+            emit dataChanged(index(i + m_dummyCnt), index(i + m_dummyCnt), roles);
             break;
         }
     }
@@ -1990,7 +2010,7 @@ void MessagingModel::onMessageDeleted(const QJsonObject &updateDeleteMessagesObj
         qint64 id = messageIds.takeAt(0);
         for (int i = 0; i < m_messages.size(); i++) {
             if (m_messages[i]->id_ == id) {
-                beginRemoveRows(QModelIndex(), i, i);
+                beginRemoveRows(i + m_dummyCnt, i + m_dummyCnt);
                 m_messages.removeAt(i);
                 endRemoveRows();
                 break;
@@ -2081,6 +2101,5 @@ int MessagingModel::findIndexById(const QString &messageId) const
 {
     return findIndexById(messageId.toLongLong());
 }
-
 }//namespace tdlibQt
 

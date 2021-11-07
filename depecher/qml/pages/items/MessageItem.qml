@@ -9,10 +9,13 @@ ListItem {
     id: messageListItem
     width: parent.width
     contentHeight:  columnWrapper.height + inlineView.height
-    property int currentMessageType: message_type ? message_type : 0
-    onCurrentMessageTypeChanged: contentLoader.reload()
-    signal replyMessageClicked(int source_message_index,string replied_message_index)
     highlighted: ListView.isCurrentItem
+
+    property int currentMessageType: message_type ? message_type : 0
+    signal replyMessageClicked(int source_message_index,string replied_message_index)
+    signal realDoubleClicked()
+
+    onCurrentMessageTypeChanged: contentLoader.reload()
 
     function refreshCurrentMessageType() {
         currentMessageType = Qt.binding(function() {return message_type ? message_type : 0})
@@ -21,6 +24,16 @@ ListItem {
     onClicked: {
         if (contentLoader.source.toString().indexOf("TopMarginDelegate.qml") > 0)
             refreshCurrentMessageType()
+
+        if (doubleClickTimer.running)
+            realDoubleClicked()
+        doubleClickTimer.start()
+    }
+
+    // doubleClick signal is broken. When I press on item 0 and quickly on item 1 then I got doubleClicked signal from item 1
+    Timer {
+        id: doubleClickTimer
+        interval: 500
     }
 
     Timer {
@@ -43,7 +56,7 @@ ListItem {
                  currentMessageType !== MessagingModel.ADD_MEMBERS &&
                  currentMessageType !== MessagingModel.CONTACT_REGISTERED &&
                  currentMessageType !== MessagingModel.CHAT_CREATED &&
-                 index != 0
+                 index >= messagingModel.dummyCnt
 
         radius: settingsUIMessage.radius
         opacity: settingsUIMessage.opacity
@@ -115,7 +128,7 @@ ListItem {
                                                                                0
         Item {
             width: parent.width
-            height:15
+            height: 15
         }
         Row {
             id: contentWrapper
@@ -133,7 +146,7 @@ ListItem {
                                                      is_outgoing ? Qt.RightToLeft : Qt.LeftToRight
             Loader {
                 id: userAvatarLoader
-                active: index != 0
+                active: index >= messagingModel.dummyCnt
                 anchors.top: contentColumn.top
                 sourceComponent: Component {
                     CircleImage {
@@ -180,7 +193,8 @@ ListItem {
                                     currentMessageType === MessagingModel.JOINBYLINK ||
                                     currentMessageType === MessagingModel.ADD_MEMBERS ||
                                     currentMessageType === MessagingModel.CONTACT_REGISTERED ||
-                                    currentMessageType === MessagingModel.CHAT_CREATED ) {
+                                    currentMessageType === MessagingModel.CHAT_CREATED ||
+                                    index < messagingModel.dummyCnt) {
                                 return false
                             }
                             else if(messagingModel.chatType["type"] == TdlibState.BasicGroup || (messagingModel.chatType["type"] == TdlibState.Supergroup && !messagingModel.chatType["is_channel"])) {
@@ -193,10 +207,11 @@ ListItem {
                 }
                 Row {
                     id: forwardRow
+                    visible: index >= messagingModel.dummyCnt
                     Label {
                         id: forwardInfoLabel
                         visible: forward_info ? true : false
-                        text:forward_info  ? qsTr("Forwarded from") + " " + forward_info : ""
+                        text: (index >= messagingModel.dummyCnt && forward_info) ? qsTr("Forwarded from") + " " + forward_info : ""
                         width: contentLoader.width
                         color: pressed ? Theme.highlightColor : Theme.secondaryHighlightColor
                         font.pixelSize: Theme.fontSizeSmall
@@ -207,7 +222,7 @@ ListItem {
                 }
                 Loader {
                     id:replyLoader
-                    active: reply_to_message_id != 0 && index != 0
+                    active: reply_to_message_id != 0 && index >= messagingModel.dummyCnt
 
                     sourceComponent: Component {
                         MouseArea {
@@ -231,6 +246,7 @@ ListItem {
                                 }
                                 Column {
                                     id:replyContentColumn
+                                    topPadding: replyAuthorLabel.text.length ? 0 : replyTextLabel.height
                                     Label {
                                         id:replyAuthorLabel
                                         width: Math.min(implicitWidth,messageListItem.width *2/3)
@@ -261,22 +277,13 @@ ListItem {
                     id:contentLoader
                     z:0
 
-                    Timer {
-                        id: fetchItemTimer
-                        interval: 3000
-                        onTriggered: refreshCurrentMessageType()
-                    }
-
                     function reload() {
                         source = ""
                         source = setItem()
                     }
                     function setItem() {
-                        if (index == 0) {
-                            // FIXME: Workaround for bug somewhere in c++ model
-                            fetchItemTimer.start()
+                        if (index < messagingModel.dummyCnt)
                             return "delegates/TopMarginDelegate.qml"
-                        }
 
                         switch (currentMessageType) {
                         case MessagingModel.TEXT: return "delegates/TextDelegate.qml"
@@ -311,7 +318,8 @@ ListItem {
                              currentMessageType !== MessagingModel.JOINBYLINK &&
                              currentMessageType !== MessagingModel.ADD_MEMBERS &&
                              currentMessageType !== MessagingModel.CONTACT_REGISTERED &&
-                             currentMessageType !== MessagingModel.CHAT_CREATED
+                             currentMessageType !== MessagingModel.CHAT_CREATED &&
+                             index >= messagingModel.dummyCnt
 
                     layoutDirection: is_outgoing ? Qt.RightToLeft : Qt.LeftToRight
                     spacing: Theme.paddingSmall
@@ -329,18 +337,17 @@ ListItem {
                         visible: sending_state === TdlibState.Sending_Pending || sending_state === TdlibState.Sending_Failed
                                  ||  messagingModel.chatType["type"] == TdlibState.Private || messagingModel.chatType["type"] == TdlibState.Secret
                         text: {
-                            if(sending_state == TdlibState.Sending_Pending) {
+                            if (index < messagingModel.dummyCnt)
+                                return ""
+
+                            if (sending_state == TdlibState.Sending_Pending)
                                 return "<b>\u23F1</b>" // clock
-                            }
-                            else if(sending_state == TdlibState.Sending_Failed) {
+                            else if(sending_state == TdlibState.Sending_Failed)
                                 return "<b>\u26A0</b>" // warning sign
-                            }
-                            else if(sending_state == TdlibState.Sending_Read) {
+                            else if(sending_state == TdlibState.Sending_Read)
                                 return "<b>\u2713\u2713</b>" // double check mark
-                            }
-                            else {
+                            else
                                 return "<b>\u2713</b>" // check mark
-                            }
                         }
                     }
                 }
@@ -353,11 +360,13 @@ ListItem {
     ListView {
         id:inlineView
         anchors.top: columnWrapper.bottom
-        visible:reply_markup && index != 0 ? true : false
+        visible: !!reply_markup && index >= messagingModel.dummyCnt
         x:Theme.horizontalPageMargin
         width:parent.width - 2 * x
         height:reply_markup ? Theme.itemSizeMedium * reply_markup.length : 0
         model:reply_markup ? reply_markup.length : 0
+        pixelAligned: true
+
         delegate: Item {
             width: parent.width
             height:Theme.itemSizeSmall

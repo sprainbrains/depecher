@@ -187,17 +187,14 @@ Page {
         }
 
         returnButtonItem.onClicked: {
-            if(arrayIndex.length>0)
-            {
+            if(arrayIndex.length > 0) {
                 messageList.currentIndex = arrayIndex.pop()
                 messageList.positionViewAtIndex(messageList.currentIndex,ListView.Center)
-
             }
             returnButtonEnabled = arrayIndex.length > 0
         }
         actionButton.onClicked:  {
             sendText(textArea.text,writer.reply_id)
-
         }
         onSendVoice: {
             messagingModel.sendVoiceMessage(location,duration,writer.reply_id, "",waveform)
@@ -220,9 +217,8 @@ Page {
             writer.clearReplyArea()
 
         }
-    onReplyAreaCleared: {
-    forwardMessages = {}
-    }
+        onReplyAreaCleared: forwardMessages = {}
+
         BusyIndicator {
             id:placeholder
             running: true
@@ -264,35 +260,32 @@ Page {
                 signal showDateSection()
                 signal hideDateSection()
 
-                onHeightChanged: {
-                    if (messageList.indexAt(width/2,height+contentY) >= count - 2)
-                        messageList.positionViewAtEnd()
-                }
-                onMovementStarted: {
-                    showDateSection()
-                }
-                onMovementEnded: {
-                    hideDateSection()
-                }
+                onMovementStarted: showDateSection()
+                onMovementEnded: hideDateSection()
 
                 clip: true
                 spacing: Theme.paddingSmall
                 model: messagingModel
 
-                Connections {
-                    target: messagingModel
-                    onRowsInserted: {
-                    if(first == 0)
-                        for(var i = 0; i < arrayIndex.length;i ++)
-                            arrayIndex[i] = arrayIndex[i] + last + 1
-                    if(messageList.atYEnd && messageList.state !== "preparing")
-                        positionAtEndTimer.start()
-                    }
+                // hide dummy items
+                topMargin: messagingModel.dummyCnt * -(Theme.itemSizeExtraLarge + 15 + spacing) // 15: spacing in columnWrapper
+
+                onHeightChanged: {
+                    if (messageList.indexAt(width/2,height+contentY) >= count - 2)
+                        messageList.positionViewAtEnd()
                 }
-                topMargin:  -1 * Theme.itemSizeExtraLarge
+
                 VerticalScrollDecorator {
                     flickable: messageList
+                    _headerSpacing: messageList.topMargin
                 }
+
+                BusyIndicator {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    running: messagingModel.fetching ||
+                             (fetchOlderTimer.running && messageList.state == "ready")
+                }
+
                 state: "preparing"
                 states: [
                     State {
@@ -368,29 +361,88 @@ Page {
                     running: false
                     onRunningChanged: {
                         if(!running)
-                            messagingModel.fetchOlder()
+                            fetchOlder()
                     }
                 }
                 boundsBehavior: Flickable.DragOverBounds
 
-                onContentYChanged: {
+                Connections {
+                    target: messagingModel
+                    onRowsInserted: {
+                        if (first == 0) {
+                            for(var i = 0; i < arrayIndex.length; i++)
+                                arrayIndex[i] = arrayIndex[i] + last + 1
+                        }
+                        if (messageList.atYEnd && messageList.state !== "preparing")
+                            positionAtEndTimer.start()
+                    }
+                }
 
-                    if(atYBeginning &&  !messagingModel.reachedHistoryEnd) {
+                onContentYChanged: {
+                    if (!messagingModel.fetching &&
+                       atYBeginning && !messagingModel.reachedHistoryEnd)
+                    {
                         fetchOlderTimer.start()
                     }
 //                    needToScroll = indexAt(messageList.width/2,contentY + 50) > messageList.count - 8
-
                 }
+
+                Timer {
+                    id:fetchOlderTimer
+                    interval: 500
+                    repeat: false
+                    onTriggered:{
+                        if (messageList.state == "ready")
+                            fetchOlder()
+                    }
+                }
+
+                Timer {
+                    id:positionAtEndTimer
+                    interval: 500
+                    repeat: false
+                    onTriggered: messageList.positionViewAtEnd()
+                }
+
+                Timer {
+                    id:centerTimer
+                    interval: 800
+                    onTriggered: {
+                        var i = messagingModel.lastMessageIndex + messagingModel.dummyCnt
+                        messageList.positionViewAtIndex(i, ListView.Beginning)
+                        messageList.currentIndex = i
+                        if (messageList.count <= 10) {
+                            fetchOlder()
+                            stateReadyTimer.start()
+                        } else {
+                            // Model already filled, skip initial fetching
+                            messageList.state = "ready"
+                        }
+
+                    }
+                }
+
+                Timer {
+                    id: stateReadyTimer
+                    interval: 100
+                    onTriggered: messageList.state = "ready"
+                }
+
+                Component.onCompleted: centerTimer.start()
+
                 delegate: MessageItem {
                     id: myDelegate
-                    menu: contextMenu
+                    menu: index >= messagingModel.dummyCnt ? contextMenu : undefined
                     onReplyMessageClicked:    {
-                        if(messagingModel.findIndexById(replied_message_index) !== -1) {
+                        if (messagingModel.findIndexById(replied_message_index) !== -1) {
                             arrayIndex.push(source_message_index)
                             writer.returnButtonEnabled = true
+                            var i = messagingModel.findIndexById(replied_message_index) + messagingModel.dummyCnt
 
-                            messageList.positionViewAtIndex(messagingModel.findIndexById(replied_message_index)+ 1,ListView.Center)
-                            messageList.currentIndex =messagingModel.findIndexById(replied_message_index)+ 1
+                            // delegate might be deleted here so messageList will be undefined
+                            var _messageList = messageList
+                            _messageList.positionViewAtIndex(i, ListView.Center)
+                            _messageList.currentIndex = i
                         }/* else {
                             messagingModel.loadAndRefreshRepliedByIndex(source_message_index)
                         }*/
@@ -409,7 +461,7 @@ Page {
                     signal triggerEdit()
                     onTriggerEdit: editEntry.clicked()
 
-                    onDoubleClicked: {
+                    onRealDoubleClicked: {
                         // TODO add settings?
                         if  ((messagingModel.chatType["type"] == TdlibState.Supergroup && !messagingModel.chatType["is_channel"]) ||
                               messagingModel.chatType["type"] == TdlibState.BasicGroup ||
@@ -511,36 +563,6 @@ Page {
                         return qsTr("Message")
                     }
                 }
-
-                Timer {
-                    id:centerTimer
-                    interval: 800
-                    onTriggered: {
-                        messageList.positionViewAtIndex(messagingModel.lastMessageIndex + 1,ListView.Beginning)
-                        messageList.currentIndex = messagingModel.lastMessageIndex + 1
-                        messagingModel.fetchOlder()
-                        messageList.state = "ready"
-                    }
-                }
-                Timer {
-                    id:fetchOlderTimer
-                    interval: 500
-                    repeat: false
-                    onTriggered:{
-                        if(messageList.state == "ready")
-                        messagingModel.fetchOlder()
-                    }
-                }
-                Timer {
-                    id:positionAtEndTimer
-                    interval: 500
-                    repeat: false
-                    onTriggered: messageList.positionViewAtEnd()
-                }
-
-                Component.onCompleted: {
-                    centerTimer.start()
-                }
             }
         }
 
@@ -561,6 +583,18 @@ Page {
             textArea.text = ""
             restoreFocusTimer.start()
             clearReplyArea()
+        }
+    }
+
+    Timer {
+        id: fetchOlderRepeatTimer
+        interval: 2000
+    }
+
+    function fetchOlder() {
+        if (!messagingModel.fetching && !fetchOlderRepeatTimer.running) {
+            messagingModel.fetchOlder()
+            fetchOlderRepeatTimer.start()
         }
     }
 }

@@ -200,7 +200,7 @@ Drawer {
             visible: enabled
             Rectangle {
                 anchors.fill: parent
-                color: Theme.highlightColor
+                color: returnButton.pressed ? Theme.secondaryHighlightColor : Theme.highlightColor
             }
             Image {
                 source: "image://theme/icon-s-low-importance"

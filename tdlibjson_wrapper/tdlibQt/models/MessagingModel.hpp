@@ -25,6 +25,8 @@ class MessagingModel : public QAbstractListModel
     Q_PROPERTY(int lastMessageIndex READ lastMessageIndex NOTIFY lastMessageIndexChanged)
     Q_PROPERTY(bool fetching READ fetching WRITE setFetching NOTIFY fetchingChanged)
     Q_PROPERTY(bool reachedHistoryEnd READ reachedHistoryEnd WRITE setReachedHistoryEnd NOTIFY reachedHistoryEndChanged)
+    Q_PROPERTY(int dummyCnt MEMBER m_dummyCnt CONSTANT)
+    Q_PROPERTY(bool fetching READ fetching NOTIFY fetchingChanged)
     QVariantList unseenMessageIds;
     QMap<qint64, QSharedPointer<updateUserChatAction>> chatActionUserMap;
     QMap<qint64, QSharedPointer<message>> replyMessagesMap;
@@ -46,7 +48,8 @@ class MessagingModel : public QAbstractListModel
     int m_lastMessageIndex;
     bool m_fetchOlderPending = false;
     bool m_reachedHistoryEnd = false;
-    int m_indexToUpdate = 0;
+    QPersistentModelIndex m_dummyIndex;
+    int m_dummyCnt;
 
     enum MessageRole {
         ID,
@@ -261,7 +264,7 @@ signals:
 
 public:
     // QAbstractItemModel interface
-    int rowCount(const QModelIndex &parent) const;
+    int rowCount(const QModelIndex & = QModelIndex()) const;
     QVariant data(const QModelIndex &index, int role) const;
     QHash<int, QByteArray> roleNames() const;
     QString userName() const;
@@ -324,6 +327,14 @@ public:
     bool reachedHistoryEnd() const
     {
         return m_reachedHistoryEnd;
+    }
+    inline void beginInsertRows(int first, int last)
+    {
+        QAbstractListModel::beginInsertRows(QModelIndex(), first, last);
+    }
+    inline void beginRemoveRows(int first, int last)
+    {
+        QAbstractListModel::beginRemoveRows(QModelIndex(), first, last);
     }
 };
 } //namespace tdlibQt
