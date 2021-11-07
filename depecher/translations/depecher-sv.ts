@@ -1162,6 +1162,10 @@ Observera att efter detta, kommer 2-faktorsauktoriseringen att inaktiveras</tran
         <source> people are typing</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Message deleted</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>tdlibQt::NotificationManager</name>

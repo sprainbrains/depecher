@@ -1162,6 +1162,10 @@
         <source> people are typing</source>
         <translation> personas están escribiendo</translation>
     </message>
+    <message>
+        <source>Message deleted</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>tdlibQt::NotificationManager</name>
