@@ -409,11 +409,11 @@
     </message>
     <message>
         <source>When this is off, you won&apos;t get Depecher app on boot</source>
-        <translation>Cuando está deshabilitado, Depecher no iniciará en el arranque</translation>
+        <translation>Cuando está deshabilitado, Depecher no iniciará en el arranque.</translation>
     </message>
     <message>
         <source>Start/stop Depecher daemon. Stopping Depecher daemon will also stop receiving notifications</source>
-        <translation>Iniciar o Detener el servicio de Depecher es opcional.</translation>
+        <translation>El Iniciar o Detener el demonio de Depecher es opcional.</translation>
     </message>
     <message>
         <source>Depecher current status</source>
@@ -429,11 +429,11 @@
     </message>
     <message>
         <source>Close app on closing UI</source>
-        <translation>Cerrar la aplicación al cerrar la interfaz de usuario</translation>
+        <translation>Cerrar la apl al cerrar la interfaz</translation>
     </message>
     <message>
         <source>When this is on, Depecher quits after closing ui. No daemon. Autostart should be disabled</source>
-        <translation>Cuando está deshabilitado, Depecher se cierra después de cerrar la interfaz. Sin Depecherd, el autoinicio  debe estar deshabilitado</translation>
+        <translation>Cuando está habilitado, Depecher renuncia después de cerrar la interfaz de usuario. No demonio. El autoinicio  debe estar deshabilitado.</translation>
     </message>
     <message>
         <source>Library settings</source>
@@ -1164,7 +1164,7 @@
     </message>
     <message>
         <source>Message deleted</source>
-        <translation type="unfinished"></translation>
+        <translation>Mensaje borrado</translation>
     </message>
 </context>
 <context>
