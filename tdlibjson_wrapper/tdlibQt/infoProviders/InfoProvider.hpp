@@ -20,22 +20,18 @@ class InfoProvider : public QObject
     Q_PROPERTY(int audioCount READ audioCount WRITE setAudioCount NOTIFY audioCountChanged)
     Q_PROPERTY(int linkCount READ linkCount WRITE setLinkCount NOTIFY linkCountChanged)
     Q_PROPERTY(int voiceCount READ voiceCount WRITE setVoiceCount NOTIFY voiceCountChanged)
+    Q_PROPERTY(int animationCount READ animationCount WRITE setAnimationCount NOTIFY animationCountChanged)
     Q_PROPERTY(int muteFor READ muteFor NOTIFY muteForChanged)
     //End saveProperty
 
     int m_photoCount = 0;
-
     int m_videoCount = 0;
-
     int m_fileCount = 0;
-
     int m_audioCount = 0;
-
     int m_linkCount = 0;
-
     int m_groupCount = 0;
-
     int m_voiceCount  = 0;
+    int m_animationCount  = 0;
     double m_chatId = -1;
 
     QString m_error = "";
@@ -84,6 +80,11 @@ public:
         return m_voiceCount;
     }
 
+    int animationCount() const
+    {
+        return m_animationCount;
+    }
+
     double chatId() const
     {
         return m_chatId;
@@ -99,18 +100,14 @@ public:
 signals:
 
     void photoCountChanged(int photoCount);
-
     void videoCountChanged(int videoCount);
-
     void fileCountChanged(int fileCount);
-
     void audioCountChanged(int audioCount);
-
     void linkCountChanged(int linkCount);
-
     void groupCountChanged(int groupCount);
-
     void voiceCountChanged(int voiceCount);
+    void animationCountChanged(int animationCount);
+
     void avatarChanged();
 
     void chatIdChanged(double chatId);
@@ -168,6 +165,14 @@ private slots:
 
         m_voiceCount = voiceCount;
         emit voiceCountChanged(m_voiceCount);
+    }
+    void setAnimationCount(int animationCount)
+    {
+        if (m_animationCount == animationCount)
+            return;
+
+        m_animationCount = animationCount;
+        emit animationCountChanged(m_animationCount);
     }
     void setMuteFor(int muteFor)
     {

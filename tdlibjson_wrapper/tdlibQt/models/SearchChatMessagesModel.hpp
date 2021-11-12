@@ -130,7 +130,7 @@ public slots:
     void setTotalCount(int totalCount);
 
 public:
-    int rowCount(const QModelIndex &) const override;
+    int rowCount(const QModelIndex & = QModelIndex()) const override;
     QVariant data(const QModelIndex &index, int role) const override;
     QVariant dataContent(const int rowIndex) const;
     QVariant dataFileMeta(const int rowIndex, int role) const;
@@ -149,6 +149,19 @@ public:
     int totalCount() const
     {
         return m_totalCount;
+    }
+
+private:
+    QSharedPointer<file> getFilePtrByMessage(QSharedPointer<message> msg) const;
+    int getFileIdByMessage(QSharedPointer<message> msg) const;
+
+    inline void beginInsertRows(int first, int last)
+    {
+        QAbstractListModel::beginInsertRows(QModelIndex(), first, last);
+    }
+    inline void beginRemoveRows(int first, int last)
+    {
+        QAbstractListModel::beginRemoveRows(QModelIndex(), first, last);
     }
 };
 } // namespace tdlibQt

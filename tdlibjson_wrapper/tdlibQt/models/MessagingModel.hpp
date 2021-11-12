@@ -26,7 +26,6 @@ class MessagingModel : public QAbstractListModel
     Q_PROPERTY(bool fetching READ fetching WRITE setFetching NOTIFY fetchingChanged)
     Q_PROPERTY(bool reachedHistoryEnd READ reachedHistoryEnd WRITE setReachedHistoryEnd NOTIFY reachedHistoryEndChanged)
     Q_PROPERTY(int dummyCnt MEMBER m_dummyCnt CONSTANT)
-    Q_PROPERTY(bool fetching READ fetching NOTIFY fetchingChanged)
     QVariantList unseenMessageIds;
     QMap<qint64, QSharedPointer<updateUserChatAction>> chatActionUserMap;
     QMap<qint64, QSharedPointer<message>> replyMessagesMap;

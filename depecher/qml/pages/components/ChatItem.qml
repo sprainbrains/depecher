@@ -12,6 +12,8 @@ ListItem {
     Loader {
         asynchronous: true
         sourceComponent: activeChat ? glassItemComponent : undefined
+        // Silica Page bug: sometimes it appears on the right side of next page
+        visible: page.status == PageStatus.Active
         anchors {
             left: parent.left
             leftMargin: -width/2

@@ -927,7 +927,7 @@ void MessagingModel::addMessages(const QJsonObject &messagesObject)
                 indexToAppend++;
                 setLastMessageIndex(indexToAppend);
 
-                beginInsertRows(indexToAppend, indexToAppend);
+                beginInsertRows(indexToAppend + m_dummyCnt, indexToAppend + m_dummyCnt);
                 qint64 messageId = m_messages[indexToAppend - 1]->id_;
                 const QByteArray messageSeparator =
                     "{\"@type\": \"message\", \"author_signature\": \"\", \"can_be_deleted_for_all_users\": false, \"can_be_deleted_only_for_self\": false, \"can_be_edited\": false, \"can_be_forwarded\": false,"

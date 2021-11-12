@@ -67,6 +67,9 @@ void InfoProvider::countReceived(const QJsonObject &countObject)
         case Enums::SearchFilter::VoiceNote:
             setVoiceCount(countObject["count"].toInt());
             break;
+        case Enums::SearchFilter::Animation:
+            setAnimationCount(countObject["count"].toInt());
+            break;
         default:
             break;
         }
@@ -99,6 +102,8 @@ void InfoProvider::setChatId(double chatId)
                                      false, "Url");
     m_tdlibJson->getChatMessageCount(m_chatId, Enums::SearchFilter::VoiceNote,
                                      false, "VoiceNote");
+    m_tdlibJson->getChatMessageCount(m_chatId, Enums::SearchFilter::Animation,
+                                     false, "Animation");
     m_chat = UsersModel::instance()->getChat(m_chatId);
     emit chatIdChanged(m_chatId);
     emit muteForChanged();

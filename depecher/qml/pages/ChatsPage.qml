@@ -114,33 +114,41 @@ Page {
             id: chatDelegate
             activeChat: _opened_chat_id === model.id
 
-            menu:  ContextMenu {
-                MenuItem {
-                    text: mute_for > 0 ? qsTr("Unmute") : qsTr("Mute")
-                    onClicked: chatsModel.changeNotificationSettings(id,!(mute_for > 0))
-                }
-                MenuItem {
-                    property bool unread: (is_marked_unread || unread_count)
-                    text: unread ? qsTr("Mark as read") : qsTr("Mark as unread")
-                    onClicked: chatsModel.markAsUnread(id, !unread)
-                }
-                MenuItem {
-                    text: wantDelete ? qsTr("Remove history and leave chat") : qsTr("Leave chat")
-                    property bool wantDelete: type["type"] == TdlibState.Private ||
-                                              type["type"] == TdlibState.BasicGroup ||
-                                              type["type"] == TdlibState.Secret
-                    onClicked: {
-                        chatDelegate.remorseAction(qsTr("Left chat"), function () {
-                            if (wantDelete)
-                                c_telegramWrapper.deleteChatHistory(id, true)
-                            else
-                                c_telegramWrapper.leaveChat(id)
-
-                            if (page.canNavigateForward && _opened_chat_id === id)
-                                pageStack.popAttached(page, PageStackAction.Immediate)
-                        })
+            menu: Component { // ContextMenu is slow
+                ContextMenu {
+                    MenuItem {
+                        text: mute_for > 0 ? qsTr("Unmute") : qsTr("Mute")
+                        onClicked: chatsModel.changeNotificationSettings(id,!(mute_for > 0))
+                    }
+                    MenuItem {
+                        property bool unread: (is_marked_unread || unread_count)
+                        text: unread ? qsTr("Mark as read") : qsTr("Mark as unread")
+                        onClicked: chatsModel.markAsUnread(id, !unread)
+                    }
+                    MenuItem {
+                        text: wantDelete ? qsTr("Remove history and leave chat") : qsTr("Leave chat")
+                        property bool wantDelete: type["type"] == TdlibState.Private ||
+                                                  type["type"] == TdlibState.BasicGroup ||
+                                                  type["type"] == TdlibState.Secret
+                        onClicked: {
+                            var _chatDelegate = chatDelegate
+                            var _wantDelete = wantDelete
+                            chatDelegate.remorseAction(qsTr("Left chat"), function () {
+                                _chatDelegate.leaveChat(_wantDelete)
+                            })
+                        }
                     }
                 }
+            }
+
+            function leaveChat(wantDelete) {
+                if (wantDelete)
+                    c_telegramWrapper.deleteChatHistory(id, true)
+                else
+                    c_telegramWrapper.leaveChat(id)
+
+                if (page.canNavigateForward && _opened_chat_id === id)
+                    pageStack.popAttached(page, PageStackAction.Immediate)
             }
 
             ListView.onAdd: AddAnimation {

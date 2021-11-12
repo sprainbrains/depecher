@@ -34,28 +34,8 @@ void SearchChatMessagesModel::prependMessage(const QJsonObject &messageObject)
     bool is_uploading = data(index(0), FILE_IS_UPLOADING).toBool();
     bool is_downloading = data(index(0), FILE_IS_DOWNLOADING).toBool();
     if (is_downloading || is_uploading) {
-        int fileId = -1;
-        if (messageItem->content_->get_id() == messageDocument::ID) {
-            auto messageDocumentPtr = static_cast<messageDocument *>
-                                      (messageItem->content_.data());
-            fileId = messageDocumentPtr->document_->document_->id_;
-        }
-        if (messageItem->content_->get_id() == messagePhoto::ID) {
-            auto messagePhotoPtr = static_cast<messagePhoto *>
-                                   (messageItem->content_.data());
-            int sizesCount = messagePhotoPtr->photo_->sizes_.size();
-            fileId = messagePhotoPtr->photo_->sizes_[sizesCount - 1]->photo_->id_;
-        }
-        if (messageItem->content_->get_id() == messageVideo::ID) {
-            auto messageVideoPtr = static_cast<messageVideo *>
-                                   (messageItem->content_.data());
-            fileId = messageVideoPtr->video_->video_->id_;
-        }
-        if (messageItem->content_->get_id() == messageVideoNote::ID) {
-            auto messageVideoPtr = static_cast<messageVideoNote *>
-                                   (messageItem->content_.data());
-            fileId = messageVideoPtr->video_note_->video_->id_;
-        }
+        //messageDocument::ID | messagePhoto::ID | messageVideo::ID | messageVideoNote::ID | messageAnimation::ID
+        int fileId = getFileIdByMessage(messageItem);
         if (fileId > 0)
             m_messagePhotoQueue[fileId] = 0;
 
@@ -133,32 +113,12 @@ void SearchChatMessagesModel::appendMessage(const QJsonObject &messageObject)
 
     m_messages.append(messageItem);
 
-    bool is_downl_or_upl = data(index(rowCount(QModelIndex()) - 1), FILE_IS_UPLOADING).toBool()
-                           || data(index(rowCount(QModelIndex()) - 1), FILE_IS_DOWNLOADING).toBool();
+    bool is_downl_or_upl = data(index(rowCount() - 1), FILE_IS_UPLOADING).toBool()
+                           || data(index(rowCount() - 1), FILE_IS_DOWNLOADING).toBool();
 
     if (is_downl_or_upl) {
-        int fileId = -1;
-        if (messageItem->content_->get_id() == messageDocument::ID) {
-            auto messageDocumentPtr = static_cast<messageDocument *>
-                                      (messageItem->content_.data());
-            fileId = messageDocumentPtr->document_->document_->id_;
-        }
-        if (messageItem->content_->get_id() == messagePhoto::ID) {
-            auto messagePhotoPtr = static_cast<messagePhoto *>
-                                   (messageItem->content_.data());
-            int sizesCount = messagePhotoPtr->photo_->sizes_.size();
-            fileId = messagePhotoPtr->photo_->sizes_[sizesCount - 1]->photo_->id_;
-        }
-        if (messageItem->content_->get_id() == messageVoiceNote::ID) {
-            auto messageVoiceNotePtr = static_cast<messageVoiceNote *>
-                                       (messageItem->content_.data());
-            fileId = messageVoiceNotePtr->voice_note_->voice_->id_;
-        }
-        if (messageItem->content_->get_id() == messageAudio::ID) {
-            auto messageAudioPtr = static_cast<messageAudio *>
-                                   (messageItem->content_.data());
-            fileId = messageAudioPtr->audio_->audio_->id_;
-        }
+        // messageDocument::ID | messagePhoto::ID | messageVoiceNote::ID | messageAudio::ID
+        int fileId = getFileIdByMessage(messageItem);
         if (fileId > 0)
             m_messagePhotoQueue[fileId] = m_messages.size() - 1;
     }
@@ -169,38 +129,34 @@ void SearchChatMessagesModel::addMessages(const QJsonObject &messagesObject)
     int totalCount = messagesObject["total_count"].toInt();
     QString extra = messagesObject["@extra"].toString("");
 
+    if (totalCount == m_messages.size()) {
+        setReachedHistoryEnd(true);
+        setFetching(false);
+        return;
+    }
+
     QJsonArray messagesArray = messagesObject["messages"].toArray();
     if (ParseObject::getInt64(messagesArray[0].toObject()["chat_id"]) == peerId()) {
-        if (totalCount == m_messages.size())
-            setReachedHistoryEnd(true);
 
         //Oldest
         if (extra == m_extra.arg("prepend")) {
-            beginInsertRows(QModelIndex(), 0, messagesArray.size() - 1);
+            beginInsertRows(0, messagesArray.size() - 1);
             for (int i = messagesArray.size() - 1; i >= 0; i--) {
                 prependMessage(messagesArray[i].toObject());
             }
             endInsertRows();
-//            //Notifying view to update previous last item. fetchOlder issue
-//            m_indexToUpdate = totalCount;
-
-//            QTimer::singleShot(500, this, [this]() {
-//                emit dataChanged(index(m_indexToUpdate), index(m_indexToUpdate), QVector<int>());
-//            });
 
         } else if (extra == m_extra.arg("append")) {
-            beginInsertRows(QModelIndex(), rowCount(QModelIndex()), rowCount(QModelIndex()) + messagesArray.size() - 1);
+            beginInsertRows(rowCount(), rowCount() + messagesArray.size() - 1);
             for (int i = 0; i < messagesArray.size(); i++)
                 appendMessage(messagesArray[i].toObject());
             endInsertRows();
         }  else if (extra == m_extra.arg(m_peerId)) {
-            beginInsertRows(QModelIndex(), rowCount(QModelIndex()), rowCount(QModelIndex()) + messagesArray.size() - 1);
+            beginInsertRows(rowCount(), rowCount() + messagesArray.size() - 1);
             for (int i = 0; i < messagesArray.size(); i++)
                 appendMessage(messagesArray[i].toObject());
             endInsertRows();
         }
-
-
 
         setFetching(false);
     }
@@ -298,7 +254,6 @@ void SearchChatMessagesModel::processFile(const QJsonObject &fileObject)
 
         }
 
-
         if (file->local_->is_downloading_completed_) {
             photoRole.append(CONTENT);
             photoRole.append(MEDIA_PREVIEW);
@@ -323,7 +278,7 @@ void SearchChatMessagesModel::fetchMore(const QModelIndex &parent)
     Q_UNUSED(parent)
     if (!fetching()) {
         setFetching(true);
-        if (rowCount(QModelIndex()) == 0)
+        if (rowCount() == 0)
             m_tdlibJson->searchChatMessages(peerId(), 0, "",
                                             0, 0, MESSAGE_LIMIT, filter(), m_extra.arg(m_peerId));
         else
@@ -378,84 +333,16 @@ void SearchChatMessagesModel::setFilter(Enums::SearchFilter filter)
 
 void SearchChatMessagesModel::downloadDocument(const int rowIndex)
 {
-    int fileId = -1;
-    int messageIndex = rowIndex;
-    if (m_messages[messageIndex ]->content_->get_id() == messageDocument::ID) {
-        auto contentDocumentPtr = static_cast<messageDocument *>
-                                  (m_messages[messageIndex ]->content_.data());
-        fileId = contentDocumentPtr->document_->document_->id_;
-    }
-    if (m_messages[messageIndex ]->content_->get_id() == messageVoiceNote::ID) {
-        auto contentDocumentPtr = static_cast<messageVoiceNote *>
-                                  (m_messages[messageIndex ]->content_.data());
-        fileId = contentDocumentPtr->voice_note_->voice_->id_;
-    }
-    if (m_messages[messageIndex ]->content_->get_id() == messageAudio::ID) {
-        auto contentDocumentPtr = static_cast<messageAudio *>
-                                  (m_messages[messageIndex ]->content_.data());
-        fileId = contentDocumentPtr->audio_->audio_->id_;
-    }
-    if (m_messages[messageIndex ]->content_->get_id() == messagePhoto::ID) {
-        auto contentDocumentPtr = static_cast<messagePhoto *>
-                                  (m_messages[messageIndex ]->content_.data());
-        int sizesCount = contentDocumentPtr->photo_->sizes_.size();
-        fileId = contentDocumentPtr->photo_->sizes_[sizesCount - 1]->photo_->id_;
-    }
-    if (m_messages[messageIndex ]->content_->get_id() == messageAnimation::ID) {
-        auto contentAnimationPtr = static_cast<messageAnimation *>
-                                   (m_messages[messageIndex ]->content_.data());
-        fileId = contentAnimationPtr->animation_->animation_->id_;
-    }
-    if (m_messages[messageIndex ]->content_->get_id() == messageVideo::ID) {
-        auto contentVideoPtr = static_cast<messageVideo *>
-                               (m_messages[messageIndex ]->content_.data());
-        fileId = contentVideoPtr->video_->video_->id_;
-    }
-    if (m_messages[messageIndex ]->content_->get_id() == messageVideoNote::ID) {
-        auto contentVideoPtr = static_cast<messageVideoNote *>
-                               (m_messages[messageIndex ]->content_.data());
-        fileId = contentVideoPtr->video_note_->video_->id_;
-    }
+    int fileId = getFileIdByMessage(m_messages[rowIndex]);
     if (fileId > -1)
-        emit downloadFileStart(fileId, 10, messageIndex);
+        emit downloadFileStart(fileId, 10, rowIndex);
 }
 
 void SearchChatMessagesModel::cancelDownload(const int rowIndex)
 {
-    int fileId = -1;
-    int messageIndex = rowIndex;
-    if (m_messages[messageIndex]->content_->get_id() == messageDocument::ID) {
-        auto contentDocumentPtr = static_cast<messageDocument *>
-                                  (m_messages[messageIndex]->content_.data());
-        fileId = contentDocumentPtr->document_->document_->id_;
-    }
-    if (m_messages[messageIndex]->content_->get_id() == messageVoiceNote::ID) {
-        auto contentDocumentPtr = static_cast<messageVoiceNote *>
-                                  (m_messages[messageIndex]->content_.data());
-        fileId = contentDocumentPtr->voice_note_->voice_->id_;
-    }
-    if (m_messages[messageIndex]->content_->get_id() == messageAudio::ID) {
-        auto contentDocumentPtr = static_cast<messageAudio *>
-                                  (m_messages[messageIndex]->content_.data());
-        fileId = contentDocumentPtr->audio_->audio_->id_;
-    }
-    if (m_messages[messageIndex]->content_->get_id() == messagePhoto::ID) {
-        auto contentDocumentPtr = static_cast<messagePhoto *>
-                                  (m_messages[messageIndex]->content_.data());
-        int sizesCount = contentDocumentPtr->photo_->sizes_.size();
-        fileId = contentDocumentPtr->photo_->sizes_[sizesCount - 1]->photo_->id_;
-    }
-    if (m_messages[messageIndex ]->content_->get_id() == messageVideo::ID) {
-        auto contentVideoPtr = static_cast<messageVideo *>
-                               (m_messages[messageIndex ]->content_.data());
-        fileId = contentVideoPtr->video_->video_->id_;
-    }
-    if (m_messages[messageIndex ]->content_->get_id() == messageVideoNote::ID) {
-        auto contentVideoPtr = static_cast<messageVideoNote *>
-                               (m_messages[messageIndex ]->content_.data());
-        fileId = contentVideoPtr->video_note_->video_->id_;
-    }
-    m_tdlibJson->cancelDownloadFile(fileId);
+    int fileId = getFileIdByMessage(m_messages[rowIndex]);
+    if (fileId > -1)
+        m_tdlibJson->cancelDownloadFile(fileId);
 }
 
 int SearchChatMessagesModel::rowCount(const QModelIndex &) const
@@ -467,7 +354,7 @@ QVariant SearchChatMessagesModel::data(const QModelIndex &index, int role) const
 {
     if (!index.isValid())
         return QVariant();
-    if (index.row() < 0 || index.row() > rowCount(QModelIndex()))
+    if (index.row() < 0 || index.row() >= rowCount())
         return QVariant();
 
     int rowIndex = index.row();
@@ -861,90 +748,38 @@ QVariant SearchChatMessagesModel::dataContent(const int rowIndex) const
 
 QVariant SearchChatMessagesModel::dataFileMeta(const int rowIndex, int role) const
 {
-    file *filePtr = nullptr;
-    if (m_messages[rowIndex]->content_->get_id() == messagePhoto::ID) {
-        auto contentPhotoPtr = static_cast<messagePhoto *>
-                               (m_messages[rowIndex]->content_.data());
-        int sizesCount = contentPhotoPtr->photo_->sizes_.size();
-        filePtr = contentPhotoPtr->photo_->sizes_[sizesCount - 1]->photo_.data();
-    }
-    if (m_messages[rowIndex]->content_->get_id() == messageDocument::ID) {
-        auto contentDocumentPtr = static_cast<messageDocument *>
-                                  (m_messages[rowIndex]->content_.data());
-        filePtr = contentDocumentPtr->document_->document_.data();
-    }
-    if (m_messages[rowIndex]->content_->get_id() == messageVoiceNote::ID) {
-        auto contentVoicePtr = static_cast<messageVoiceNote *>
-                               (m_messages[rowIndex]->content_.data());
-        filePtr = contentVoicePtr->voice_note_->voice_.data();
-    }
-    if (m_messages[rowIndex]->content_->get_id() == messageAudio::ID) {
-        auto contentAudioPtr = static_cast<messageAudio *>
-                               (m_messages[rowIndex]->content_.data());
-        filePtr = contentAudioPtr->audio_->audio_.data();
-    }
-    if (m_messages[rowIndex]->content_->get_id() == messageVideo::ID) {
-        auto contentVideoPtr = static_cast<messageVideo *>
-                               (m_messages[rowIndex]->content_.data());
-        filePtr = contentVideoPtr->video_->video_.data();
-    }
-    if (m_messages[rowIndex]->content_->get_id() == messageVideoNote::ID) {
-        auto contentVideoPtr = static_cast<messageVideoNote *>
-                               (m_messages[rowIndex]->content_.data());
-        filePtr = contentVideoPtr->video_note_->video_.data();
-    }
-    if (m_messages[rowIndex]->content_->get_id() == messageAnimation::ID) {
-        auto contentAnimationPtr = static_cast<messageAnimation *>
-                                   (m_messages[rowIndex]->content_.data());
-        filePtr = contentAnimationPtr->animation_->animation_.data();
-    }
+    QSharedPointer<file> filePtr = getFilePtrByMessage(m_messages.at(rowIndex));
+    if (!filePtr)
+        return QVariant();
+
     switch (role) {
     case FILE_IS_DOWNLOADING:
-        if (filePtr)
-            return filePtr->local_->is_downloading_active_;
-        return QVariant();
-        break;
+        return filePtr->local_->is_downloading_active_;
     case FILE_IS_UPLOADING:
-        if (filePtr)
-            return filePtr->remote_->is_uploading_active_;
-        return QVariant();
-        break;
+        return filePtr->remote_->is_uploading_active_;
     case FILE_DOWNLOADING_COMPLETED:
-        if (filePtr)
-            return filePtr->local_->is_downloading_completed_;
-        return QVariant();
-        break;
+        return filePtr->local_->is_downloading_completed_;
     case FILE_UPLOADING_COMPLETED:
-        if (filePtr)
-            return filePtr->remote_->is_uploading_completed_;
-        return QVariant();
-        break;
+        return filePtr->remote_->is_uploading_completed_;
     case FILE_DOWNLOADED_SIZE:
-        if (filePtr)
-            return filePtr->local_->downloaded_size_;
-        return QVariant();
-        break;
+        return filePtr->local_->downloaded_size_;
     case FILE_UPLOADED_SIZE:
-        if (filePtr)
-            return filePtr->remote_->uploaded_size_;
-        return QVariant();
-        break;
-    case FILE_TYPE:
-        if (m_messages[rowIndex]->content_->get_id() == messageAnimation::ID) {
+        return filePtr->remote_->uploaded_size_;
+    case FILE_TYPE: {
+        int contentId = m_messages[rowIndex]->content_->get_id();
+        if (contentId == messageAnimation::ID) {
             auto contentAnimationPtr = static_cast<messageAnimation *>
-                                       (m_messages[rowIndex]->content_.data());
+                    (m_messages[rowIndex]->content_.data());
             return QString::fromStdString(contentAnimationPtr->animation_->mime_type_);
-        }
-        if (m_messages[rowIndex]->content_->get_id() == messageVideo::ID) {
+        } else if (contentId == messageVideo::ID) {
             auto contentVideoPtr = static_cast<messageVideo *>
-                                   (m_messages[rowIndex]->content_.data());
+                    (m_messages[rowIndex]->content_.data());
             return QString::fromStdString(contentVideoPtr->video_->mime_type_);
         }
         return QVariant();
-    default:
-        return QVariant();
-        break;
     }
+    }
+    return QVariant();
 }
 
 double SearchChatMessagesModel::peerId() const
@@ -996,6 +831,46 @@ QHash<int, QByteArray> SearchChatMessagesModel::roleNames() const
     roles[SENDER_PHOTO] = "sender_photo";
 
     return roles;
+}
+
+QSharedPointer<file> SearchChatMessagesModel::getFilePtrByMessage(QSharedPointer<message> msg) const
+{
+    int contentId = msg->content_->get_id();
+    QSharedPointer<file> filePtr;
+
+    if (contentId == messageDocument::ID) {
+        auto contentDocumentPtr = static_cast<messageDocument *>(msg->content_.data());
+        filePtr = contentDocumentPtr->document_->document_;
+    } else if (contentId == messageVoiceNote::ID) {
+        auto contentDocumentPtr = static_cast<messageVoiceNote *>(msg->content_.data());
+        filePtr = contentDocumentPtr->voice_note_->voice_;
+    } else if (contentId == messageAudio::ID) {
+        auto contentDocumentPtr = static_cast<messageAudio *>(msg->content_.data());
+        filePtr = contentDocumentPtr->audio_->audio_;
+    } else if (contentId == messagePhoto::ID) {
+        auto contentDocumentPtr = static_cast<messagePhoto *>(msg->content_.data());
+        int sizesCount = contentDocumentPtr->photo_->sizes_.size();
+        filePtr = contentDocumentPtr->photo_->sizes_[sizesCount - 1]->photo_;
+    } else if (contentId == messageAnimation::ID) {
+        auto contentAnimationPtr = static_cast<messageAnimation *>(msg->content_.data());
+        filePtr = contentAnimationPtr->animation_->animation_;
+    } else if (contentId == messageVideo::ID) {
+        auto contentVideoPtr = static_cast<messageVideo *>(msg->content_.data());
+        filePtr = contentVideoPtr->video_->video_;
+    } else if (contentId == messageVideoNote::ID) {
+        auto contentVideoPtr = static_cast<messageVideoNote *>(msg->content_.data());
+        filePtr = contentVideoPtr->video_note_->video_;
+    }
+    return filePtr;
+}
+
+int SearchChatMessagesModel::getFileIdByMessage(QSharedPointer<message> msg) const
+{
+    QSharedPointer<file> filePtr = getFilePtrByMessage(msg);
+    if (filePtr)
+        return filePtr->id_;
+    else
+        return -1;
 }
 
 } // namespace tdlibQt

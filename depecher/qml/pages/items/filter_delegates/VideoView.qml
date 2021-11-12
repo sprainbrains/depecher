@@ -14,7 +14,6 @@ Page {
     }
     SilicaGridView {
         id:grid
-        property var currentFilter
         header: PageHeader {
             title: qsTr("Videos")
         }
@@ -102,6 +101,9 @@ Page {
             }
         }
 
+        VerticalScrollDecorator {
+            flickable: grid
+        }
     }
 
 }

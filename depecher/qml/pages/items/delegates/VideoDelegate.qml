@@ -103,28 +103,27 @@ Column{
             z:0
             }
 
-            Image {
+            IconButton {
                 id: downloadIcon
                 visible: !file_downloading_completed || progress.visible
-                source: progress.visible ? "image://theme/icon-s-clear-opaque-cross"
-                                         : "image://theme/icon-s-update"
+                icon.source: progress.visible ? "image://theme/icon-s-clear-opaque-cross"
+                                              : "image://theme/icon-s-update"
                 anchors.centerIn: parent
+                width: Math.min(parent.width, Theme.itemSizeMedium)
+                height: width
 
-                MouseArea {
-                    enabled: parent.visible
-                    anchors.fill: parent
-                    onClicked: {
-                        if(progress.visible)
-                            if(file_is_downloading)
-                                messagingModel.cancelDownload(index)
-                            else
-                                messagingModel.deleteMessage(index)
+                onClicked: {
+                    if(progress.visible)
+                        if(file_is_downloading)
+                            messagingModel.cancelDownload(index)
                         else
-                            messagingModel.downloadDocument(index)
-                    }
+                            messagingModel.deleteMessage(index)
+                    else
+                        messagingModel.downloadDocument(index)
                 }
             }
         }
+
         RichTextItem {
             id:captionText
             width: parent.width

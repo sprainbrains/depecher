@@ -44,6 +44,7 @@ Column{
                 fillMode: VideoOutput.PreserveAspectFit
                 source: file_downloading_completed ? "file://"+content : ""
                 playing: false
+                asynchronous: true
                 Image {
                     id:animationThumbnail
                     anchors.fill: parent
@@ -51,6 +52,8 @@ Column{
                     sourceSize.height: height
                     source: media_preview ? ("image://depecherDb/" + media_preview) : ""
                     visible:  mediaPlayer.playbackState != MediaPlayer.PlayingState || !file_downloading_completed;
+                    asynchronous: true
+
                     Rectangle {
                         id:dimmedColor
                         anchors.fill: parent
@@ -65,26 +68,26 @@ Column{
                         value : file_is_uploading ? file_uploaded_size / file_downloaded_size :
                                                     file_downloaded_size / file_uploaded_size
                     }
-                    Image {
+                    IconButton {
                         id: downloadIcon
                         visible: !file_downloading_completed || progress.visible
-                        source: progress.visible ? "image://theme/icon-s-clear-opaque-cross"
-                                                 : "image://theme/icon-s-update"
+                        icon.source: progress.visible ? "image://theme/icon-s-clear-opaque-cross"
+                                                      : "image://theme/icon-s-update"
                         anchors.centerIn: parent
-                        MouseArea{
-                            enabled: parent.visible
-                            anchors.fill: parent
-                            onClicked: {
-                                if(progress.visible)
-                                    if(file_is_downloading)
-                                        messagingModel.cancelDownload(index)
-                                    else
-                                        messagingModel.deleteMessage(index)
+                        width: Math.min(parent.width, Theme.itemSizeMedium)
+                        height: width
+
+                        onClicked: {
+                            if(progress.visible)
+                                if(file_is_downloading)
+                                    messagingModel.cancelDownload(index)
                                 else
-                                    messagingModel.downloadDocument(index)
-                            }
+                                    messagingModel.deleteMessage(index)
+                            else
+                                messagingModel.downloadDocument(index)
                         }
                     }
+
                     Label {
                         color:  Theme.primaryColor
                         visible: downloadIcon.visible
@@ -179,6 +182,8 @@ Column{
                     sourceSize.height: height
                     source: media_preview ? ("image://depecherDb/" + media_preview) : ""
                     visible:  mediaPlayer.playbackState != MediaPlayer.PlayingState || !file_downloading_completed;
+                    asynchronous: true
+
                     Rectangle {
                         id:dimmedColor
                         anchors.fill: parent
@@ -193,26 +198,26 @@ Column{
                         value : file_is_uploading ? file_uploaded_size / file_downloaded_size :
                                                     file_downloaded_size / file_uploaded_size
                     }
-                    Image {
+                    IconButton {
                         id: downloadIcon
                         visible: !!media_preview && (!file_downloading_completed || progress.visible)
-                        source: progress.visible ? "image://theme/icon-s-clear-opaque-cross"
-                                                 : "image://theme/icon-s-update"
+                        icon.source: progress.visible ? "image://theme/icon-s-clear-opaque-cross"
+                                                      : "image://theme/icon-s-update"
                         anchors.centerIn: parent
-                        MouseArea{
-                            enabled: parent.visible
-                            anchors.fill: parent
-                            onClicked: {
-                                if(progress.visible)
-                                    if(file_is_downloading)
-                                        messagingModel.cancelDownload(index)
-                                    else
-                                        messagingModel.deleteMessage(index)
+                        width: Math.min(parent.width, Theme.itemSizeMedium)
+                        height: width
+
+                        onClicked: {
+                            if(progress.visible)
+                                if(file_is_downloading)
+                                    messagingModel.cancelDownload(index)
                                 else
-                                    messagingModel.downloadDocument(index)
-                            }
+                                    messagingModel.deleteMessage(index)
+                            else
+                                messagingModel.downloadDocument(index)
                         }
                     }
+
                     Label {
                         color:  Theme.primaryColor
                         visible: downloadIcon.visible
