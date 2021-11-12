@@ -433,7 +433,7 @@
     </message>
     <message>
         <source>When this is on, Depecher quits after closing ui. No daemon. Autostart should be disabled</source>
-        <translation>Cuando está habilitado, Depecher renuncia después de cerrar la interfaz de usuuario. No Depecherd, el autoinicio  debe estar deshabilitado.</translation>
+        <translation>Cuando está habilitado, Depecher renuncia después de cerrar la interfaz de usuario. No demonio. El autoinicio  debe estar deshabilitado.</translation>
     </message>
     <message>
         <source>Library settings</source>
