@@ -42,8 +42,9 @@ ListItem {
             spacing:Theme.paddingMedium
             CircleImage {
                 id: avatar
-                width:height
-                height: parent.height
+                height: parent.height - Theme.paddingSmall
+                width: height
+                anchors.verticalCenter: parent.verticalCenter
                 source: photo ? "image://depecherDb/"+photo : ""
                 fallbackText: title.charAt(0)
                 fallbackItemVisible: photo ? false : true
