@@ -125,7 +125,7 @@
     <name>AnimationView</name>
     <message>
         <source>Animations</source>
-        <translation type="unfinished"></translation>
+        <translation>Animacines</translation>
     </message>
 </context>
 <context>
@@ -937,7 +937,7 @@
     </message>
     <message>
         <source>%1 animations</source>
-        <translation type="unfinished"></translation>
+        <translation>1% animaciones</translation>
     </message>
 </context>
 <context>
