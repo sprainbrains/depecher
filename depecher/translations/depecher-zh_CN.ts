@@ -122,6 +122,13 @@
     </message>
 </context>
 <context>
+    <name>AnimationView</name>
+    <message>
+        <source>Animations</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>AppearancePage</name>
     <message>
         <source>Appearance</source>
@@ -927,6 +934,10 @@
     <message>
         <source>%1 voice notes</source>
         <translation>%1 条留言</translation>
+    </message>
+    <message>
+        <source>%1 animations</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
