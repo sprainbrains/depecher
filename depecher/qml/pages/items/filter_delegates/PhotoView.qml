@@ -37,7 +37,7 @@ Page {
                 width:grid.cellSize
                 height:width
                 Image {
-                    source: content
+                    source: content ? content : ""
                     fillMode: Image.PreserveAspectCrop
                     anchors.fill: parent
                     asynchronous: true

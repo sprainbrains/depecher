@@ -2,6 +2,7 @@ import QtQuick 2.6
 import Sailfish.Silica 1.0
 import tdlibQtEnums 1.0
 import TelegramModels 1.0
+import Nemo.Notifications 1.0
 import "items"
 import "components"
 
@@ -48,6 +49,15 @@ Page {
         onInviteIdReady: {
             pageStack.push(Qt.resolvedUrl("JoinChatDialog.qml"), { title: title, chatId: chatId })
         }
+        onErrorMessage: {
+            notification.previewBody = errorMessage
+            notification.publish()
+        }
+    }
+
+    Notification {
+        id: notification
+        appName: "Depecher"
     }
 
     SilicaListView {

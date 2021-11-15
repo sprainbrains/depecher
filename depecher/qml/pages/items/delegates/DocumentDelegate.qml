@@ -71,7 +71,7 @@ Column{
                     elide: Text.ElideMiddle
                     color: pressed ? Theme.secondaryColor : Theme.primaryColor
                     font.pixelSize: Theme.fontSizeSmall
-                    text: document_name
+                    text: document_name ? document_name : ""
                 }
 
                 Label {

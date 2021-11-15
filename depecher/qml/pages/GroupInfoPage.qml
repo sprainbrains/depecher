@@ -120,14 +120,15 @@ Page {
                 height:Theme.paddingLarge
             }
             SharedContent {
-                chatId:groupInfo.chatId
+                chatId: groupInfo.chatId
 
-                photoCount:groupInfo.photoCount
-                videoCount:groupInfo.videoCount
-                fileCount:groupInfo.fileCount
-                audioCount:groupInfo.audioCount
-                linkCount:groupInfo.linkCount
-                voiceCount:groupInfo.voiceCount
+                photoCount: groupInfo.photoCount
+                videoCount: groupInfo.videoCount
+                fileCount: groupInfo.fileCount
+                audioCount: groupInfo.audioCount
+                linkCount: groupInfo.linkCount
+                voiceCount: groupInfo.voiceCount
+                animationCount: groupInfo.animationCount
             }
             Item {
                 width: 1

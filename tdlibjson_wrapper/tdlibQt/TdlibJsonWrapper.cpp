@@ -181,6 +181,7 @@ void TdlibJsonWrapper::startListen()
             this, &TdlibJsonWrapper::meReceived);
     connect(parseObject, &ParseObject::errorReceived,
     [this](const QJsonObject & errorObject) {
+        qDebug() << "error: " << errorObject["message"].toString();
         if (errorObject["code"].toInt() == 420) { // FLOOD_WAIT_X
             static int floodCounter = 0;
             qDebug() << "FLOOD error: " << errorObject["message"].toString();
@@ -190,7 +191,6 @@ void TdlibJsonWrapper::startListen()
                 exit(1);
             }
         }
-        qDebug() << "error: " << errorObject["message"].toString();
         emit errorReceived(errorObject);
         emit errorReceivedMap(errorObject.toVariantMap());
     });
@@ -245,8 +245,6 @@ void TdlibJsonWrapper::startListen()
             this, &TdlibJsonWrapper::setMyId);
     listenThread->start();
     parseThread->start();
-
-
 }
 
 bool TdlibJsonWrapper::isCredentialsEmpty() const

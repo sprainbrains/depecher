@@ -143,6 +143,7 @@ DISTFILES += \
     qml/pages/UserPage.qml \
     qml/pages/JoinChatDialog.qml \
     qml/pages/items/MsgPageSettings.qml \
+    qml/pages/items/filter_delegates/AnimationView.qml \
     qml/pages/items/filter_delegates/AudioView.qml \
     qml/pages/items/filter_delegates/DocumentView.qml \
     qml/pages/items/filter_delegates/LinkView.qml \

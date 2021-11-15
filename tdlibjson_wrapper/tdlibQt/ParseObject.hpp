@@ -56,6 +56,7 @@ public:
     static QSharedPointer<messagePhoto> parseMessagePhoto(const QJsonObject &messagePhotoObject);
     static QSharedPointer<photo> parsePhoto(const QJsonObject &photoObject);
     static QSharedPointer<photoSize> parsePhotoSize(const QJsonObject &photoSizeObject);
+    static QSharedPointer<minithumbnail> parseMinithumbnail(const QJsonObject &minithumbnailObject);
 
     static QSharedPointer<formattedText> parseFormattedTextContent(const QJsonObject
             &formattedTextObject);
@@ -108,7 +109,7 @@ public:
     static QSharedPointer<basicGroupFullInfo> parseBasicGroupFullInfo(const QJsonObject &basicGroupFullInfoObject);
     static QSharedPointer<chatMember> parseChatMember(const QJsonObject &chatMemberObject);
     static QSharedPointer<chatMembers> parseChatMembers(const QJsonObject &chatMembersObject);
-
+    static Enums::ChatType chatTypeToChatTypeEnum(QSharedPointer<ChatType> chatType);
 signals:
 
     void updateAuthorizationState(Enums::AuthorizationState &authorizationState);

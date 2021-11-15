@@ -14,6 +14,7 @@ Column {
     property int audioCount
     property int linkCount
     property int voiceCount
+    property int animationCount
 
     width: parent.width
     BackgroundItem {
@@ -69,9 +70,9 @@ Column {
             }
         }
         onClicked: pageStack.push("VideoView.qml",{
-                                  totalCount: sharedContent.photoCount,
+                                  totalCount: videoCount,
                                   chatId: sharedContent.chatId,
-                                  filter:TdlibState.Video
+                                  filter: TdlibState.Video
                                   })
 
     }
@@ -100,7 +101,7 @@ Column {
             }
         }
         onClicked: pageStack.push("DocumentView.qml",{
-                                  totalCount: sharedContent.photoCount,
+                                  totalCount: fileCount,
                                   chatId: sharedContent.chatId,
                                   filter:TdlibState.Document
                                   })
@@ -129,7 +130,7 @@ Column {
             }
         }
         onClicked: pageStack.push("AudioView.qml",{
-                                  totalCount: sharedContent.photoCount,
+                                  totalCount: audioCount,
                                   chatId: sharedContent.chatId,
                                   filter:TdlibState.Audio
                                   })
@@ -189,9 +190,38 @@ Column {
             }
         }
         onClicked: pageStack.push("VoiceView.qml",{
-                                  totalCount: sharedContent.photoCount,
-                                  chatId: sharedContent.chatId,
-                                  filter:TdlibState.VoiceNote
+                                      totalCount: voiceCount,
+                                      chatId: sharedContent.chatId,
+                                      filter:TdlibState.VoiceNote
+                                  })
+
+    }
+    BackgroundItem {
+        width: parent.width
+        height: Theme.itemSizeSmall
+        visible: animationCount
+        Row {
+            width: parent.width - 2 * x
+            anchors.verticalCenter: parent.verticalCenter
+            x: Theme.horizontalPageMargin
+            Icon {
+                source: "image://theme/icon-m-media"
+                anchors.verticalCenter: parent.verticalCenter
+            }
+            Item {
+                width: Theme.paddingLarge
+                height: Theme.paddingLarge
+            }
+            Label {
+                width: parent.width - Theme.iconSizeMedium - Theme.paddingLarge
+                text:qsTr("%1 animations").arg(animationCount)
+                anchors.verticalCenter: parent.verticalCenter
+            }
+        }
+        onClicked: pageStack.push("AnimationView.qml",{
+                                      totalCount: animationCount,
+                                      chatId: sharedContent.chatId,
+                                      filter: TdlibState.Animation
                                   })
 
     }

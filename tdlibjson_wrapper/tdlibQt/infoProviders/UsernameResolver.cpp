@@ -51,25 +51,20 @@ void UsernameResolver::chatReceived(const QJsonObject &chatObject)
         switch (chat->type_->get_id()) {
         case chatTypePrivate::ID:
             setResolvedId(static_cast<chatTypePrivate *>(chat->type_.data())->user_id_);
-            setChatType(tdlibQt::Enums::ChatType::Private);
             break;
         case chatTypeBasicGroup::ID:
             setResolvedId(static_cast<chatTypeBasicGroup *>(chat->type_.data())->basic_group_id_);
-            setChatType(tdlibQt::Enums::ChatType::BasicGroup);
             break;
         case chatTypeSupergroup::ID:
             setResolvedId(static_cast<chatTypeSupergroup *>(chat->type_.data())->supergroup_id_);
-            if (static_cast<chatTypeSupergroup *>(chat->type_.data())->is_channel_)
-                setChatType(tdlibQt::Enums::ChatType::Channel);
-            else
-                setChatType(tdlibQt::Enums::ChatType::Supergroup);
             break;
         case chatTypeSecret::ID:
             setResolvedId(static_cast<chatTypeSecret *>(chat->type_.data())->secret_chat_id_);
-            setChatType(tdlibQt::Enums::ChatType::Secret);
+            break;
         default:
             break;
         }
+        setChatTypeEnum(ParseObject::chatTypeToChatTypeEnum(chat->type_));
     }
 }
 void UsernameResolver::errorReceived(const QJsonObject &errorObject)

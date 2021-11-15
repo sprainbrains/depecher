@@ -13,8 +13,8 @@ class UsernameResolver : public QObject
     Q_PROPERTY(QString username READ username WRITE setUsername NOTIFY usernameChanged)
     Q_PROPERTY(double resolvedId READ resolvedId WRITE setResolvedId NOTIFY resolvedIdChanged)
     Q_PROPERTY(double resolvedChatId READ resolvedChatId WRITE setResolvedChatId NOTIFY resolvedChatIdChanged)
-    Q_PROPERTY(tdlibQt::Enums::ChatType chatType READ chatType WRITE setChatType NOTIFY chatTypeChanged)
-    tdlibQt::Enums::ChatType m_chatType;
+    Q_PROPERTY(tdlibQt::Enums::ChatType chatTypeEnum READ chatTypeEnum WRITE setChatTypeEnum NOTIFY chatTypeEnumChanged)
+    tdlibQt::Enums::ChatType m_chatTypeEnum;
 
     TdlibJsonWrapper *m_tdlibJson;
     QString m_username = "";
@@ -29,9 +29,9 @@ class UsernameResolver : public QObject
 public:
     explicit UsernameResolver(QObject *parent = nullptr);
 
-    tdlibQt::Enums::ChatType chatType() const
+    tdlibQt::Enums::ChatType chatTypeEnum() const
     {
-        return m_chatType;
+        return m_chatTypeEnum;
     }
 
     QString username() const
@@ -61,7 +61,7 @@ public:
 
 signals:
 
-    void chatTypeChanged(tdlibQt::Enums::ChatType chatType);
+    void chatTypeEnumChanged(tdlibQt::Enums::ChatType chatTypeEnum);
 
     void usernameChanged(QString username);
 
@@ -75,13 +75,13 @@ private slots:
     void setResolvedChatId(double resolvedChatId);
 
 public slots:
-    void setChatType(tdlibQt::Enums::ChatType chatType)
+    void setChatTypeEnum(tdlibQt::Enums::ChatType chatTypeEnum)
     {
-        if (m_chatType == chatType)
+        if (m_chatTypeEnum == chatTypeEnum)
             return;
 
-        m_chatType = chatType;
-        emit chatTypeChanged(m_chatType);
+        m_chatTypeEnum = chatTypeEnum;
+        emit chatTypeEnumChanged(m_chatTypeEnum);
     }
     void setUsername(QString username);
     void chatReceived(const QJsonObject &chatObject);

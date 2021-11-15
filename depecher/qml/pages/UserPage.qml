@@ -39,14 +39,12 @@ Page {
 
     UsernameResolver {
         id:resolver
-        onChatTypeChanged: {
-            if(resolver.chatType === TdlibState.Private)
-            {
+        onChatTypeEnumChanged: {
+            if(resolver.chatTypeEnum === TdlibState.Private) {
                 loader.sourceComponent  = userInfoComponent
                 loader.item.chatId=resolver.resolvedChatId
                 loader.item.userId=resolver.resolvedId
-            }
-            else {
+            } else {
                 loader.sourceComponent  = channelInfoComponent
                 loader.item.chatId=resolver.resolvedChatId
                 loader.item.supergroupId=resolver.resolvedId
@@ -283,14 +281,15 @@ Page {
                 }
 
                 SharedContent {
-                    chatId:userInfo.chatId
+                    chatId: userInfo.chatId
 
-                    photoCount:userInfo.photoCount
-                    videoCount:userInfo.videoCount
-                    fileCount:userInfo.fileCount
-                    audioCount:userInfo.audioCount
-                    linkCount:userInfo.linkCount
-                    voiceCount:userInfo.voiceCount
+                    photoCount: userInfo.photoCount
+                    videoCount: userInfo.videoCount
+                    fileCount: userInfo.fileCount
+                    audioCount: userInfo.audioCount
+                    linkCount: userInfo.linkCount
+                    voiceCount: userInfo.voiceCount
+                    animationCount: userInfo.animationCount
                 }
                 BackgroundItem {
                     width: parent.width
@@ -653,6 +652,7 @@ Page {
                     audioCount:channelInfo.audioCount
                     linkCount:channelInfo.linkCount
                     voiceCount:channelInfo.voiceCount
+                    animationCount:channelInfo.animationCount
                 }
 
                 //                Column {

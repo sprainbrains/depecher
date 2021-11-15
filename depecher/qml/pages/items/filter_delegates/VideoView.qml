@@ -32,7 +32,7 @@ Page {
             fillMode: Image.PreserveAspectFit
             source: media_preview ? ("image://depecherDb/" + media_preview) : ""
 
-            MouseArea{
+            BackgroundItem {
                 anchors.fill: parent
                 enabled: file_downloading_completed
                 onClicked:{
@@ -105,5 +105,4 @@ Page {
             flickable: grid
         }
     }
-
 }

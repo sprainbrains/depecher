@@ -571,7 +571,6 @@ QSharedPointer<ChatType> ParseObject::parseType(const QJsonObject &typeObject)
         resultType->is_channel_ = typeObject["is_channel"].toBool();
         resultType->supergroup_id_ = typeObject["supergroup_id"].toInt();
         return resultType;
-        return QSharedPointer<chatTypeSupergroup>(new chatTypeSupergroup);
     }
     if (chatType == "chatTypeSecret") {
         auto resultType = QSharedPointer<chatTypeSecret>
@@ -948,6 +947,7 @@ QSharedPointer<animation> ParseObject::parseAnimation(const QJsonObject
     resultAnimation->mime_type_ = animationObject["mime_type"].toString().toStdString();
     resultAnimation->width_ = animationObject["width"].toInt();
     resultAnimation->thumbnail_ = parsePhotoSize(animationObject["thumbnail"].toObject());
+    //resultAnimation->minithumbnail_ = parseMinithumbnail(animationObject["minithumbnail"].toObject());
 
     return resultAnimation;
 }
@@ -983,6 +983,7 @@ QSharedPointer<video> ParseObject::parseVideo(const QJsonObject &videoObject)
     resultVideo->mime_type_ = videoObject["mime_type"].toString().toStdString();
     resultVideo->supports_streaming_ = videoObject["supports_streaming"].toBool();
     resultVideo->thumbnail_ = parsePhotoSize(videoObject["thumbnail"].toObject());
+    //resultVideo->minithumbnail_ = parseMinithumbnail(videoObject["minithumbnail"].toObject());
     resultVideo->video_ = parseFile(videoObject["video"].toObject());
     resultVideo->width_ = videoObject["width"].toInt();
 
@@ -999,8 +1000,8 @@ QSharedPointer<videoNote> ParseObject::parseVideoNote(const QJsonObject &videoNo
     resultVideoNote->duration_  = videoNoteObject["duration"].toInt();
     resultVideoNote->length_  = videoNoteObject["length"].toInt();
     resultVideoNote->thumbnail_ = parsePhotoSize(videoNoteObject["thumbnail"].toObject());
+    //resultVideoNote->minithumbnail_ = parseMinithumbnail(videoNoteObject["minithumbnail"].toObject());
     resultVideoNote->video_ = parseFile(videoNoteObject["video"].toObject());
-
 
     return resultVideoNote;
 }
@@ -1200,6 +1201,19 @@ QSharedPointer<photoSize> ParseObject::parsePhotoSize(const QJsonObject &photoSi
     resultPhotoSize->height_ = photoSizeObject["height"].toInt();
     resultPhotoSize->photo_ = parseFile(photoSizeObject["photo"].toObject());
     return resultPhotoSize;
+}
+
+// It's tiny image
+QSharedPointer<minithumbnail> ParseObject::parseMinithumbnail(const QJsonObject &minithumbnailObject)
+{
+    if (minithumbnailObject["@type"].toString() != "minithumbnail")
+        return QSharedPointer<minithumbnail>(nullptr);;
+
+    QSharedPointer<minithumbnail> resultMinithumbnail(new minithumbnail);
+    resultMinithumbnail->data_ = minithumbnailObject["data"].toString().toStdString();
+    resultMinithumbnail->width_ = minithumbnailObject["width"].toInt();
+    resultMinithumbnail->height_ = minithumbnailObject["height"].toInt();
+    return resultMinithumbnail;
 }
 
 QSharedPointer<formattedText> ParseObject::parseFormattedTextContent(const QJsonObject
@@ -1715,6 +1729,22 @@ QSharedPointer<LinkState> ParseObject::parseLinkState(const QJsonObject &linkSta
         return QSharedPointer<LinkState>(new linkStateIsContact);
 
     return QSharedPointer<LinkState>(new linkStateNone);
+}
+
+Enums::ChatType ParseObject::chatTypeToChatTypeEnum(QSharedPointer<ChatType> chatType)
+{
+    switch (chatType->get_id()) {
+    case chatTypeBasicGroup::ID: return Enums::ChatType::BasicGroup;
+    case chatTypePrivate::ID: return Enums::ChatType::Private;
+    case chatTypeSecret::ID: return Enums::ChatType::Secret;
+    case chatTypeSupergroup::ID: {
+        if (static_cast<chatTypeSupergroup *>(chatType.data())->is_channel_)
+            return Enums::ChatType::Channel;
+        else
+            return Enums::ChatType::Supergroup;
+    }
+    }
+    return Enums::ChatType::BasicGroup;
 }
 
 

@@ -116,6 +116,7 @@ class MessagingModel : public QAbstractListModel
 private:
     QSharedPointer<file> getFilePtrByMessage(QSharedPointer<message> msg) const;
     int getFileIdByMessage(QSharedPointer<message> msg) const;
+    QVariant getThumbnailPathOrDownload(QSharedPointer<photoSize> thumbnail, const int rowIndex) const;
 
 protected:
     QList<QSharedPointer<message>> m_messages;

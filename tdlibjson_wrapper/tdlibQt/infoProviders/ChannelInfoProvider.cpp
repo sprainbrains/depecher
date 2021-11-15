@@ -17,6 +17,8 @@ ChannelInfoProvider::ChannelInfoProvider(QObject *parent) : InfoProvider(parent)
             this, &ChannelInfoProvider::onChatIdChanged);
     connect(m_tdlibJson, &TdlibJsonWrapper::supergroupMembersReceived,
             this, &ChannelInfoProvider::supergroupMembersReceived);
+    connect(m_tdlibJson, &TdlibJsonWrapper::errorReceived,
+            this, &ChannelInfoProvider::onErrorReceived);
 }
 
 QString ChannelInfoProvider::name() const
@@ -57,6 +59,13 @@ QString ChannelInfoProvider::inviteLink() const
     if (m_supergroupFullInfo.data())
         return QString::fromStdString(m_supergroupFullInfo->invite_link_);
     return QString();
+}
+
+QString ChannelInfoProvider::restrictionReason() const
+{
+    if (!m_supergroupFullInfo.data())
+        return QString();
+    return QString::fromStdString(m_supergroup->restriction_reason_);
 }
 
 bool ChannelInfoProvider::canBeEdited() const
@@ -243,9 +252,16 @@ bool ChannelInfoProvider::canPinMessages() const
 
 void ChannelInfoProvider::infoChanged(const QJsonObject &obj)
 {
-    if (obj["@extra"].toString() == c_extra.arg(QString::number(m_supergroupId))) {
-        m_supergroupFullInfo = ParseObject::parseSupergroupFullInfo(obj);
-        emitAll();
+    if (obj["@extra"].toString() != c_extra.arg(QString::number(m_supergroupId)))
+        return;
+
+    m_supergroupFullInfo = ParseObject::parseSupergroupFullInfo(obj);
+    emitAll();
+    if (m_supergroupFullInfo) {
+        emit infoReady();
+        if (m_supergroupFullInfo->can_get_members_)
+            m_tdlibJson->getSupergroupMembers(m_supergroupId,
+                                              "", 0, 200, c_extra.arg(QString::number(m_supergroupId)));
     }
 }
 
@@ -299,6 +315,7 @@ void ChannelInfoProvider::emitGroup()
     emit canSendMessages();
     emit canSendOtherMessages();
     emit canAddWebPagePreviews();
+    emit restrictionReasonChanged();
 }
 
 void ChannelInfoProvider::emitInfo()
@@ -319,15 +336,23 @@ void ChannelInfoProvider::setSupergroupId(int supergroupId)
     if (m_supergroupId == supergroupId)
         return;
 
+    static int firstTime = true;
+
     m_supergroupId = supergroupId;
     m_supergroup = UsersModel::instance()->getSupergroup(m_supergroupId);
     m_tdlibJson->getSupergroupFullInfo(m_supergroupId, c_extra.arg(QString::number(m_supergroupId)));
-    m_tdlibJson->getSupergroupMembers(m_supergroupId,
-                                      "", 0, 200, c_extra.arg(QString::number(m_supergroupId)));
-    emitAll();
+
+    if (!firstTime)
+        emitAll();
+    firstTime = false;
     emit supergroupIdChanged(m_supergroupId);
 }
 
-
+void ChannelInfoProvider::onErrorReceived(const QJsonObject &errorObject)
+{
+    if (errorObject["@extra"].toString() != c_extra.arg(QString::number(m_supergroupId)))
+        return;
+    setError(errorObject["message"].toString());
+}
 
 } // namespace tdlibQt

@@ -37,7 +37,7 @@ void ChatMembersModel::setMembers(const std::vector<QSharedPointer<chatMember> >
     beginInsertRows(QModelIndex(), 0, members.size() - 1);
     for (uint i = 0; i < members.size(); ++i)
         m_members.push_back(members[i]);
-    qDebug() << m_members.size();
+    //qDebug() << "members: " << m_members.size();
 
     endInsertRows();
     emit countChanged();

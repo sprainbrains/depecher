@@ -49,6 +49,7 @@ public:
     QString description() const;
 
     QString inviteLink() const;
+    QString restrictionReason() const;
 
     enum MemberStatus {
         Administrator,
@@ -102,6 +103,8 @@ signals:
     void canRestrictMembersChanged();
     void statusChanged(MemberStatus status);
     void membersModelChanged();
+    void restrictionReasonChanged();
+    void infoReady();
 
 private slots:
     void infoChanged(const QJsonObject &obj);
@@ -122,6 +125,9 @@ private:
     ChatMembersModel *m_membersModel;
 
     int m_supergroupId;
+
+private:
+    void onErrorReceived(const QJsonObject &errorObject);
 };
 } // namespace tdlibQt
 

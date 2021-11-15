@@ -23,6 +23,8 @@ QImage TelegramProfileProvider::requestImage(const QString &id, QSize *size,
             imgReader.setFormat("jpg");
             result = imgReader.read();
         }
+    } else if (id.startsWith("/9j/")) {
+        result.loadFromData(QByteArray::fromBase64(id.toUtf8()), "jpg");
     } else {
         QImageReader imgReader(id);
         result = imgReader.read();

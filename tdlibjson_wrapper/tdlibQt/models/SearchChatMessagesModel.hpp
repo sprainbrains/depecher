@@ -154,6 +154,7 @@ public:
 private:
     QSharedPointer<file> getFilePtrByMessage(QSharedPointer<message> msg) const;
     int getFileIdByMessage(QSharedPointer<message> msg) const;
+    QVariant getThumbnailPathOrDownload(QSharedPointer<photoSize> thumbnail, const int rowIndex) const;
 
     inline void beginInsertRows(int first, int last)
     {
