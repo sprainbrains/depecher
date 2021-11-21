@@ -125,7 +125,7 @@
     <name>AnimationView</name>
     <message>
         <source>Animations</source>
-        <translation>Animacines</translation>
+        <translation>Animaciones</translation>
     </message>
 </context>
 <context>
@@ -852,11 +852,11 @@
     </message>
     <message>
         <source>Bio</source>
-        <translation>Cambiando la biografía</translation>
+        <translation>Biografía</translation>
     </message>
     <message>
         <source>Change Bio</source>
-        <translation>Biografía</translation>
+        <translation>Cambiar biografía</translation>
     </message>
 </context>
 <context>
@@ -937,7 +937,7 @@
     </message>
     <message>
         <source>%1 animations</source>
-        <translation>1% animaciones</translation>
+        <translation>%1 animaciones</translation>
     </message>
 </context>
 <context>
